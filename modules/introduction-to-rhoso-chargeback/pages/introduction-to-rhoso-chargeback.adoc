@@ -1,0 +1,12 @@
+#  Introduction to RHOSO Chargeback
+
+=== Introduction to RHOSO Chargeback
+
+RHOSO Chargeback introduces robust chargeback and rating capabilities for RHOSO clouds through the Rating service (CloudKitty).
+
+Key points:
+
+*   It facilitates either strict cost recovery from internal departments or provides transparent visibility into resource consumption.
+*   CloudKitty bridges raw OpenStack telemetry data with enterprise FinOps middleware, providing structured and reliable data for financial analysis.
+*   This native, highly customizable feature was integrated into the RHOSO ecosystem starting with feature release 5.
+*   It leverages the Telemetry Operator to gather necessary data for its rating and chargeback calculations.

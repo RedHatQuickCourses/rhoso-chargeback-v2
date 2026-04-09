@@ -1,0 +1,137 @@
+#  Prerequisites for Chargeback deployment in RHOSP
+
+Here's the detailed educational content for the "Prerequisites for Chargeback deployment in RHOSP" topic, formatted in Antora AsciiDoc.
+
+```asciidoc
+= Prerequisites for Chargeback Deployment in RHOSP
+
+The successful implementation of chargeback capabilities within your Red Hat OpenStack Platform (RHOSP) environment, managed by Red Hat OpenStack Services on OpenShift (RHOSO), hinges on fulfilling several foundational prerequisites. These prerequisites ensure that the necessary infrastructure and services are in place to support the data collection, rating, and reporting functions of the Cloudkitty service.
+
+Ensuring these components are properly configured before attempting to enable chargeback will streamline the deployment process and prevent common issues related to missing dependencies or misconfigured services.
+
+== Understanding the RHOSO Chargeback Architecture
+
+Before diving into the prerequisites, it's crucial to understand that chargeback in RHOSO leverages the `cloudkitty` project from OpenStack. The `cloudkitty` service, also known as the Rating service, is enabled through the Telemetry Operator within your RHOSO deployment. Its primary function is to retrieve collected metrics, apply customer-defined rating rules, and then store the rated data for reporting.
+
+[NOTE]
+====
+Chargeback in RHOSO, powered by Cloudkitty, is *not* a billing solution. It provides granular consumption data and applies defined costs to resources, enabling internal cost allocation and showback/chargeback reporting, but it does not handle invoicing or financial transactions directly.
+====
+
+== Key Prerequisites for Chargeback Deployment
+
+To successfully deploy and activate the Chargeback feature in your RHOSP environment via RHOSO, the following prerequisites must be met:
+
+=== 1. Operational Red Hat OpenStack Services on OpenShift (RHOSO) Environment
+
+The foundation for deploying chargeback is a fully functional and stable RHOSO environment. RHOSO extends the capabilities of RHOSP by running its services on an OpenShift cluster.
+
+*   **Detailed Technical Explanation:**
+    Chargeback, through the Cloudkitty service, is deeply integrated into the RHOSO architecture. This means that Cloudkitty's components (API and processor) are deployed and managed by the Telemetry Operator running within your OpenShift cluster. For Cloudkitty to operate correctly, all core RHOSO services, including the OpenStack control plane and data plane services, must be up and running without errors. This includes:
+    ** OpenShift Container Platform: The underlying platform hosting RHOSO.
+    ** RHOSO Operators: All necessary RHOSO operators (e.g., OpenStack Platform Operator, Telemetry Operator, etc.) must be installed and reconciled.
+    ** OpenStack Core Services: Neutron, Nova, Cinder, Glance, Keystone, etc., must be operational as Cloudkitty will be rating resources provisioned by these services.
+
+*   **Verification:**
+    While a direct "hands-on activity" for verifying the entire RHOSO environment is beyond the scope of a single prerequisite, you would typically verify its health using `oc` commands and checking the status of OpenStack pods and services.
+
+    [source,bash,subs="attributes+"]
+    ----
+    # Check the status of the Telemetry Operator and its operands
+    oc get pod -n openstack-operators -l app.kubernetes.io/name=telemetry-operator
+    oc get openstacktelemetries -n openstack
+    
+    # Verify the health of core OpenStack services
+    oc get openstackcontrolplane -n openstack
+    oc get openstacknets -n openstack
+    oc get openstackcinders -n openstack
+    # ... and so on for other OpenStack services
+    ----
+
+=== 2. Telemetry Operator Deployment and Configuration
+
+The Telemetry Operator is the primary mechanism for deploying and managing the Cloudkitty service in RHOSO.
+
+*   **Detailed Technical Explanation:**
+    The Telemetry Operator is responsible for deploying, managing, and scaling telemetry-related components, including the Cloudkitty (Rating) service. You *enable* the Rating service through the Telemetry Operator's configuration. This operator ensures that Cloudkitty's API and processor components are correctly deployed as Kubernetes pods and configured to interact with other RHOSO services and data sources. Without a properly installed and operational Telemetry Operator, you cannot deploy Cloudkitty.
+
+*   **Verification:**
+    Ensure the Telemetry Operator is installed in your OpenShift cluster and its pods are running.
+
+    [source,bash,subs="attributes+"]
+    ----
+    # Check if the Telemetry Operator namespace exists
+    oc get project openstack-operators
+
+    # List pods within the Telemetry Operator namespace
+    oc get pods -n openstack-operators | grep telemetry-operator
+    ----
+    You should see pods related to the `telemetry-operator` in a `Running` state.
+
+=== 3. Robust Metrics Collection (Prometheus)
+
+Cloudkitty relies on collected metrics to perform its rating calculations. Prometheus is the primary data storage for these metrics in RHOSO.
+
+*   **Detailed Technical Explanation:**
+    Cloudkitty retrieves metrics from a data storage system, specifically Prometheus, to perform its rating. For chargeback to function accurately, a robust and comprehensive metrics collection pipeline must be in place. This includes:
+    ** Prometheus: An instance of Prometheus must be deployed and actively collecting metrics from various OpenStack components (Nova for instances, Cinder for volumes, Neutron for network traffic, etc.). These metrics are the raw data that Cloudkitty will process.
+    ** Metric Exporters: Appropriate exporters must be configured within the OpenStack services to expose relevant metrics in a format Prometheus can scrape.
+    ** Retention Policies: Prometheus must be configured with adequate retention policies to ensure historical metric data is available for Cloudkitty to process chargeback reports over specified periods.
+
+    Without a functional Prometheus instance collecting the necessary OpenStack usage metrics, Cloudkitty will lack the data required to apply rating rules and generate accurate charges.
+
+*   **Verification:**
+    Access your Prometheus instance (typically via OpenShift's monitoring stack) and verify that OpenStack-related metrics are being collected. You can query for common metrics, for example:
+
+    [source,bash,subs="attributes+"]
+    ----
+    # (Example using oc port-forward to access Prometheus UI, adjust service name/namespace)
+    # oc -n openshift-monitoring port-forward service/prometheus-k8s 9090:9090 &
+    # Then navigate to http://localhost:9090 in your browser and use the Prometheus expression browser.
+
+    # Example Prometheus Query for Nova instance count
+    # count(nova_instance_info)
+
+    # Example Prometheus Query for Cinder volume usage (adjust metric name as per your setup)
+    # sum(cinder_volume_used_bytes)
+    ----
+
+=== 4. Dedicated Loki Instance for Rated Data Storage
+
+Cloudkitty, after retrieving metrics and applying rating rules, stores the resulting rated data. This storage is handled by Loki.
+
+*   **Detailed Technical Explanation:**
+    A separate, dedicated Loki instance is required for Cloudkitty to store the generated ratings. This Loki instance serves as the repository for all rated data, which Cloudkitty later uses to generate chargeback reports. The context explicitly states, "We create a separate, small loki instance for this purpose." This ensures that Cloudkitty's output data is isolated and readily available for reporting without interfering with other Loki instances that might be used for general log aggregation.
+
+*   **Verification:**
+    Verify that a Loki instance designated for Cloudkitty's use is deployed and accessible. Its configuration should be part of the Telemetry Operator's `OpenStackTelemetry` custom resource definition (CRD).
+
+    [source,bash,subs="attributes+"]
+    ----
+    # Check for Loki pods (names might vary, look for those related to telemetry or cloudkitty)
+    oc get pod -n openstack | grep loki
+    
+    # Examine the OpenStackTelemetry CR for Loki configuration details
+    oc get openstacktelemetries -n openstack -o yaml
+    ----
+    Look for sections within the `OpenStackTelemetry` CRD that define the Loki service endpoint or related configuration for `cloudkitty`.
+
+=== 5. OpenStack Identity Service (Keystone)
+
+While not explicitly called out as a separate prerequisite in the provided context for Cloudkitty's *deployment*, it is implicitly essential for any OpenStack service.
+
+*   **Detailed Technical Explanation:**
+    Cloudkitty, like other OpenStack services, relies on Keystone for authentication and authorization. Cloudkitty will need to authenticate with Keystone to interact with other OpenStack services (e.g., retrieving project/user information) and potentially secure its own API endpoints. A fully functional Keystone service is therefore a fundamental dependency.
+
+*   **Verification:**
+    Ensure Keystone is operational and users/projects can authenticate successfully.
+
+    [source,bash,subs="attributes+"]
+    ----
+    # Check Keystone service status
+    oc get openstackkeystones -n openstack
+    oc get pod -n openstack | grep keystone
+    ----
+
+By ensuring these prerequisites are meticulously addressed, you lay a solid groundwork for a robust and accurate chargeback system within your RHOSO-managed RHOSP environment. The next steps will involve configuring Cloudkitty itself and defining your rating rules.
+```

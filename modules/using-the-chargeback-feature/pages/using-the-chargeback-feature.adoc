@@ -1,0 +1,10 @@
+#  Using the Chargeback Feature
+
+Chargeback enables users to apply rating rules to cloud resource consumption to determine associated costs.
+
+Key steps include:
+
+*   Understanding rating definitions and components.
+*   Creating and managing rating rules.
+*   Generating chargeback reports and invoices based on these rules and collected metrics.
+*   Analyzing the chargeback data and resource consumption for cost assessment.

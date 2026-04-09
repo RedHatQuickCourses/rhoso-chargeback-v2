@@ -1,22 +1,31 @@
-= An Example Quick Course
+=  RHOSO Chargeback and Observability Fundamentals
 :navtitle: Home
 
 == Introduction
 
-Course Title: Course title FIXME
+Course Title:  RHOSO Chargeback and Observability Fundamentals
 
 Description:
 Course description FIXME
 
 Duration: FIXME hours
 
-== Objectives
+== Topics covered in this course
 
-On completing this course, you should be able to:
 
-* Observable, measurable objective...
-* Observable, measurable objective...
-* Observable, measurable objective...
+*  Basics of RHOSO Observability
+
+*  Introduction to RHOSO Chargeback
+
+*  Enabling Chargeback in RHOSP
+
+*  Using the Chargeback Feature
+
+*  Hands-on Lab: Implementing Your First Chargeback Rating
+
+*  Basic Chargeback Troubleshooting
+
+
 
 == Prerequisites
 

@@ -1,0 +1,121 @@
+#  Integration of Chargeback with RHOSO Observability
+
+= Integration of Chargeback with RHOSO Observability
+
+This section delves into the critical integration between RHOSO Chargeback and RHOSO Observability, outlining how the observability platform provides the foundational data necessary for accurate cost allocation and billing.
+
+== The Synergy of Observability and Chargeback
+
+For any robust chargeback system, a reliable source of consumption data is paramount. In the Red Hat OpenStack on OpenShift (RHOSO) environment, RHOSO Observability serves as this vital data source. It aggregates performance metrics, logs, and events, offering a comprehensive view of resource utilization across the OpenStack and underlying OpenShift layers. Chargeback leverages this rich telemetry to calculate costs, providing transparency and accountability for resource consumption.
+
+=== RHOSO Observability's Role in Data Provisioning
+
+RHOSO Observability, as the observability solution for RHOSO 18 and beyond, is specifically designed to collect and expose telemetry from your OpenStack deployment running on OpenShift. This platform integrates native OpenStack telemetry solutions like Ceilometer and AODH with the robust tooling available in OpenShift Observability, such as the Cluster Observability Operator (COO), Cluster Logging Operator (CLO), and the OpenShift Console UI.
+
+The key aspects of RHOSO Observability relevant to Chargeback include:
+
+*   **Comprehensive Metric Collection:** It collects a wide array of metrics related to CPU usage, memory consumption, storage I/O, network traffic, and other resource utilization parameters from both the OpenStack instances and the underlying OpenShift infrastructure.
+*   **Leveraging OpenShift Ecosystem:** By integrating with OpenShift Observability (specifically COO and the telemetry-operator), RHOSO leverages a proven and familiar metrics stack, typically involving Prometheus for time-series data storage and Grafana for visualization.
+*   **Metrics for Scraping:** Critically, RHOSO Observability exposes these metrics for scraping. This means that while it doesn't *guarantee* delivery or cache all historical data, the current and near-real-time metrics are available for collection by other systems.
+*   **Logging:** As noted, RHOSO observability logging is enabled on the control plane, providing valuable event data that can complement metric analysis for auditing or detailed troubleshooting in chargeback scenarios.
+
+IMPORTANT: The context states that "RHOSO Observability does not guarantee the delivery of metrics. Metrics are exposed for scraping but they are not cached. If data is dropped there is no ability to retrospectively fill in gaps in the data, which might result in incomplete metrics." This is a crucial consideration for Chargeback, as any data loss in the observability layer directly impacts the accuracy of historical charge calculations. Robust monitoring of the observability pipeline itself becomes essential.
+
+=== Chargeback's Data Consumption and Attribution
+
+The Chargeback feature within RHOSO requires specific consumption data points to apply its rating definitions and calculate costs. This data is primarily sourced from RHOSO Observability. The integration typically follows these steps:
+
+1.  **Metric Identification:** Chargeback administrators identify the specific metrics (e.g., `cpu_usage_seconds_total`, `memory_bytes_total`, `volume_bytes_used`) that are relevant for billing different services and resources. These metrics are exposed by RHOSO Observability.
+2.  **Data Ingestion:** The Chargeback component is configured to scrape or ingest these identified metrics from the RHOSO Observability platform (often via Prometheus APIs or similar interfaces).
+3.  **Resource Correlation:** For accurate billing, raw metrics must be attributed to specific tenants, projects, users, or resource types. The observability data, along with OpenStack metadata available through APIs, allows Chargeback to correlate consumption with the responsible entity. For example, a CPU usage metric might have labels indicating the associated OpenStack instance ID and project ID.
+4.  **Rating Engine Input:** The ingested and correlated consumption data then feeds into the Chargeback rating engine, where predefined rating rules (based on cost per unit of resource) are applied to calculate the actual charges.
+
+This integration ensures that the costs allocated through Chargeback are directly tied to the actual resource utilization measured by the observability platform, promoting fairness and operational efficiency.
+
+== Hands-on Lab: Verifying Observability Data for Chargeback
+
+While direct configuration of the core integration components is often part of the RHOSO deployment, verifying that the necessary observability data is being collected and exposed is crucial for Chargeback's success. This lab activity guides you through inspecting relevant metrics that would typically be consumed by the Chargeback system.
+
+=== Setting up the Lab Environment for Chargeback Data Verification
+
+For this activity, you will need access to your RHOSO environment and administrative privileges to query the OpenShift Observability stack, specifically Prometheus.
+
+*   **Prerequisites:**
+    *   An operational RHOSO deployment with RHOSO Observability enabled.
+    *   Access to the OpenShift cluster's `oc` command-line tool.
+    *   `kubeadmin` or a user with `cluster-admin` roles to access Prometheus.
+    *   (Optional but recommended) Access to the OpenShift Console.
+
+=== Activity: Inspecting Key Observability Metrics
+
+In this step, you will identify and query common metrics exposed by RHOSO Observability that are essential for Chargeback calculations.
+
+.Log in to the OpenShift Cluster
+Log in to your OpenShift cluster using the `oc` CLI tool:
+[source,bash]
+----
+oc login --token=<your-token> --server=<your-api-server>
+----
+
+.Access the Prometheus Web UI
+The primary way to verify metric exposure is through the Prometheus web UI.
+You can find the route to Prometheus in the `openshift-monitoring` project.
+[source,bash]
+----
+oc get route -n openshift-monitoring prometheus-k8s
+----
+Look for the `HOST/PORT` in the output. Navigate to this URL in your web browser. You might need to accept security warnings or log in if prompted.
+
+.Query for OpenStack Instance CPU Usage
+One of the most common metrics for chargeback is CPU utilization. Query for a metric that represents CPU usage of OpenStack instances. These metrics are typically exposed by Ceilometer or other OpenStack telemetry components integrated into RHOSO Observability.
+
+In the Prometheus UI, in the "Expression" input field, type a query like:
+[source,prometheus]
+----
+ceilometer_instance_cpu_utilization_seconds_total
+----
+Or for a more general Kubernetes/OpenShift container CPU usage that might apply to OpenStack components:
+[source,prometheus]
+----
+container_cpu_usage_seconds_total{container!=""}
+----
+
+NOTE: The exact metric names can vary based on your specific RHOSO version and deployed telemetry agents. You may need to explore available metrics using the "Insert metric at cursor" dropdown in the Prometheus UI. Look for metrics prefixed with `openstack_`, `nova_`, `cinder_`, or `neutron_`.
+
+.Execute the query and observe the results. You should see a graph and a table of time-series data. Pay attention to labels like `instance`, `project_id`, `tenant_id`, or `container_id` that allow for attribution.
+
+.Query for OpenStack Instance Memory Usage
+Similarly, memory consumption is a key chargeback metric.
+[source,prometheus]
+----
+ceilometer_instance_memory_usage_bytes
+----
+Or for container memory:
+[source,prometheus]
+----
+container_memory_usage_bytes{container!=""}
+----
+
+.Execute the query and verify that data is being collected.
+
+.Query for Block Storage Usage
+If your chargeback includes storage, you'll want to inspect Cinder-related metrics.
+[source,prometheus]
+----
+ceilometer_volume_capacity_bytes
+----
+Or for actual usage:
+[source,prometheus]
+----
+cinder_volume_used_bytes
+----
+
+.Reviewing the Generated Data
+The goal here is not to calculate charges yet, but to confirm that the *raw data* needed for chargeback is present and being actively collected by RHOSO Observability.
+
+*   **Data Presence:** Confirm that the queries return actual data points and not "No data found."
+*   **Granularity:** Observe the frequency of data points. A higher frequency provides more accurate chargeback.
+*   **Labels:** Examine the labels associated with each metric (e.g., `instance_id`, `project_id`, `tenant_id`). These labels are critical for the Chargeback system to correctly attribute resource consumption to the respective OpenStack projects or users.
+*   **Timeliness:** Ensure the timestamps on the latest data points are recent, indicating active collection.
+
+By successfully completing this activity, you have verified that RHOSO Observability is actively collecting and exposing the fundamental metrics required by the RHOSO Chargeback system to perform its calculations. This foundational data flow is crucial for the accuracy and reliability of your chargeback reports.

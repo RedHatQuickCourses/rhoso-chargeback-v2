@@ -1,6 +1,6 @@
 site:
-  title: FIXME Course Title
-  start_page: REPLACEREPONAME::index.adoc
+  title:  RHOSO Chargeback and Observability Fundamentals
+  start_page: rhoso-chargeback-v2::index.adoc
 
 content:
   sources:

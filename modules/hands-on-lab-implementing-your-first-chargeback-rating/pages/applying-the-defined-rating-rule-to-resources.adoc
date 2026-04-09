@@ -1,0 +1,111 @@
+#  Applying the defined rating rule to resources
+
+Here is the content for "Applying the defined rating rule to resources" in Antora AsciiDoc format.
+
+```adoc
+[[applying-defined-rating-rule-to-resources]]
+= Applying the Defined Rating Rule to Resources
+
+Once rating rules are defined within RHOSO's Chargeback service (powered by `cloudkitty`), they are not "manually applied" in the traditional sense. Instead, the `cloudkitty` service continuously monitors resource consumption data flowing from OpenStack Telemetry services (like Ceilometer and Gnocchi). When consumption data matches the criteria specified in an active rating rule, `cloudkitty` automatically processes that data and assigns a monetary value based on the rule's definition.
+
+== Technical Explanation: How Rating Rules are Applied
+
+The application of rating rules by `cloudkitty` is a dynamic and continuous process, ensuring that all relevant resource consumption is evaluated against the current pricing structure.
+
+. *Data Ingestion*: The `cloudkitty` collector service is responsible for ingesting raw resource consumption metrics. These metrics originate from OpenStack's telemetry components, such as Ceilometer for event-driven data and Gnocchi for time-series data. Examples include CPU usage, RAM consumption, disk I/O, network traffic, and storage capacity utilization for various OpenStack resources (VMs, volumes, networks, etc.).
+
+. *Rule Matching*: As new consumption data streams into `cloudkitty`, the rating engine evaluates each data point against the set of active rating rules. A rule is applied if the incoming resource's attributes (e.g., resource type, project ID, flavor, metadata tags) and consumption metrics (e.g., CPU hours, GB-hours) precisely match the conditions defined in the rating rule.
++
+[NOTE]
+====
+The *metrics.yaml* file (as referenced in the context) plays a crucial role here. It defines *which* specific metrics `cloudkitty` should collect and process for rating. If a metric is not listed in `metrics.yaml`, `cloudkitty` will not be able to rate consumption based on that metric, regardless of any defined rules.
+====
+
+. *Rating Calculation*: Upon a successful match, `cloudkitty` applies the pricing logic specified in the rule. This can involve:
+    *   *Flat fees*: A fixed charge per unit (e.g., $0.01 per vCPU hour).
+    *   *Tiered pricing*: Different rates based on consumption thresholds (e.g., first 100 GB-hours at $X, subsequent at $Y).
+    *   *Time-based pricing*: Rates that vary depending on the time of day or week.
+    *   *Attribute-based pricing*: Rates that change based on resource attributes (e.g., premium storage type costs more).
++
+The output of this calculation is a *rated data record* that includes the original consumption, the applied rate, and the calculated charge.
+
+. *Data Storage and Aggregation*: The generated rated data records are stored by `cloudkitty`. These records form the basis for chargeback reports and invoices. `cloudkitty` can aggregate these records over specified periods (e.g., hourly, daily, monthly) to provide a comprehensive view of resource costs per project or resource.
+
+In essence, defining a rating rule makes it *active*. `cloudkitty` then continuously applies all active rules to incoming consumption data without requiring further manual intervention for each resource. The "application" is an automated, background process.
+
+[[hands-on-lab-applying-defined-rating-rule]]
+== Hands-on Lab: Verifying Rule Application and Generating Initial Charges
+
+This lab activity builds upon the previous step of "Defining a basic rating rule for a service." Here, we will ensure that a resource matching your defined rule is active and then verify that `cloudkitty` has processed and rated its consumption.
+
+=== Prerequisites
+
+*   You have successfully defined a basic rating rule using the `cloudkitty` CLI or API in a previous step. This rule should target a common OpenStack resource metric, such as vCPU hours for a compute instance or GB-hours for a volume.
+*   You have access to an OpenStack project (tenant) and its credentials.
+*   The `openstack` client is configured to connect to your RHOSP environment.
+*   The `cloudkitty` CLI (usually part of the `openstack` client, e.g., `openstack rating`) is available.
+
+=== Step 1: Ensure a Resource is Consuming and Matches Your Rule
+
+For `cloudkitty` to apply a rule, there must be actual resource consumption that matches the rule's criteria.
+
+. *Identify a Target Resource*:
+    *   Recall the rating rule you defined. For instance, if you defined a rule for `compute.instance.cpu.usage`, you need an active OpenStack instance. If it was for `volume.size`, you need an active Cinder volume.
+    *   For this example, let's assume your rule targets vCPU usage of an instance.
+. *Verify Resource Existence and Activity*:
+    . Log in to your OpenStack environment as the project user or an administrator.
+    . List your instances to ensure at least one is running. If not, launch a small test instance (e.g., cirros, fedora).
+    [source,bash]
+    ----
+    openstack server list
+    ----
+    . Note the `ID` and `Name` of a running instance. This instance will be our subject for verification.
+. *Generate Some Consumption (If Needed)*:
+    *   For CPU usage, simply having the instance running is usually sufficient to generate base metrics. If you want to simulate higher usage, you could SSH into the instance and run a CPU-intensive command (e.g., `stress-ng --cpu 1 --timeout 60s`).
+
+=== Step 2: Query for Rated Data to Confirm Rule Application
+
+`cloudkitty` processes data periodically. After a few minutes of consumption, you can query `cloudkitty` to see if your rule has been applied and charges calculated.
+
+. *List Rated Data for Your Project*:
+    . Use the `openstack rating data list` command. You can filter by project ID to focus on your specific project.
+    . First, get your current project's ID:
+    [source,bash]
+    ----
+    openstack project show <your_project_name> -f value -c id
+    ----
+    . Now, list rated data for that project. Specify a time range to narrow down the results, especially if you just started the resource.
+    [source,bash]
+    ----
+    PROJECT_ID=$(openstack project show <your_project_name> -f value -c id)
+    openstack rating data list --project $PROJECT_ID --start-time $(date -Iminutes --date='-1 hour') --end-time $(date -Iminutes)
+    ----
+    *Expected Output*: You should see entries resembling the rated consumption. Look for `rated_data` that corresponds to the metrics your rule targets (e.g., `compute.instance.cpu.usage`). The `rating_id` will correspond to the rule applied.
++
+[NOTE]
+====
+If you don't see immediate results, wait a few minutes and re-run the command. `cloudkitty` operates on a polling cycle for telemetry data, so there might be a slight delay between resource consumption and rating.
+====
+
+. *Inspect Specific Rated Data (Optional)*:
+    . If you found a `uuid` in the `openstack rating data list` output that looks relevant, you can inspect it in more detail:
+    [source,bash]
+    ----
+    openstack rating data show <uuid_of_rated_data_entry>
+    ----
+    *Expected Output*: This will provide a detailed JSON output showing the original metric, the applied rating rule ID, the unit price, and the calculated charge. This is concrete proof that your rule has been successfully applied to the resource's consumption.
+
+=== Step 3: Reviewing Generated Charges
+
+While `openstack rating data list` shows raw rated entries, `cloudkitty` also aggregates these into summary reports. This step briefly previews how you would look at the aggregated charges, linking to the next lab objective.
+
+. *Generate a Summary Report (for the current month/period)*:
+    . Use the `openstack rating hashmap get` command to retrieve a summary of charges. This typically groups charges by project and service.
+    [source,bash]
+    ----
+    openstack rating hashmap get --project $PROJECT_ID
+    ----
+    *Expected Output*: You will see a summary of charges, often broken down by service and aggregated for the specified period. The `total` field will indicate the calculated cost. If your rule has been applied, you should see a non-zero value associated with the service and resource type your rule targets.
+
+By successfully completing these steps, you have confirmed that your defined rating rule is active, `cloudkitty` is processing relevant resource consumption, and the rule is being applied to generate chargeback data. This forms the foundation for generating comprehensive chargeback reports and understanding your cloud resource costs.
+```

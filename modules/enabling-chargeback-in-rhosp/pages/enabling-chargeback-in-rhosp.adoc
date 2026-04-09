@@ -1,0 +1,3 @@
+#  Enabling Chargeback in RHOSP
+
+You enable Chargeback in RHOSP by activating the Rating service (cloudkitty) within the Telemetry Operator. This process provides chargeback and rating capabilities to your Red Hat OpenStack Services on OpenShift (RHOSO) cloud environment.

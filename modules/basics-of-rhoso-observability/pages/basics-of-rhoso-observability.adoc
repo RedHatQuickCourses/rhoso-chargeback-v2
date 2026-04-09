@@ -1,0 +1,13 @@
+#  Basics of RHOSO Observability
+
+=== Basics of RHOSO Observability
+
+RHOSO Observability is the comprehensive solution for monitoring Red Hat OpenStack Services on OpenShift (RHOSO). It provides insight into the RHOSO environment by collecting, storing, and searching metrics, logs, and alerts.
+
+Key aspects include:
+
+*   **Purpose:** To provide observability for the latest OpenStack Platform (OSP) release, where OSP runs as a workload on OpenShift.
+*   **Architecture:** Leverages Red Hat OpenShift Container Platform (RHOCP) Observability tools (e.g., COO, CLO, Console UI) alongside native OpenStack telemetry solutions (e.g., Ceilometer, AODH).
+*   **Advantages:** Integrates with the OpenShift ecosystem using proven tools while retaining familiar OpenStack administration solutions.
+*   **Functionality:** Collects metrics, logs, and alerts from services within RHOCP and on Compute nodes. Observability logging is enabled on the control plane.
+*   **Replacement:** It replaces the Service Telemetry Framework in RHOSO 18 and beyond.

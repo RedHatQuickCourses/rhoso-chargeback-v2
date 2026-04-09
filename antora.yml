@@ -1,10 +1,20 @@
-name: REPLACEREPONAME
-title: FIXME Course Title
-version: 1
+name: rhoso-chargeback-v2
+title:  RHOSO Chargeback and Observability Fundamentals
+version: 1.0.0
 nav:
 - modules/ROOT/nav.adoc
 - modules/LABENV/nav.adoc
-- modules/chapter1/nav.adoc
-- modules/chapter2/nav.adoc
-- modules/chapter3/nav.adoc
+
+- modules/basics-of-rhoso-observability/nav.adoc
+
+- modules/introduction-to-rhoso-chargeback/nav.adoc
+
+- modules/enabling-chargeback-in-rhosp/nav.adoc
+
+- modules/using-the-chargeback-feature/nav.adoc
+
+- modules/hands-on-lab-implementing-your-first-chargeback-rating/nav.adoc
+
+- modules/basic-chargeback-troubleshooting/nav.adoc
+
 - modules/appendix/nav.adoc

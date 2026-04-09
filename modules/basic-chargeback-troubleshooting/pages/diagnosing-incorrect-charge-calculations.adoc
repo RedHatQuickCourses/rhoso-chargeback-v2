@@ -1,0 +1,135 @@
+#  Diagnosing incorrect charge calculations
+
+Here is the content for diagnosing incorrect charge calculations in Antora AsciiDoc format:
+
+== Diagnosing Incorrect Charge Calculations
+
+Understanding and addressing incorrect charge calculations is crucial for maintaining the financial integrity and accuracy of your cloud resource billing. Discrepancies in chargeback reports can erode trust and complicate financial planning. This section provides a detailed technical explanation of common causes for incorrect calculations and outlines a systematic approach to diagnose and resolve them.
+
+=== Understanding the Root Causes of Incorrect Charges
+
+Incorrect charge calculations typically stem from issues at various stages of the chargeback process, from data collection to rule application.
+
+.Data Collection and Processing
+The foundation of accurate chargeback is reliable and complete telemetry data. The `telemetry-operator` is responsible for configuring the scraping of all metric sources through `scrapeconfig` CRs. If metrics are missing, incomplete, or incorrectly collected, the subsequent calculations will be flawed. The processor then periodically retrieves this data from Prometheus, performing calculations based on the configured rules. An incorrect processing `period config` can lead to stale or incomplete data being used for calculations.
+
+.Rating Rule Definition and Application
+Charge calculations are performed by `cloudkitty` based on predefined rating rules. These rules dictate how raw consumption metrics are translated into monetary charges. Any misconfiguration or logical error within these rules directly translates to incorrect charge outputs. For example, an incorrect unit cost, a flawed aggregation method, or an improperly defined scope for a rule can lead to significant discrepancies.
+
+.Integration and Component Health
+RHOSO Chargeback integrates with RHOSO Observability to leverage collected metrics. Issues in the underlying observability components, such as a misbehaving `MetricStorage` or an uninstalled `COO` (as noted in the context, leading to messages like "Can't own the MonitoringStack" or "COO probably isn't installed"), can prevent the necessary data from being available to the chargeback processor, thereby impacting calculation accuracy.
+
+=== Hands-on Lab: Diagnosing Calculation Discrepancies
+
+This lab provides a step-by-step guide to systematically identify and troubleshoot the causes of incorrect charge calculations within your RHOSO environment.
+
+.Prerequisites
+*   Access to the RHOSO cluster with administrative privileges.
+*   Familiarity with `oc` or `kubectl` commands.
+*   Basic understanding of `cloudkitty` rating definitions and `Prometheus` metrics.
+*   Access to chargeback reports and logs.
+
+.Step 1: Verify Metric Availability and Accuracy
+The first step is to confirm that the raw telemetry data required for your chargeback rules is being collected correctly and is accessible.
+
+.Examine Scrape Configs
+The `telemetry-operator` uses `scrapeconfig` Custom Resources (CRs) to define how metrics are scraped. Review these configurations to ensure they target the correct metric endpoints and include the metrics relevant to your chargeback rules.
+
+*   **Action:** List and inspect `scrapeconfig` CRs.
++
+[,bash]
+----
+oc get scrapeconfig -n openshift-telemetry
+oc describe scrapeconfig <scrapeconfig-name> -n openshift-telemetry
+----
+*   **Expected Outcome:** Confirm that the necessary metrics (e.g., `ceilometer_network_incoming_bytes` as seen in the context example) are configured for scraping. If you suspect missing metrics, this is a critical first check.
+
+.Query Prometheus for Raw Metrics
+Directly query Prometheus to see if the expected raw metrics are present and have reasonable values for the period in question.
+
+*   **Action:** Access the OpenShift Container Platform console, navigate to *Observe* > *Metrics*, and query for relevant metrics.
++
+For example, to check network incoming bytes:
++
+[,text]
+----
+ceilometer_network_incoming_bytes{namespace="<your-project>", instance="<instance-id>"}
+----
+*   **Expected Outcome:** You should see data points for the metrics that are supposed to contribute to the charge. If data is missing or looks abnormal, it indicates a data collection issue.
+
+.Step 2: Review Cloudkitty Rating Rule Definitions
+Incorrect charges often stem from logically flawed or misconfigured rating rules in `cloudkitty`.
+
+.Inspect Existing Rating Rules
+Review the rating rules configured in `cloudkitty` to ensure their logic, pricing, and scope align with your expected chargeback model.
+
+*   **Action:** Access the `cloudkitty` rating definitions. While the exact command might vary based on your RHOSO deployment, you would typically inspect `Rating` or `RatingRule` CRs or use a dedicated `cloudkitty` CLI/UI if available.
++
+An example conceptual command (adapt based on your specific RHOSO version and `cloudkitty` integration):
++
+[,bash]
+----
+oc get ratingrule -n openshift-chargeback # Or similar CRD
+oc describe ratingrule <rule-name> -n openshift-chargeback
+----
+*   **Expected Outcome:**
+    *   Verify the correct `metric_name` is being referenced.
+    *   Check `unit_price` and `aggregation_method` to ensure they are set as intended.
+    *   Confirm that the `period` and `filters` (if any) correctly define the scope of the rule application.
+    *   Look for common pitfalls like incorrect units (e.g., bytes vs. gigabytes), or rules applying to unintended resources.
+
+.Step 3: Analyze Data Processing Period Configuration
+The frequency at which the chargeback processor aggregates data and performs calculations can impact the timeliness and completeness of charges.
+
+.Check Processor Period Configuration
+Ensure the processor's period configuration aligns with your reporting cycles and expectations. If the period is too long, charges might appear delayed or not reflect recent consumption changes.
+
+*   **Action:** Inspect the configuration of the chargeback processor component. This might be part of a `Chargeback` CR or a specific `ConfigMap`.
++
+[,bash]
+----
+oc get chargeback -n openshift-chargeback -o yaml
+----
+*   **Expected Outcome:** Identify the `period config` or similar setting. Understand how frequently data is processed and aggregated. Ensure it's not set to an unexpectedly long interval that could cause perceived calculation errors due to delayed processing.
+
+.Step 4: Cross-Reference Raw Data with Chargeback Reports
+Compare the raw consumption data from Prometheus (Step 1) with the charges presented in your chargeback reports.
+
+.Generate and Review Reports
+Generate a chargeback report for a specific period and resource, then compare the reported consumption figures and calculated charges.
+
+*   **Action:** Use the RHOSO console or `cloudkitty` reporting tools to generate a detailed chargeback report for a known resource and time frame where discrepancies are suspected.
+*   **Expected Outcome:**
+    *   Identify the specific line items showing incorrect charges.
+    *   Note the reported consumption value for that line item.
+    *   Cross-reference this consumption value with the raw metric data pulled directly from Prometheus. If the reported consumption in the chargeback report doesn't match the raw Prometheus data, investigate the data aggregation or transformation steps.
+
+.Step 5: Check Component Status and Logs
+If the above steps don't pinpoint the issue, examine the health and logs of the chargeback components.
+
+.Inspect Condition Messages
+As highlighted in the context, condition messages are a primary interface for support. Look for clear descriptions of what might be wrong.
+
+*   **Action:** Check the status and conditions of your chargeback-related Custom Resources (e.g., `Chargeback`, `MeteringStack`).
++
+[,bash]
+----
+oc describe chargeback -n openshift-chargeback
+oc describe meteringstack -n openshift-chargeback # Or similar top-level CRs
+----
+*   **Expected Outcome:** Look for `Conditions` that are in a `False` or `Unknown` state, or clear `Reason` and `Message` fields indicating potential problems (e.g., "Can't own the MonitoringStack," "COO probably isn't installed"). If you encounter unclear messages regularly, providing feedback to improve them is encouraged.
+
+.Analyze Logs for Chargeback Components
+Logs can provide granular details about errors during data processing, rule application, or report generation.
+
+*   **Action:** View logs for the `cloudkitty` pods, `telemetry-operator` pods, and any other pods associated with the chargeback pipeline.
++
+[,bash]
+----
+oc get pods -n openshift-chargeback
+oc logs <cloudkitty-api-pod-name> -n openshift-chargeback
+oc logs <telemetry-operator-pod-name> -n openshift-telemetry
+----
+*   **Expected Outcome:** Look for error messages, warnings, or anomalies that occurred around the time the incorrect charges were calculated. Common log messages might indicate issues with database connectivity, rule parsing errors, or problems fetching metrics from Prometheus.
+
+By following these systematic steps, you can effectively diagnose and pinpoint the root cause of incorrect charge calculations in your RHOSO environment, leading to more accurate and reliable chargeback reporting.

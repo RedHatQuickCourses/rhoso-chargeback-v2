@@ -1,0 +1,104 @@
+#  Setting up the lab environment for Chargeback
+
+= Setting up the Lab Environment for RHOSO Chargeback
+
+In this lab, you will prepare your Red Hat OpenShift Service on OpenStack (RHOSO) environment to leverage the powerful Chargeback capabilities provided by CloudKitty, the Rating service integrated with the Telemetry Operator. By the end of this lab, you will have CloudKitty actively monitoring and collecting resource usage data, laying the groundwork for transparent cost recovery and optimization.
+
+== Prerequisites
+
+Before you begin, ensure you have met the following prerequisites:
+
+*   **Access to an RHOSO Cluster**: You need `kubeconfig` access to a running Red Hat OpenShift Service on OpenStack environment with administrator privileges.
+*   **OpenShift CLI (`oc`)**: The `oc` command-line tool configured to interact with your RHOSO cluster.
+*   **Telemetry Operator**: The Telemetry Operator must be installed and running within your RHOSO environment. Chargeback functionality (CloudKitty) is enabled and managed through this operator.
+*   **Sufficient Permissions**: You need appropriate permissions to modify Custom Resources (CRs) managed by the Telemetry Operator.
+
+== Understanding CloudKitty: The RHOSO Chargeback Engine
+
+At the heart of RHOSO's chargeback functionality lies *CloudKitty*, which the context describes as the "meter reader" for your cloud resources. CloudKitty acts as a critical translation layer, transforming raw technical metrics (such as VM uptime, storage consumption, or network traffic) into meaningful, quantifiable charges based on your predefined rating rules.
+
+As highlighted in our introduction to Chargeback, CloudKitty empowers organizations to achieve two major goals:
+
+*   **Transparent Cost Recovery**: It provides clear, itemized breakdowns of resource usage per tenant, enabling accurate recoupment of operational expenses without surprising internal customers with opaque charges.
+*   **Trust and Optimization**: When tenants see how their consumption (broken down by project, flavor, and metric) affects their cost, they can make informed decisions, fostering efficiency and promoting better resource utilization.
+
+It's crucial to understand that CloudKitty functions purely as a visibility and rating engine. It does *not* actively enforce budgets or block resource creation (like Nova instances) if a tenant exceeds a certain cost threshold. Its role is to provide the data necessary for informed financial management.
+
+== Enabling the Chargeback (CloudKitty) Service
+
+The Chargeback feature in RHOSO is provided by the Rating service (CloudKitty), which you enable and manage through the Telemetry Operator. To activate CloudKitty in your lab environment, you will modify the `Telemetry` custom resource (CR) to include the `cloudkitty` component. This modification instructs the Telemetry Operator to deploy and configure all necessary CloudKitty components.
+
+=== Hands-on Activity: Deploying CloudKitty via Telemetry Operator
+
+In this activity, you will enable the CloudKitty service by patching the `telemetry-operator`'s `Telemetry` custom resource. This action will trigger the operator to deploy the required CloudKitty infrastructure in your RHOSO environment.
+
+.  **Identify the Telemetry CR**
+    First, you need to identify the exact name of your `Telemetry` Custom Resource. It is typically named `telemetry-sample` or a similar identifier within the `openshift-telemetry-operator` namespace.
+
+    ```bash
+    oc get telemetry -n openshift-telemetry-operator
+    ```
+    .Expected Output
+    ```
+    NAME                 NAMESPACE                   PHASE      AGE
+    telemetry-sample     openshift-telemetry-operator Running    2h
+    ```
+    Note down the `NAME` of your `Telemetry` resource (e.g., `telemetry-sample`).
+
+.  **Patch the Telemetry CR to Enable CloudKitty**
+    Execute the following `oc patch` command. Remember to replace `<TELEMETRY_CR_NAME>` with the actual name you identified in the previous step. This command specifically adds `cloudkitty` to the `spec.components` list within the `Telemetry` CR, instructing the operator to deploy it.
+
+    ```bash
+    oc patch telemetry <TELEMETRY_CR_NAME> -n openshift-telemetry-operator --type='json' -p='[{"op": "add", "path": "/spec/components/-", "value": "cloudkitty"}]'
+    ```
+    .Example Output
+    ```
+    telemetry.telemetry.openstack.org/telemetry-sample patched
+    ```
+    This command uses a JSON patch to append `cloudkitty` to the `components` array in the `Telemetry` resource's specification.
+
+.  **Verify CloudKitty Deployment**
+    After patching the `Telemetry` CR, the Telemetry Operator will start deploying the CloudKitty pods. It may take a few minutes for all components to become fully operational. Monitor the `openshift-telemetry-operator` namespace to ensure the new CloudKitty components transition to a `Running` state.
+
+    ```bash
+    oc get pods -n openshift-telemetry-operator -w | grep cloudkitty
+    ```
+    .Expected Output (once pods are running)
+    ```
+    cloudkitty-api-xxxxxxxxx-xxxxx   1/1     Running   0          5m
+    cloudkitty-processor-xxxxxxxxx-xxxxx 1/1     Running   0          5m
+    cloudkitty-worker-xxxxxxxxx-xxxxx 1/1     Running   0          5m
+    ```
+    You should see pods for `cloudkitty-api`, `cloudkitty-processor`, and `cloudkitty-worker` eventually reaching a `Running` status.
+
+[NOTE]
+The deployment process involves creating several CloudKitty components, including API services for external interaction, a processor to apply rating rules, and worker pods to handle metric collection and processing, along with associated services and routes.
+
+.  **Confirm CloudKitty Service Availability**
+    Finally, confirm that the CloudKitty API service, which allows interaction with CloudKitty, is available within the cluster.
+
+    ```bash
+    oc get svc -n openshift-telemetry-operator | grep cloudkitty-api
+    ```
+    .Expected Output
+    ```
+    cloudkitty-api          ClusterIP   172.30.XXX.YYY   <none>        8889/TCP      5m
+    ```
+    You should see an entry for `cloudkitty-api` with a `ClusterIP`, indicating the service is ready.
+
+== Initial Data Collection and Scrape Configs
+
+Once CloudKitty is successfully deployed and running, it immediately begins collecting metrics from your RHOSO environment. The Telemetry Operator intelligently configures the scraping of all metric sources through `ScrapeConfig` Custom Resources (CRs).
+
+While you won't modify these in this lab, understanding `ScrapeConfig` CRs is crucial for troubleshooting potential issues, particularly if you suspect missing metrics or incorrect data collection later on. If you ever need to diagnose why CloudKitty isn't receiving certain data, inspecting these CRs can provide valuable diagnostic information regarding the configured metric endpoints and collection intervals.
+
+You can list these `ScrapeConfig` resources with the following command:
+
+```bash
+oc get scrapeconfig -n openshift-telemetry-operator
+```
+This command will show you the various configurations the Telemetry Operator uses to gather data for CloudKitty.
+
+== What's Next?
+
+With CloudKitty successfully enabled and confirmed to be running, your lab environment is now fully prepared for the next crucial steps. The system will begin accumulating usage data, which will be processed according to the rating rules you will define in subsequent labs. You are now ready to delve into creating and managing your first chargeback rating definitions.

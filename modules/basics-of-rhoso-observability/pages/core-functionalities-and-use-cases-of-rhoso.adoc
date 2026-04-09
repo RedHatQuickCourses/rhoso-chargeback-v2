@@ -1,0 +1,88 @@
+#  Core functionalities and use cases of RHOSO
+
+```asciidoc
+= Core Functionalities and Use Cases of RHOSO Observability
+
+This section details the fundamental capabilities and practical applications of Red Hat OpenStack Services on OpenShift (RHOSO) Observability. Understanding these core functionalities and use cases is crucial for effectively managing, troubleshooting, and optimizing your RHOSO environment.
+
+== Core Functionalities of RHOSO Observability
+
+RHOSO Observability provides a comprehensive solution for gaining deep insights into your OpenStack deployment running on OpenShift. It achieves this by strategically integrating and leveraging both OpenShift's robust observability stack and OpenStack's native telemetry tools.
+
+=== Integrated Telemetry Collection
+
+One of the primary functionalities of RHOSO Observability is its ability to collect diverse telemetry data from various layers of your RHOSO environment. This unified approach ensures no blind spots exist across the complex stack.
+
+*   *Metrics:* RHOSO Observability collects performance metrics from both the underlying OpenShift components (e.g., CPU utilization, memory consumption, network I/O of pods and nodes) and the OpenStack services themselves (e.g., virtual machine resource utilization via Ceilometer, storage usage from Cinder, network traffic from Neutron).
+*   *Logs:* It provides comprehensive log aggregation from OpenShift control plane and data plane components, alongside all OpenStack services. This enables centralized log collection, storage, and analysis, critical for debugging and auditing.
+*   *Alerts:* Integration with OpenShift's native alerting framework allows for proactive notifications based on predefined thresholds or anomalous behavior detected across the entire RHOSO stack, ensuring rapid response to critical events.
+
+[NOTE]
+====
+The context highlights that "RHOSO Observability leverages much of tooling in OpenShift Observability, like COO, CLO and Console UI, while also keeping the native OpenStack telemetry solutions, like Ceilometer and AODH." This synergistic approach ensures a holistic view of the infrastructure by combining the strengths of both platforms.
+====
+
+=== Unified Data Storage and Analysis
+
+RHOSO Observability consolidates the collected telemetry data into a unified platform, primarily leveraging OpenShift's robust observability components for storage and initial processing.
+
+*   *OpenShift Container Platform (RHOCP) Observability Tools:* It uses core OpenShift components such as the Cluster Observability Operator (COO) for managing metrics and the Cluster Logging Operator (CLO) for log collection and storage. The `telemetry-operator` plays a crucial role in facilitating the integration, bridging the gap to ensure OpenStack-specific data is correctly routed and processed within the OpenShift observability framework.
++
+[TIP]
+====
+As stated in the context, "RHOSO observability -> COO + telemetry-operator." This indicates a core architectural choice to integrate OpenStack telemetry seamlessly into the OpenShift observability framework, streamlining management and reducing operational overhead.
+====
+*   *Centralized Monitoring Interface:* The OpenShift Console UI serves as a central point for visualizing dashboards, querying metrics, and reviewing logs across your entire RHOSO deployment. This provides a consistent and familiar user experience for administrators already accustomed to OpenShift.
+
+=== Enhanced Troubleshooting and Diagnostics
+
+With its integrated approach to metrics and logs, RHOSO Observability significantly enhances the ability to troubleshoot and diagnose issues efficiently across the entire RHOSO environment.
+
+*   *Root Cause Analysis:* By correlating events, metrics, and logs from both OpenShift and OpenStack components, administrators can quickly pinpoint the root cause of performance degradation, service outages, or misconfigurations, reducing mean time to resolution (MTTR).
+*   *Real-time Monitoring:* Intuitive dashboards provide real-time visibility into the health and performance of critical services, allowing for proactive identification of potential problems before they escalate and impact end-users.
+
+=== Data Plane Logging Capabilities
+
+RHOSO Observability extends its reach to the data plane, enabling the collection of crucial logs from OpenStack Compute nodes and other data plane services.
+
+*   *Configurable Logging:* As described in the context, "You can enable Red Hat OpenStack Services on OpenShift (RHOSO) observability logging on the data plane by adding the `OpenStackDataPlaneService` logging service to the services list of each `OpenStackDataPlaneNodeSet` custom resource (CR) defined for the data plane." This provides granular control, allowing administrators to specify which data plane logs are collected and integrated into the central observability solution, ensuring comprehensive coverage without unnecessary overhead.
+
+== Use Cases of RHOSO Observability
+
+RHOSO Observability is an indispensable tool for a variety of operational and strategic use cases, providing the necessary data and insights to maintain a healthy, efficient, and cost-effective OpenStack cloud running on OpenShift.
+
+=== Proactive Monitoring and Alerting
+
+One of the most critical use cases is the continuous, proactive monitoring of the RHOSO environment to ensure high availability and optimal performance.
+
+*   *System Health Checks:* Administrators can monitor the health and operational status of all OpenStack services (e.g., Nova, Neutron, Cinder, Glance, Keystone) and the underlying OpenShift infrastructure (e.g., pods, nodes, network, storage resources).
+*   *Threshold-based Alerts:* Configure custom alerts for deviations from normal behavior, such as high CPU utilization on a compute node, low disk space on storage, API service failures, or network saturation, enabling rapid response to potential issues.
+
+=== Performance Optimization and Capacity Planning
+
+Observability data is vital for understanding resource consumption patterns and making informed decisions about future growth and resource allocation.
+
+*   *Resource Utilization Analysis:* Analyze historical data to understand trends in CPU, memory, network, and storage usage across different OpenStack projects, tenants, and services. This helps in identifying underutilized or overutilized resources.
+*   *Bottleneck Identification:* Pinpoint performance bottlenecks within the OpenStack application layer or the underlying OpenShift infrastructure that might be impacting workload performance and user experience.
+*   *Informed Scaling Decisions:* Use consumption patterns and growth projections to make data-driven decisions about scaling your RHOSO environment, ensuring adequate resources are available for future demands without unnecessary overprovisioning.
+
+=== Troubleshooting and Debugging
+
+When issues arise, RHOSO Observability provides the tools necessary for quick and effective resolution, minimizing downtime.
+
+*   *Accelerated Root Cause Analysis:* Aggregated logs and metrics from across the entire stack drastically reduce the time spent sifting through disparate data sources, speeding up the identification of the problem's origin, whether it lies in OpenStack or OpenShift.
+*   *Historical Data Review:* Review past performance metrics and log data to understand when an issue started, what changes occurred around that time, and how the problem evolved, aiding in post-mortem analysis and preventing recurrence.
+
+=== Security Auditing and Compliance
+
+The comprehensive logs collected by RHOSO Observability are invaluable for maintaining security posture and demonstrating compliance.
+
+*   *Activity Auditing:* Track user activities, API calls, and system events within both OpenStack and OpenShift to monitor for unauthorized access, suspicious behavior, or policy violations.
+*   *Compliance Reporting:* Generate reports based on log data to demonstrate adherence to internal policies and external regulatory requirements for data access, system changes, and operational procedures.
+
+=== Strategic Transition and Modernization
+
+For organizations transitioning from previous OpenStack deployments, RHOSO Observability represents a significant evolution.
+
+*   *Replacement for Service Telemetry Framework (STF):* It's important to note that "RHOSO Observability is the replacement of the Service Telemetry Framework in RHOSO 18 and beyond." This signifies a strategic shift towards a more integrated, OpenShift-native approach for telemetry collection and analysis, streamlining operations for environments running OpenStack on OpenShift and aligning with modern cloud-native observability practices.
+```

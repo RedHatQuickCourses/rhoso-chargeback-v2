@@ -1,0 +1,5 @@
+* xref:using-the-chargeback-feature.adoc[]
+** xref:understanding-rating-definitions-and-components.adoc[]
+** xref:creating-and-managing-rating-rules.adoc[]
+** xref:generating-chargeback-reports-and-invoices.adoc[]
+** xref:analyzing-chargeback-data-and-consumption.adoc[]

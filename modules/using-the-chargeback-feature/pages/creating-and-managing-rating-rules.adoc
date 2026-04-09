@@ -1,0 +1,136 @@
+#  Creating and managing rating rules
+
+```asciidoc
+= Creating and managing rating rules
+
+In RHOSO Chargeback, rating rules are the fundamental mechanism for translating raw resource consumption data into actionable costs. They enable organizations to define granular pricing policies, ensure financial accountability, and provide transparency into resource utilization across various departments, projects, or users. This section provides a detailed technical explanation of how these critical rules are structured, created, and maintained within RHOSO.
+
+== Understanding Rating Definitions and Components
+
+At its core, a rating rule establishes a clear, auditable mapping: it specifies *what* resource usage should be rated, *how* it should be rated (the cost), and *when* that rating applies. This allows for the implementation of detailed billing and chargeback policies tailored to the specific services and resource types consumed within your cloud environment.
+
+As highlighted in the provided context, "You create rating rules by creating mappings from a field or service that triggers the application of the rating rule. For example, you can add a rating to a specific value of flavor on an instance." This means a rating rule isn't just a flat rate; it's a dynamic condition-based charging mechanism.
+
+A typical rating rule is composed of several key components that work together to define the charge:
+
+*   **Triggering Event or Field**: This is the condition or attribute that, when met, activates the application of the rating rule. Examples include:
+    *   A specific OpenStack `flavor_name` (e.g., `m1.gold`).
+    *   A particular `project_id` or `user_id`.
+    *   A specific resource type (e.g., `volume_type`).
+    *   Custom tags or metadata associated with a resource.
+*   **Metric to Rate**: This specifies the quantifiable unit of consumption to which the rate will be applied. Common metrics include:
+    *   `instance_hours` (for compute instances).
+    *   `gb_hours` (for storage).
+    *   `iops` (for disk operations).
+    *   `network_egress_gb` (for network traffic).
+*   **Rate/Cost**: The monetary value or formula assigned per unit of the specified metric. This can be:
+    *   A fixed price (e.g., `$0.10` per `gb_hour`).
+    *   A tiered price (e.g., first 100 GB-hours at `$0.05`, subsequent at `$0.03`).
+    *   A complex formula incorporating multiple variables.
+*   **Currency**: The currency in which the rate is denominated (e.g., `USD`, `EUR`).
+*   **Start Date**: As per the context, this "Specifies the date from which the rating applies." This is critical for applying new pricing structures from a specific point in time, ensuring historical charges remain consistent.
+*   **End Date (Optional)**: While not explicitly mentioned in the context, chargeback systems often allow defining an end date for a rule, specifying when it ceases to be active. This is useful for temporary promotions or phased pricing changes.
+*   **Scope/Applicability**: Defines the boundaries within which the rule is active (e.g., applies globally, to specific tenants, or to a set of resources with certain tags).
+
+image::chargeback-rating-rule-components.png[Chargeback Rating Rule Components, 800, 450]
+_Figure 1: Key components of a RHOSO Chargeback rating rule._
+
+=== Identifying and Configuring New Rating Metrics
+
+Before you can create a rating rule for a specific resource consumption, it's crucial to verify if the underlying metric is already being collected by RHOSO Observability and exposed for Chargeback. The RHOSO UI provides mechanisms to review these available metrics.
+
+.Procedure: Checking Configured Metrics for Rating
+. **Access the RHOSO Dashboard**: Log in to your RHOSO instance with appropriate administrative privileges.
+. **Navigate to Chargeback Configuration**: In the main navigation menu, select *Chargeback* and then look for a section like *Rating Configuration* or *Metrics Definitions*.
+. **Review Available Metrics**: A list of metrics that can be used for rating will be displayed. This list typically includes common OpenStack metrics like `instance_hours`, `volume_gb_hours`, `network_bytes_in`, etc.
+
+If a specific resource usage (e.g., a custom storage class, GPU usage, or a new service metric) is not present in this list but needs to be charged, you will need to configure RHOSO to ingest and expose this new metric for Chargeback.
+
+[NOTE]
+Exposing new raw metrics for chargeback can be a more advanced administrative task. It often involves ensuring the metric is properly collected by Prometheus (or other monitoring components), then configuring RHOSO's observability and chargeback services to recognize and process it. Refer to the RHOSO administration and integration guides for detailed procedures on advanced metric integration.
+
+== Creating and Managing Rating Rules
+
+The RHOSO web interface provides a streamlined process for defining, applying, and managing your chargeback rating rules. This allows administrators to implement detailed pricing logic without direct interaction with backend databases.
+
+=== Step-by-step Guide to Creating a Rating Rule
+
+Let's walk through a conceptual example, as suggested by our context, of creating a basic *flavor-based rating rule*. This rule will assign a specific cost to instances that are provisioned with a particular flavor (e.g., `m1.gold`).
+
+.Procedure: Defining a Basic Flavor-Based Rating Rule
+. **Access the Chargeback Rating Rules Interface**:
+    . Log in to the RHOSO UI.
+    . From the main menu, navigate to *Chargeback* -> *Rating Rules*.
+    . This page will display a list of all existing rating rules.
+
+. **Initiate New Rule Creation**:
+    . Click on the *Create New Rule* (or similar) button, typically found at the top of the rating rules table.
+    . A form or wizard will appear, guiding you through the rule definition process.
+
+. **Define Rule Metadata**:
+    . **Rule Name**: Provide a clear and descriptive name for the rule (e.g., `Premium_m1_gold_Instance_Charge`).
+    . **Description**: Add a brief explanation of the rule's purpose (e.g., `Applies a charge of $0.15/hour for instances utilizing the 'm1.gold' flavor.`).
+
+. **Configure the Triggering Condition**:
+    . This is where you implement the "mapping from a field or service that triggers the application of the rating rule."
+    . **Service Type**: Select the relevant service (e.g., `OpenStack Compute`).
+    . **Resource Field**: Choose the attribute that will trigger this rule (e.g., `instance_flavor_name` or `flavor_name`).
+    . **Value**: Specify the exact value that must match for the rule to apply (e.g., `m1.gold`).
+    +
+    image::rating-rule-trigger-config.png[Rating Rule Trigger Configuration, 600, 300]
+    _Figure 2: Example of configuring a trigger based on an instance's flavor name._
+
+. **Define the Rating Components (Rate)**:
+    . **Metric**: Select the consumption metric this rule will apply to (e.g., `instance_hours`). This means the charge will be calculated based on the cumulative hours the instance is running.
+    . **Rate**: Enter the cost per unit of the selected metric (e.g., `0.15`). If `instance_hours` is chosen, this implies $0.15 per hour.
+    . **Currency**: Select the appropriate currency (e.g., `USD`).
+
+. **Set the Start Date**:
+    . "Specifies the date from which the rating applies."
+    . Choose the *Start Date* for when this rule should become active. For example, if you want it to apply from the beginning of the current month, select that date.
+
+. **Review and Save the Rule**:
+    . Carefully review all the configured parameters to ensure accuracy.
+    . Click *Save* or *Create Rule* to finalize the creation.
+    . The newly created rule will now be listed in your active rating rules.
+
+[TIP]
+It is highly recommended to establish a default or "catch-all" rating rule. This rule applies to any resource consumption that isn't specifically covered by more granular rules, ensuring no usage goes unrated and providing a baseline for cost allocation.
+
+=== Managing Existing Rating Rules
+
+Once rating rules are in place, they require ongoing management to adapt to changing pricing strategies, service offerings, or operational needs. RHOSO provides tools for editing, activating/deactivating, and deleting rules.
+
+.Procedure: Editing and Deleting Rating Rules
+. **View Existing Rules**:
+    . Navigate to *Chargeback* -> *Rating Rules* in the RHOSO UI.
+    . You will see a comprehensive table listing all active and inactive rules, along with their key parameters.
+
+. **Edit a Rule**:
+    . Locate the specific rule you wish to modify in the table.
+    . Click the *Edit* icon (often represented by a pencil) associated with that rule.
+    . Make the necessary adjustments to parameters such as the rate, start/end dates, or even the triggering conditions.
+    . Click *Save Changes* to apply your modifications.
+
+. **Deactivate/Activate a Rule**:
+    . Many chargeback systems allow you to toggle the active status of a rule without permanently deleting it. This is beneficial for pausing a rule temporarily or for testing new pricing.
+    . Look for a *Toggle* switch, a *Status* column, or dedicated *Activate/Deactivate* actions next to the rule.
+
+. **Delete a Rule**:
+    . If a rule is no longer needed, you can delete it permanently.
+    . Locate the rule in the table and click the *Delete* icon (often a trash can).
+    . Confirm the deletion when prompted.
+    +
+    [WARNING]
+    Deleting a rating rule can have significant implications for historical chargeback reports if the rule was active for a period. It may lead to inconsistencies in past billing data. It is generally safer to *deactivate* a rule rather than permanently deleting it, especially if it has been active for some time.
+
+=== Applying and Prioritizing Rating Rules
+
+In complex environments, it's common for multiple rating rules to potentially apply to the same resource consumption. RHOSO Chargeback, like other robust systems, employs a clear prioritization mechanism to determine which rule takes precedence. This typically involves:
+
+*   **Specificity**: More specific rules (e.g., a rule for a particular `flavor_name` within a specific `project_id`) usually override broader, more general rules (e.g., a rule for all `instance_hours`).
+*   **Order of Application**: In some systems, rules might be processed in a defined order (e.g., based on their position in a list), with the first matching rule being applied.
+*   **Rule Conflict Resolution**: The system has predefined logic for how to handle overlaps or conflicts, ensuring that each unit of consumption is rated only once and correctly.
+
+Understanding RHOSO's specific rule resolution logic, which is usually detailed in its documentation or indicated within the UI, is paramount to ensure that your charges are calculated exactly as intended, preventing unexpected billing discrepancies.
+```

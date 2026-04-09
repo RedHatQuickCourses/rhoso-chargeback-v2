@@ -1,0 +1,10 @@
+#  Hands-on Lab: Implementing Your First Chargeback Rating
+
+=== Hands-on Lab: Implementing Your First Chargeback Rating
+
+This lab provides practical experience in configuring and using RHOSO Chargeback. You will:
+
+* Set up the required lab environment for Chargeback.
+* xref:../using_the_rating_service_cloudkitty/creating_a_rating_rule.adoc[Define a basic rating rule] for a service using CloudKitty.
+* Apply the created rating rule to resources.
+* Review generated charge reports and analyze consumption data.

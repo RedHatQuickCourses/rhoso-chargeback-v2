@@ -1,0 +1,6 @@
+#  Basic Chargeback Troubleshooting
+
+*   Ensure the Rating service (Cloudkitty) is correctly enabled and operational within the Telemetry Operator, as it provides the core chargeback and rating capabilities.
+*   Examine logs and status messages of Chargeback components for errors. Pay attention to clear messages that indicate specific problems, such as uninstalled dependencies or configuration issues.
+*   Verify that all required metric sources are being scraped successfully via `ScrapeConfig` resources. Missing or incorrect metric data will lead to inaccurate charge calculations.
+*   Check the status of related internal components, such as `DBSyncReady` and `InputReady`, for any initialization or data processing failures that could impact chargeback operations.
