@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Understanding rating definitions and components :: RHOSO Chargeback and Observability Fundamentals</title>
+    <link rel="prev" href="using-the-chargeback-feature.html">
+    <link rel="next" href="creating-and-managing-rating-rules.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">RHOSO Chargeback and Observability Fundamentals</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="rhoso-chargeback-v2" data-version="1.0.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../basics-of-rhoso-observability/basics-of-rhoso-observability.html">Basics of RHOSO Observability</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/introduction-to-rhoso-and-its-purpose.html">Introduction to RHOSO and its purpose</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/core-functionalities-and-use-cases-of-rhoso.html">Core functionalities and use cases of RHOSO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/rhoso-architectural-overview.html">RHOSO architectural overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/key-features-of-rhoso-observability.html">Key features of RHOSO Observability</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/introduction-to-rhoso-chargeback.html">Introduction to RHOSO Chargeback</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/understanding-the-chargeback-feature-in-rhoso.html">Understanding the Chargeback feature in RHOSO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/business-value-and-benefits-of-chargeback.html">Business value and benefits of Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/overview-of-the-chargeback-process-flow.html">Overview of the chargeback process flow</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/integration-of-chargeback-with-rhoso-observability.html">Integration of Chargeback with RHOSO Observability</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/enabling-chargeback-in-rhosp.html">Enabling Chargeback in RHOSP</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/prerequisites-for-chargeback-deployment-in-rhosp.html">Prerequisites for Chargeback deployment in RHOSP</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/step-by-step-guide-to-enable-chargeback.html">Step-by-step guide to enable Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/configuration-parameters-and-settings.html">Configuration parameters and settings</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/verifying-successful-chargeback-activation.html">Verifying successful Chargeback activation</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="using-the-chargeback-feature.html">Using the Chargeback Feature</a>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="understanding-rating-definitions-and-components.html">Understanding rating definitions and components</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="creating-and-managing-rating-rules.html">Creating and managing rating rules</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="generating-chargeback-reports-and-invoices.html">Generating chargeback reports and invoices</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="analyzing-chargeback-data-and-consumption.html">Analyzing chargeback data and consumption</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/hands-on-lab-implementing-your-first-chargeback-rating.html">Hands-on Lab: Implementing Your First Chargeback Rating</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/setting-up-the-lab-environment-for-chargeback.html">Setting up the lab environment for Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/defining-a-basic-rating-rule-for-a-service.html">Defining a basic rating rule for a service</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/applying-the-defined-rating-rule-to-resources.html">Applying the defined rating rule to resources</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/reviewing-the-generated-charges-and-reports.html">Reviewing the generated charges and reports</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/basic-chargeback-troubleshooting.html">Basic Chargeback Troubleshooting</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/identifying-common-issues-during-chargeback-configuration.html">Identifying common issues during Chargeback configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/diagnosing-incorrect-charge-calculations.html">Diagnosing incorrect charge calculations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/analyzing-logs-for-chargeback-components.html">Analyzing logs for Chargeback components</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/best-practices-for-maintaining-chargeback-accuracy.html">Best practices for maintaining Chargeback accuracy</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">RHOSO Chargeback and Observability Fundamentals</span>
+    <span class="version">1.0.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">RHOSO Chargeback and Observability Fundamentals</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.0.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></li>
+    <li><a href="using-the-chargeback-feature.html">Using the Chargeback Feature</a></li>
+    <li><a href="understanding-rating-definitions-and-components.html">Understanding rating definitions and components</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Understanding rating definitions and components</h1>
+<h1 id="_understanding_rating_definitions_and_components" class="sect0"><a class="anchor" href="#_understanding_rating_definitions_and_components"></a>Understanding Rating Definitions and Components</h1>
+<div class="paragraph">
+<p>Chargeback systems, such as the one offered by RHOSO, are instrumental in transforming raw resource consumption data into actionable financial insights. At the heart of this transformation lie <strong>rating definitions</strong> or <strong>rating rules</strong>. These rules provide the intelligence needed to accurately attribute costs, foster accountability, and drive efficient resource utilization across an organization. This section will demystify rating definitions and break down their essential components, providing a foundational understanding for effective Chargeback implementation.</p>
+</div>
+<div class="sect1">
+<h2 id="_what_is_a_rating_definition"><a class="anchor" href="#_what_is_a_rating_definition"></a>What is a Rating Definition?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A <strong>rating definition</strong>, often synonymously referred to as a <strong>rating rule</strong>, is a meticulously structured instruction set that dictates how specific resource or service consumption within an environment should be financially valued. It&#8217;s the blueprint that allows RHOSO&#8217;s Chargeback engine to translate observable technical metrics into quantifiable costs, making infrastructure consumption transparent and auditable.</p>
+</div>
+<div class="paragraph">
+<p>As the provided context states, "You create rating rules by creating mappings from a field or service that triggers the application of the rating rule." This emphasizes the core function of a rating definition: establishing a clear link between a specific condition or event related to a resource and the financial charge associated with it. For example, if your organization aims to charge for the usage of virtual machines, a rating definition would specify that for every hour a VM is actively running, a certain monetary value should be applied to the consuming project or tenant.</p>
+</div>
+<div class="paragraph">
+<p>The primary goal of a well-crafted rating definition is to ensure that the charges levied are fair, predictable, transparent, and accurately reflect the actual cost incurred by the consumption of resources. This not only aids in cost recovery but also serves as a powerful incentive for users to optimize their resource footprint.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_key_components_of_a_rating_rule"><a class="anchor" href="#_key_components_of_a_rating_rule"></a>Key Components of a Rating Rule</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To effectively configure and manage Chargeback in RHOSO, it is crucial to understand the individual building blocks that constitute a comprehensive rating rule. While implementations may vary in granular detail, the following core components are universally present in RHOSO&#8217;s Chargeback system:</p>
+</div>
+<div class="sect2">
+<h3 id="_triggercondition"><a class="anchor" href="#_triggercondition"></a>Trigger/Condition</h3>
+<div class="paragraph">
+<p>The trigger or condition is the logical expression that determines <strong>when</strong> a particular rating rule should become active and <strong>what</strong> specific resource consumption or attribute causes the charge to be applied. It&#8217;s the "if" clause of your rating logic.</p>
+</div>
+<div class="paragraph">
+<p>As highlighted in the context, "You create rating rules by creating mappings from a field or service that triggers the application of the rating rule." This mapping can be based on several factors:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Service Type:</strong> The specific type of infrastructure service being consumed (e.g., Compute, Block Storage, Object Storage, Network).</p>
+</li>
+<li>
+<p><strong>Resource Attributes:</strong> Specific properties or characteristics of a resource. The context offers a clear example: "For example, you can add a rating to a specific value of flavor on an instance." This allows for differentiated pricing, where a <code>m1.large</code> VM instance might have a different base rate than an <code>m1.small</code> instance.</p>
+</li>
+<li>
+<p><strong>Events:</strong> Specific actions or lifecycle events (e.g., creation of a resource, deletion, snapshotting).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Effectively defining triggers allows administrators to apply different pricing models based on varying service levels, performance tiers, or operational costs.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_metric"><a class="anchor" href="#_metric"></a>Metric</h3>
+<div class="paragraph">
+<p>The metric represents the quantifiable unit of consumption upon which the charge is based. It defines <strong>what</strong> specific aspect of resource usage is being measured and charged for.</p>
+</div>
+<div class="paragraph">
+<p>The context refers to metrics indirectly by stating, "You can see which metrics are configured for rating with If something should be rated, but it&#8217;s missing from the list, you can use the following procedure for configuring new rating rules." This implies that metrics are the core data points that the rating engine consumes.</p>
+</div>
+<div class="paragraph">
+<p>Examples of common metrics include:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Compute:</strong> CPU-hours, RAM-GB-hours, VM-hours (the duration a VM is active).</p>
+</li>
+<li>
+<p><strong>Storage:</strong> GB-months (average storage consumed over a month), IOPS (Input/Output Operations Per Second).</p>
+</li>
+<li>
+<p><strong>Network:</strong> GB transferred (data ingress/egress), network port hours.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>RHOSO leverages its extensive observability capabilities to collect a wide array of metrics, providing the raw data necessary for granular and accurate chargeback calculations.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_rate_price"><a class="anchor" href="#_rate_price"></a>Rate (Price)</h3>
+<div class="paragraph">
+<p>The rate, or price, is the monetary value assigned to a single unit of the chosen metric. This is the ultimate financial quantification of consumption.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Example:</strong> If the metric is "CPU-hour," the rate might be $0.05 per CPU-hour. If it&#8217;s "GB-month of storage," the rate could be $0.01 per GB-month.</p>
+</li>
+<li>
+<p>Rates can be configured as:</p>
+</li>
+<li>
+<p><strong>Fixed:</strong> A constant price per unit.</p>
+</li>
+<li>
+<p><strong>Tiered:</strong> Different rates apply based on consumption bands (e.g., first 100 GB are $X/GB, next 200 GB are $Y/GB).</p>
+</li>
+<li>
+<p><strong>Volume-based:</strong> Rates decrease as total consumption increases.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_periodicityapplicability_date"><a class="anchor" href="#_periodicityapplicability_date"></a>Periodicity/Applicability Date</h3>
+<div class="paragraph">
+<p>This component defines the timeframe during which a rating rule is active and applicable. It&#8217;s crucial for managing versioning of pricing policies and historical data.</p>
+</div>
+<div class="paragraph">
+<p>The context explicitly highlights this with the statement: "Specifies the date from which the rating applies."</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Start Date:</strong> The specific date and time from which the rating rule becomes active and starts influencing charge calculations.</p>
+</li>
+<li>
+<p><strong>End Date (Optional):</strong> An expiry date and time when the rule ceases to be active. This is useful for temporary promotions or planned pricing changes.</p>
+</li>
+<li>
+<p><strong>Billing Period:</strong> While not a direct component of an <strong>individual</strong> rating rule, the overall Chargeback system will typically aggregate charges over predefined billing periods (e.g., monthly, quarterly, annually) for reporting and invoicing.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_targetscope"><a class="anchor" href="#_targetscope"></a>Target/Scope</h3>
+<div class="paragraph">
+<p>The target or scope dictates <strong>to whom</strong> or <strong>what specific entities</strong> a rating rule applies. This provides the flexibility to implement varying pricing models for different internal customers or departments.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Project/Tenant:</strong> A common approach is to apply rules to specific OpenStack projects or tenants, allowing different departments to have custom pricing.</p>
+</li>
+<li>
+<p><strong>User Group:</strong> Rules could be tailored for different user groups within an organization.</p>
+</li>
+<li>
+<p><strong>Geographical Region/Availability Zone:</strong> If your infrastructure spans multiple regions or availability zones, different rates might apply based on location-specific costs.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_how_rating_rules_work"><a class="anchor" href="#_how_rating_rules_work"></a>How Rating Rules Work in Practice</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When resources are provisioned and consumed within RHOSP, the RHOSO Chargeback engine continuously monitors their usage and associated metrics. During a chargeback cycle, it queries the active rating rules. For each instance of resource consumption, it first identifies if any rating rule&#8217;s <strong>trigger/condition</strong> is met. If a match is found, it then uses the defined <strong>metric</strong> to quantify the usage. This usage is then multiplied by the specified <strong>rate</strong> (price) and attributed to the appropriate <strong>target/scope</strong>. All these calculations adhere to the <strong>periodicity/applicability date</strong> defined for the rule.</p>
+</div>
+<div class="paragraph">
+<p>This systematic process ensures that all chargeable resource consumption is accurately recorded and aggregated, forming the basis for comprehensive chargeback reports and invoices. The meticulous combination of these components allows organizations to build highly flexible, transparent, and accurate chargeback models that align with their financial governance and operational objectives.</p>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="using-the-chargeback-feature.html">Using the Chargeback Feature</a></span>
+  <span class="next"><a href="creating-and-managing-rating-rules.html">Creating and managing rating rules</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

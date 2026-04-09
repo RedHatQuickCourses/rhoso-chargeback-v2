@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Analyzing chargeback data and consumption :: RHOSO Chargeback and Observability Fundamentals</title>
+    <link rel="prev" href="generating-chargeback-reports-and-invoices.html">
+    <link rel="next" href="../hands-on-lab-implementing-your-first-chargeback-rating/hands-on-lab-implementing-your-first-chargeback-rating.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">RHOSO Chargeback and Observability Fundamentals</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="rhoso-chargeback-v2" data-version="1.0.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../basics-of-rhoso-observability/basics-of-rhoso-observability.html">Basics of RHOSO Observability</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/introduction-to-rhoso-and-its-purpose.html">Introduction to RHOSO and its purpose</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/core-functionalities-and-use-cases-of-rhoso.html">Core functionalities and use cases of RHOSO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/rhoso-architectural-overview.html">RHOSO architectural overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/key-features-of-rhoso-observability.html">Key features of RHOSO Observability</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/introduction-to-rhoso-chargeback.html">Introduction to RHOSO Chargeback</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/understanding-the-chargeback-feature-in-rhoso.html">Understanding the Chargeback feature in RHOSO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/business-value-and-benefits-of-chargeback.html">Business value and benefits of Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/overview-of-the-chargeback-process-flow.html">Overview of the chargeback process flow</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/integration-of-chargeback-with-rhoso-observability.html">Integration of Chargeback with RHOSO Observability</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/enabling-chargeback-in-rhosp.html">Enabling Chargeback in RHOSP</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/prerequisites-for-chargeback-deployment-in-rhosp.html">Prerequisites for Chargeback deployment in RHOSP</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/step-by-step-guide-to-enable-chargeback.html">Step-by-step guide to enable Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/configuration-parameters-and-settings.html">Configuration parameters and settings</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/verifying-successful-chargeback-activation.html">Verifying successful Chargeback activation</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="using-the-chargeback-feature.html">Using the Chargeback Feature</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="understanding-rating-definitions-and-components.html">Understanding rating definitions and components</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="creating-and-managing-rating-rules.html">Creating and managing rating rules</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="generating-chargeback-reports-and-invoices.html">Generating chargeback reports and invoices</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="analyzing-chargeback-data-and-consumption.html">Analyzing chargeback data and consumption</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/hands-on-lab-implementing-your-first-chargeback-rating.html">Hands-on Lab: Implementing Your First Chargeback Rating</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/setting-up-the-lab-environment-for-chargeback.html">Setting up the lab environment for Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/defining-a-basic-rating-rule-for-a-service.html">Defining a basic rating rule for a service</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/applying-the-defined-rating-rule-to-resources.html">Applying the defined rating rule to resources</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/reviewing-the-generated-charges-and-reports.html">Reviewing the generated charges and reports</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/basic-chargeback-troubleshooting.html">Basic Chargeback Troubleshooting</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/identifying-common-issues-during-chargeback-configuration.html">Identifying common issues during Chargeback configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/diagnosing-incorrect-charge-calculations.html">Diagnosing incorrect charge calculations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/analyzing-logs-for-chargeback-components.html">Analyzing logs for Chargeback components</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/best-practices-for-maintaining-chargeback-accuracy.html">Best practices for maintaining Chargeback accuracy</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">RHOSO Chargeback and Observability Fundamentals</span>
+    <span class="version">1.0.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">RHOSO Chargeback and Observability Fundamentals</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.0.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></li>
+    <li><a href="using-the-chargeback-feature.html">Using the Chargeback Feature</a></li>
+    <li><a href="analyzing-chargeback-data-and-consumption.html">Analyzing chargeback data and consumption</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Analyzing chargeback data and consumption</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Here&#8217;s the detailed educational content for "Analyzing chargeback data and consumption" in Antora AsciiDoc format:</p>
+</div>
+<div class="paragraph">
+<p>Unresolved include directive in modules/using-the-chargeback-feature/pages/analyzing-chargeback-data-and-consumption.adoc - include::attributes.adoc[]</p>
+</div>
+</div>
+</div>
+<h1 id="_analyzing_chargeback_data_and_consumption" class="sect0"><a class="anchor" href="#_analyzing_chargeback_data_and_consumption"></a>Analyzing Chargeback Data and Consumption</h1>
+<div class="paragraph">
+<p>Understanding and effectively analyzing chargeback data is crucial for cost management, resource optimization, and transparent billing within a cloud environment. RHOSO&#8217;s Chargeback feature, powered by the Rating service (CloudKitty), provides the mechanisms to collect, rate, and report on resource consumption. This section will delve into how to access and interpret this valuable data to gain insights into usage patterns and associated costs.</p>
+</div>
+<div class="sect1">
+<h2 id="_retrieving_chargeback_data"><a class="anchor" href="#_retrieving_chargeback_data"></a>Retrieving Chargeback Data</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The core of analyzing chargeback data lies in querying the aggregated consumption reports generated by the CloudKitty service. These reports provide a summary of resource usage over specified periods, allowing for granular analysis of costs.</p>
+</div>
+<div class="paragraph">
+<p>CloudKitty exposes a REST API endpoint that allows you to retrieve these reports. The <code>v1/report/summary</code> endpoint is particularly useful for obtaining an overview of consumption, broken down by various parameters.</p>
+</div>
+<div class="paragraph">
+<p>To access these reports, you typically use a <code>curl</code> command, authenticating with an appropriate token (e.g., <code>$TENANT_TOKEN</code> for a specific project).</p>
+</div>
+<div class="sect2">
+<h3 id="_key_query_parameters"><a class="anchor" href="#_key_query_parameters"></a>Key Query Parameters</h3>
+<div class="paragraph">
+<p>When querying chargeback reports, the following parameters are essential:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>begin</code>: Specifies the start timestamp for the reporting period (e.g., <code>2026-02-01T00:00:00</code>).</p>
+</li>
+<li>
+<p><code>end</code>: Specifies the end timestamp for the reporting period (e.g., <code>2026-03-01T00:00:00</code>).</p>
+</li>
+<li>
+<p><code>groupby</code>: This parameter is critical for breaking down the consumption data. It allows you to group the results by different criteria, such as resource type (<code>res_type</code>), tenant ID (<code>tenant_id</code>), or service type. The provided context specifically highlights <code>res_type</code>.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_hands_on_activity_fetching_a_basic_chargeback_summary_report"><a class="anchor" href="#_hands_on_activity_fetching_a_basic_chargeback_summary_report"></a>Hands-on Activity: Fetching a Basic Chargeback Summary Report</h3>
+<div class="paragraph">
+<p>In this activity, you will use the CloudKitty API to retrieve a summary of resource consumption for a specific period, grouped by resource type.</p>
+</div>
+<div class="sect3">
+<h4 id="_prerequisites"><a class="anchor" href="#_prerequisites"></a>Prerequisites</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Access to an RHOSP environment with Chargeback enabled.</p>
+</li>
+<li>
+<p>An authenticated token (<code>$TENANT_TOKEN</code>) for a project to query its consumption.</p>
+</li>
+<li>
+<p>The CloudKitty API endpoint (e.g., <code><a href="http://localhost:8888" class="bare">http://localhost:8888</a></code>).</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_steps"><a class="anchor" href="#_steps"></a>Steps</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Set your Authentication Token and CloudKitty Endpoint</strong>:
+Before running the <code>curl</code> command, ensure you have your tenant&#8217;s authentication token set as an environment variable (e.g., <code>$TENANT_TOKEN</code>) and the correct CloudKitty API endpoint. For lab environments, <code><a href="http://localhost:8888" class="bare">http://localhost:8888</a></code> is a common placeholder, but in a production environment, this would be the actual CloudKitty API URL.</p>
+<div class="literalblock">
+<div class="content">
+<pre>[source,bash]
+----
+# Replace with your actual token
+export TENANT_TOKEN="YOUR_ACTUAL_AUTH_TOKEN"
+export CLOUDKITTY_API="http://localhost:8888" # Or your actual CloudKitty endpoint
+----</pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Execute the <code>curl</code> Command</strong>:
+Use the following <code>curl</code> command to query a summary report. This example fetches data for February 2026, grouped by resource type.</p>
+<div class="literalblock">
+<div class="content">
+<pre>[source,bash]
+----
+curl -X GET \
+  -H "X-Auth-Token: $TENANT_TOKEN" \
+  "${CLOUDKITTY_API}/v1/report/summary?begin=2026-02-01T00:00:00&amp;end=2026-03-01T00:00:00&amp;groupby=res_type"
+----</pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Review the Output</strong>:
+The command will return a JSON object containing the summary data. Observe the structure and content of the response.</p>
+<div class="literalblock">
+<div class="content">
+<pre>[source,json]
+----
+{
+  "summary": [
+    {
+      "tenant_id": "MoD-project-uuid",
+      "res_type": "ceilometer_cpu",
+      "begin": "2026-02-01T00:00:00",
+      "end": "2026-03-01T00:00:00",
+      "rate": 125.50
+    },
+    {
+      "tenant_id": "MoD-project-uuid",
+      "res_type": "instance_hours",
+      "begin": "2026-02-01T00:00:00",
+      "end": "2026-03-01T00:00:00",
+      "rate": 200.75
+    },
+    {
+      "tenant_id": "MoD-project-uuid",
+      "res_type": "volume_gb_hours",
+      "begin": "2026-02-01T00:00:00",
+      "end": "2026-03-01T00:00:00",
+      "rate": 50.25
+    }
+  ]
+}
+----</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+For readability, you can pipe the <code>curl</code> output to a JSON processor like <code>jq</code>: <code>curl &#8230;&#8203; | jq .</code>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_interpreting_chargeback_reports"><a class="anchor" href="#_interpreting_chargeback_reports"></a>Interpreting Chargeback Reports</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The JSON output from the <code>v1/report/summary</code> endpoint provides a clear, structured view of resource consumption and its associated "rate" or calculated units. Each object within the <code>"summary"</code> array represents a breakdown of consumption for a specific criterion.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s break down the components of a typical entry:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>tenant_id</code>: This unique identifier specifies the project or tenant for which the resource consumption is being reported. This is crucial for attributing costs to specific departments or users.</p>
+</li>
+<li>
+<p><code>res_type</code>: Indicates the type of resource being consumed (e.g., <code>ceilometer_cpu</code> for CPU usage, <code>instance_hours</code> for VM uptime, <code>volume_gb_hours</code> for storage consumption). This field is directly influenced by the <code>groupby</code> parameter in your query.</p>
+</li>
+<li>
+<p><code>begin</code> and <code>end</code>: These timestamps define the precise period over which the consumption was measured and aggregated. They align with the <code>begin</code> and <code>end</code> parameters provided in your <code>curl</code> query.</p>
+</li>
+<li>
+<p><code>rate</code>: This value represents the total <strong>calculated units</strong> for the specified <code>res_type</code> during the given period. It&#8217;s the output of applying the defined rating rules to the collected metrics. While not a direct monetary cost, it&#8217;s the quantified consumption that serves as the basis for financial billing.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The <code>rate</code> field in CloudKitty&#8217;s output represents the <strong>calculated units</strong> after applying rating rules, not necessarily the final monetary cost. CloudKitty provides the crucial link between usage and these calculated units, which are then typically funneled into an organization&#8217;s financial software for final cost accountability and invoicing.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_analyzing_consumption_patterns"><a class="anchor" href="#_analyzing_consumption_patterns"></a>Analyzing Consumption Patterns</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Analyzing chargeback data goes beyond just generating reports; it involves extracting meaningful insights to inform decision-making.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Identifying High-Consumption Areas</strong>: By grouping data by <code>res_type</code> (resource type), you can quickly identify which resources (e.g., CPU, storage, network) are being heavily utilized and contributing significantly to the <code>rate</code>. This helps in resource planning and optimization.</p>
+</li>
+<li>
+<p><strong>Tenant-Level Consumption</strong>: If you were to use <code>groupby=tenant_id</code>, you could see the total <code>rate</code> for each tenant, enabling you to understand which projects or departments are consuming the most resources. This is essential for cross-charging.</p>
+</li>
+<li>
+<p><strong>Trend Analysis</strong>: By running reports over different time periods (e.g., weekly, monthly, quarterly) and comparing the <code>rate</code> values, you can identify consumption trends. Are certain resources increasing in usage? Are there seasonal peaks? This helps in forecasting and budget allocation.</p>
+</li>
+<li>
+<p><strong>Performance vs. Cost</strong>: Combining chargeback data with performance metrics can help you understand if high-cost resources are delivering equivalent value or if there are opportunities for efficiency improvements (e.g., rightsizing VMs).</p>
+</li>
+<li>
+<p><strong>Chargeback Accuracy Verification</strong>: Regular analysis of reports helps in verifying that the rating rules are being applied correctly and that the calculated <code>rate</code> accurately reflects the intended consumption.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For deeper analysis, you can adjust the <code>groupby</code> parameter in your <code>curl</code> command. For instance, while not explicitly shown in the context, a common practice would be to group by <code>tenant_id</code> to see the total consumption per project:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -X GET \
+  -H "X-Auth-Token: $TENANT_TOKEN" \
+  "${CLOUDKITTY_API}/v1/report/summary?begin=2026-02-01T00:00:00&amp;end=2026-03-01T00:00:00&amp;groupby=tenant_id"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This would provide a summary of the <code>rate</code> accumulated by each distinct <code>tenant_id</code> within the specified period, offering a different perspective on overall consumption.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_integrating_with_financial_software"><a class="anchor" href="#_integrating_with_financial_software"></a>Integrating with Financial Software</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>While CloudKitty excels at collecting metrics, applying rating rules, and generating structured consumption reports, it is <strong>not</strong> a full-fledged billing solution. Its primary role is to serve as the "crucial puzzle piece linking usage to cost" by providing the "structured, aggregated JSON data."</p>
+</div>
+<div class="paragraph">
+<p>The final step in the chargeback process is to funnel this data directly into your enterprise&#8217;s broader financial software, such as an accounting system or an internal billing platform. This external system then takes the <code>rate</code> (calculated units) from CloudKitty&#8217;s reports and applies specific monetary values (e.g., "$5 per unit of `ceilometer_cpu`") to generate actual invoices and ensure cost accountability.</p>
+</div>
+<div class="paragraph">
+<p>By systematically analyzing the chargeback data and integrating it with financial systems, organizations can achieve:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Transparent Cost Allocation</strong>: Clearly show how resource consumption translates into costs for each project or department.</p>
+</li>
+<li>
+<p><strong>Improved Budgeting and Forecasting</strong>: Use historical consumption data to make more accurate predictions and allocate budgets more effectively.</p>
+</li>
+<li>
+<p><strong>Resource Optimization</strong>: Identify underutilized or over-provisioned resources by linking high costs to low actual usage.</p>
+</li>
+<li>
+<p><strong>Enhanced Accountability</strong>: Foster a culture of cost awareness among cloud users, encouraging efficient resource usage.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In essence, the cycle of <code>Set Rating Rules → Collect Metrics → Generate Rating Reports</code> culminates in the analysis of these reports, which then feeds into the broader financial ecosystem to close the loop between infrastructure consumption and financial accountability.</p>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="generating-chargeback-reports-and-invoices.html">Generating chargeback reports and invoices</a></span>
+  <span class="next"><a href="../hands-on-lab-implementing-your-first-chargeback-rating/hands-on-lab-implementing-your-first-chargeback-rating.html">Hands-on Lab: Implementing Your First Chargeback Rating</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
