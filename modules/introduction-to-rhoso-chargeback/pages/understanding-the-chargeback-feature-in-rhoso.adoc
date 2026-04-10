@@ -1,6 +1,5 @@
 #  Understanding the Chargeback feature in RHOSO
 
-```asciidoc
 [[understanding-chargeback-rhoso]]
 = Understanding the Chargeback Feature in RHOSO
 
@@ -54,5 +53,3 @@ This means that while the observability platform *exposes* metrics for consumpti
 *   **Develop Reconciliation Strategies:** Consider implementing strategies to reconcile potential data discrepancies or to clearly communicate the potential for minor variations to stakeholders.
 
 By understanding these aspects, organizations can effectively leverage RHOSO's chargeback feature to gain unprecedented control and transparency over their cloud costs.
-
-```

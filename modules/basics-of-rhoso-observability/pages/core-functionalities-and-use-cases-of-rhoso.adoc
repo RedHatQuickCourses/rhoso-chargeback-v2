@@ -1,6 +1,5 @@
 #  Core functionalities and use cases of RHOSO
 
-```asciidoc
 = Core Functionalities and Use Cases of RHOSO Observability
 
 This section details the fundamental capabilities and practical applications of Red Hat OpenStack Services on OpenShift (RHOSO) Observability. Understanding these core functionalities and use cases is crucial for effectively managing, troubleshooting, and optimizing your RHOSO environment.
@@ -85,4 +84,3 @@ The comprehensive logs collected by RHOSO Observability are invaluable for maint
 For organizations transitioning from previous OpenStack deployments, RHOSO Observability represents a significant evolution.
 
 *   *Replacement for Service Telemetry Framework (STF):* It's important to note that "RHOSO Observability is the replacement of the Service Telemetry Framework in RHOSO 18 and beyond." This signifies a strategic shift towards a more integrated, OpenShift-native approach for telemetry collection and analysis, streamlining operations for environments running OpenStack on OpenShift and aligning with modern cloud-native observability practices.
-```

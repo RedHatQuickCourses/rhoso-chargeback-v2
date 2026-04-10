@@ -2,7 +2,6 @@
 
 Here is the content for the "Introduction to RHOSO and its purpose" topic in Antora AsciiDoc format.
 
-```asciidoc
 == Introduction to RHOSO and its Purpose
 
 Red Hat OpenStack Services on OpenShift (RHOSO) represents a significant evolution in the deployment and management of OpenStack environments. At its core, *RHOSO stands for Red Hat OpenStack on OpenShift*. This new architectural paradigm shifts the traditional deployment model, enabling OpenStack (OSP) to run directly as a workload on top of Red Hat OpenShift Container Platform (RHOCP).
@@ -22,4 +21,3 @@ This new observability approach in RHOSO specifically aims to:
 The observability architecture within RHOSO is a hybrid model, comprising services running within the Red Hat OpenShift Container Platform on the control plane, along with specific services on your Compute nodes that are responsible for furnishing metrics, logs, and alerts. For instance, RHOSO Observability ensures that logging is comprehensively enabled on the control plane, allowing for deep insight into the core operations of the OpenStack deployment running atop OpenShift.
 
 Ultimately, RHOSO's purpose is to combine the strengths of OpenStack's infrastructure management with OpenShift's container orchestration and operational excellence, providing a powerful, observable, and highly integrated platform for enterprise cloud deployments.
-```

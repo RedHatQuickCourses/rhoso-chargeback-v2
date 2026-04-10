@@ -1,6 +1,5 @@
 #  Creating and managing rating rules
 
-```asciidoc
 = Creating and managing rating rules
 
 In RHOSO Chargeback, rating rules are the fundamental mechanism for translating raw resource consumption data into actionable costs. They enable organizations to define granular pricing policies, ensure financial accountability, and provide transparency into resource utilization across various departments, projects, or users. This section provides a detailed technical explanation of how these critical rules are structured, created, and maintained within RHOSO.
@@ -133,4 +132,3 @@ In complex environments, it's common for multiple rating rules to potentially ap
 *   **Rule Conflict Resolution**: The system has predefined logic for how to handle overlaps or conflicts, ensuring that each unit of consumption is rated only once and correctly.
 
 Understanding RHOSO's specific rule resolution logic, which is usually detailed in its documentation or indicated within the UI, is paramount to ensure that your charges are calculated exactly as intended, preventing unexpected billing discrepancies.
-```

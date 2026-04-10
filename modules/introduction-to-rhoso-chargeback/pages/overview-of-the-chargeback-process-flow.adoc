@@ -2,7 +2,6 @@
 
 Here's the content covering the "Overview of the chargeback process flow" in Antora AsciiDoc format:
 
-```adoc
 = Overview of the Chargeback Process Flow
 
 The chargeback feature within RHOSO, powered by CloudKitty, provides a crucial translation layer between raw infrastructure usage and financial accountability. It allows organizations to accurately track and attribute resource consumption costs to specific projects, departments, or tenants. This process is fundamental for achieving transparency in cloud spending, facilitating cost recovery, and driving optimization efforts.
@@ -84,4 +83,3 @@ The final, crucial step in the chargeback process flow is the integration of the
 *   Data-driven decision-making for resource optimization and capacity planning.
 
 This comprehensive process ensures that resource consumption is not just monitored, but is also accurately accounted for financially, driving efficiency and trust within your cloud environment.
-```

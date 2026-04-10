@@ -2,7 +2,6 @@
 
 Here is the content for "Applying the defined rating rule to resources" in Antora AsciiDoc format.
 
-```adoc
 [[applying-defined-rating-rule-to-resources]]
 = Applying the Defined Rating Rule to Resources
 
@@ -108,4 +107,3 @@ While `openstack rating data list` shows raw rated entries, `cloudkitty` also ag
     *Expected Output*: You will see a summary of charges, often broken down by service and aggregated for the specified period. The `total` field will indicate the calculated cost. If your rule has been applied, you should see a non-zero value associated with the service and resource type your rule targets.
 
 By successfully completing these steps, you have confirmed that your defined rating rule is active, `cloudkitty` is processing relevant resource consumption, and the rule is being applied to generate chargeback data. This forms the foundation for generating comprehensive chargeback reports and understanding your cloud resource costs.
-```

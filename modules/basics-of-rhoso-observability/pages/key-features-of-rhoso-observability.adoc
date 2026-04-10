@@ -1,6 +1,5 @@
 #  Key features of RHOSO Observability
 
-```asciidoc
 = Key Features of RHOSO Observability
 :navtitle: Key Features of Observability
 :page-aliases: observability:rhoso-observability-features.adoc
@@ -67,4 +66,3 @@ The key features of RHOSO Observability translate into significant practical ben
 *   *Enhanced Resource Optimization:* Detailed telemetry from Ceilometer provides a clear understanding of resource consumption across OpenStack projects, aiding in effective capacity planning, resource allocation, and cost management, which is a foundational element for chargeback.
 *   *Proactive Issue Detection:* Robust and configurable alerting mechanisms ensure that potential problems are identified and addressed proactively before they can escalate and impact users, significantly improving service availability and reliability.
 *   *Consistency and Standardization:* Leveraging OpenShift's proven observability stack brings a high degree of consistency and standardization to monitoring practices across different workloads within the enterprise, simplifying training and operational consistency.
-```

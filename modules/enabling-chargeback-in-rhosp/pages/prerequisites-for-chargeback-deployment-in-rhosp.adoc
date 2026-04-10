@@ -2,7 +2,6 @@
 
 Here's the detailed educational content for the "Prerequisites for Chargeback deployment in RHOSP" topic, formatted in Antora AsciiDoc.
 
-```asciidoc
 = Prerequisites for Chargeback Deployment in RHOSP
 
 The successful implementation of chargeback capabilities within your Red Hat OpenStack Platform (RHOSP) environment, managed by Red Hat OpenStack Services on OpenShift (RHOSO), hinges on fulfilling several foundational prerequisites. These prerequisites ensure that the necessary infrastructure and services are in place to support the data collection, rating, and reporting functions of the Cloudkitty service.
@@ -134,4 +133,3 @@ While not explicitly called out as a separate prerequisite in the provided conte
     ----
 
 By ensuring these prerequisites are meticulously addressed, you lay a solid groundwork for a robust and accurate chargeback system within your RHOSO-managed RHOSP environment. The next steps will involve configuring Cloudkitty itself and defining your rating rules.
-```
