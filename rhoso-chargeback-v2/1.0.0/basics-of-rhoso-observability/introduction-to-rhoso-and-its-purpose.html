@@ -24,7 +24,7 @@
     </div>
     <div id="topbar-nav" class="navbar-menu">
       <div class="navbar-end">
-        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/rhoso-chargeback-v2/issues" target="_blank">Report Issues</a>
       </div>
     </div>
   </nav>
@@ -230,30 +230,57 @@
 </aside>
 <article class="doc">
 <h1 class="page">Introduction to RHOSO and its purpose</h1>
+<div id="preamble">
+<div class="sectionbody">
 <div class="paragraph">
 <p>Here is the content for the "Introduction to RHOSO and its purpose" topic in Antora AsciiDoc format.</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-asciidoc hljs" data-lang="asciidoc">== Introduction to RHOSO and its Purpose
-
-Red Hat OpenStack Services on OpenShift (RHOSO) represents a significant evolution in the deployment and management of OpenStack environments. At its core, *RHOSO stands for Red Hat OpenStack on OpenShift*. This new architectural paradigm shifts the traditional deployment model, enabling OpenStack (OSP) to run directly as a workload on top of Red Hat OpenShift Container Platform (RHOCP).
-
-The primary purpose of RHOSO is to bring the robust capabilities of OpenStack for managing virtual machines and bare metal resources into the modern, cloud-native operational framework provided by OpenShift. This integration offers substantial advantages:
-
-*   *Unified Management and Operations:* By deploying OpenStack as a workload on OpenShift, administrators can leverage OpenShift's powerful orchestration, automation, and lifecycle management features across their entire infrastructure stack, from containers to virtual machines.
-*   *Enhanced Observability:* The shift to an OpenShift-centric architecture necessitated a complete rethinking of how metrics, logs, and alerts are collected and stored within the OpenStack environment. RHOSO Observability is designed to provide comprehensive insight into your RHOSO environment.
-
-This new observability approach in RHOSO specifically aims to:
-
-*   *Leverage OpenShift Tooling:* Integrate seamlessly with familiar and proven OpenShift Observability tools such as the Cluster Observability Operator (COO), Cluster Logging Operator (CLO), and the OpenShift Console UI. This provides a consistent monitoring experience for customers already familiar with OpenShift.
-*   *Retain OpenStack Telemetry:* While embracing OpenShift tools, RHOSO Observability also maintains compatibility with native OpenStack telemetry solutions like Ceilometer and AODH (Alarming and Notification service for OpenStack) for data collection. This ensures that OpenStack administrators can continue to use solutions they are accustomed to.
-*   *Improve Integration with the OpenShift Ecosystem:* By building on OpenShift's foundation, RHOSO better integrates into the broader OpenShift ecosystem, enabling more streamlined workflows and tooling consolidation.
-*   *Modernize Telemetry Infrastructure:* RHOSO Observability is the direct replacement for the Service Telemetry Framework (STF) in RHOSO 18 and beyond, offering a more integrated and performant solution for collecting and analyzing operational data.
-
-The observability architecture within RHOSO is a hybrid model, comprising services running within the Red Hat OpenShift Container Platform on the control plane, along with specific services on your Compute nodes that are responsible for furnishing metrics, logs, and alerts. For instance, RHOSO Observability ensures that logging is comprehensively enabled on the control plane, allowing for deep insight into the core operations of the OpenStack deployment running atop OpenShift.
-
-Ultimately, RHOSO's purpose is to combine the strengths of OpenStack's infrastructure management with OpenShift's container orchestration and operational excellence, providing a powerful, observable, and highly integrated platform for enterprise cloud deployments.</code></pre>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_introduction_to_rhoso_and_its_purpose"><a class="anchor" href="#_introduction_to_rhoso_and_its_purpose"></a>Introduction to RHOSO and its Purpose</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Red Hat OpenStack Services on OpenShift (RHOSO) represents a significant evolution in the deployment and management of OpenStack environments. At its core, <strong>RHOSO stands for Red Hat OpenStack on OpenShift</strong>. This new architectural paradigm shifts the traditional deployment model, enabling OpenStack (OSP) to run directly as a workload on top of Red Hat OpenShift Container Platform (RHOCP).</p>
+</div>
+<div class="paragraph">
+<p>The primary purpose of RHOSO is to bring the robust capabilities of OpenStack for managing virtual machines and bare metal resources into the modern, cloud-native operational framework provided by OpenShift. This integration offers substantial advantages:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Unified Management and Operations:</strong> By deploying OpenStack as a workload on OpenShift, administrators can leverage OpenShift&#8217;s powerful orchestration, automation, and lifecycle management features across their entire infrastructure stack, from containers to virtual machines.</p>
+</li>
+<li>
+<p><strong>Enhanced Observability:</strong> The shift to an OpenShift-centric architecture necessitated a complete rethinking of how metrics, logs, and alerts are collected and stored within the OpenStack environment. RHOSO Observability is designed to provide comprehensive insight into your RHOSO environment.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This new observability approach in RHOSO specifically aims to:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Leverage OpenShift Tooling:</strong> Integrate seamlessly with familiar and proven OpenShift Observability tools such as the Cluster Observability Operator (COO), Cluster Logging Operator (CLO), and the OpenShift Console UI. This provides a consistent monitoring experience for customers already familiar with OpenShift.</p>
+</li>
+<li>
+<p><strong>Retain OpenStack Telemetry:</strong> While embracing OpenShift tools, RHOSO Observability also maintains compatibility with native OpenStack telemetry solutions like Ceilometer and AODH (Alarming and Notification service for OpenStack) for data collection. This ensures that OpenStack administrators can continue to use solutions they are accustomed to.</p>
+</li>
+<li>
+<p><strong>Improve Integration with the OpenShift Ecosystem:</strong> By building on OpenShift&#8217;s foundation, RHOSO better integrates into the broader OpenShift ecosystem, enabling more streamlined workflows and tooling consolidation.</p>
+</li>
+<li>
+<p><strong>Modernize Telemetry Infrastructure:</strong> RHOSO Observability is the direct replacement for the Service Telemetry Framework (STF) in RHOSO 18 and beyond, offering a more integrated and performant solution for collecting and analyzing operational data.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The observability architecture within RHOSO is a hybrid model, comprising services running within the Red Hat OpenShift Container Platform on the control plane, along with specific services on your Compute nodes that are responsible for furnishing metrics, logs, and alerts. For instance, RHOSO Observability ensures that logging is comprehensively enabled on the control plane, allowing for deep insight into the core operations of the OpenStack deployment running atop OpenShift.</p>
+</div>
+<div class="paragraph">
+<p>Ultimately, RHOSO&#8217;s purpose is to combine the strengths of OpenStack&#8217;s infrastructure management with OpenShift&#8217;s container orchestration and operational excellence, providing a powerful, observable, and highly integrated platform for enterprise cloud deployments.</p>
+</div>
 </div>
 </div>
 <nav class="pagination">

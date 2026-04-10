@@ -24,7 +24,7 @@
     </div>
     <div id="topbar-nav" class="navbar-menu">
       <div class="navbar-end">
-        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/rhoso-chargeback-v2/issues" target="_blank">Report Issues</a>
       </div>
     </div>
   </nav>
@@ -230,71 +230,119 @@
 </aside>
 <article class="doc">
 <h1 class="page">Generating chargeback reports and invoices</h1>
+<div id="preamble">
+<div class="sectionbody">
 <div class="paragraph">
 <p>Here&#8217;s the content for "Generating chargeback reports and invoices" in Antora AsciiDoc format.</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-asciidoc hljs" data-lang="asciidoc">[[generating-chargeback-reports]]
-== Generating Chargeback Reports and Analyzing Consumption Data
-
-While the term "invoice" often conjures images of formal billing documents, it's crucial to understand CloudKitty's specific role in the financial operations (FinOps) ecosystem. CloudKitty is not an invoicing system itself; rather, it functions as a powerful data engine that processes raw usage metrics, applies predefined rating rules, and then generates detailed *chargeback reports* or *rated data*. This data is then readily consumable by your existing FinOps, showback, or full billing middleware solutions to produce the final invoices.
-
-CloudKitty's primary purpose is to provide the critical translation layer between technical resource consumption (e.g., VM uptime, storage usage) and assignable costs. This capability is foundational for achieving:
-
-*   *Transparent Cost Recovery:* By providing a clear, itemized breakdown of resource usage per tenant, project, or service, CloudKitty enables organizations to accurately recoup operational expenses. This transparency helps avoid "bill shock" and fosters trust among internal customers.
-*   *Informed Optimization:* When tenants are presented with detailed reports showing how their consumption directly impacts their costs (broken down by metrics like flavor, storage type, or network traffic), they are empowered to make data-driven decisions. This can lead to optimizations such as archiving stale data, rightsizing VMs, or adjusting usage patterns to reduce expenditure.
-
-CloudKitty does not actively enforce budgets or block resource creation. Its strength lies in providing the visibility and data required for informed financial management and accountability.
-
-### Understanding CloudKitty's Data Output
-
-After rating rules are set and metrics are collected, CloudKitty stores and exposes the processed, rated data. This data is designed for programmatic access and integration, making it ideal for automation and feeding into other systems.
-
-*   **Data Format:** CloudKitty primarily provides rated data in a parsable JSON format.
-*   **Access Methods:**
-    *   **REST API:** The CloudKitty API allows direct programmatic access to rated data.
-    *   **OpenStack Client:** The `openstack rating` command-line interface provides a convenient way for users and scripts to query and extract summaries of rated data.
-
-One of CloudKitty's inherent security features is its tenant-aware access control. When an administrator or a tenant queries for usage data, CloudKitty ensures that users can only access information pertinent to their own projects or the projects they are authorized to view. Any attempts to access data from other tenants are automatically blocked or ignored by the API, maintaining data privacy and integrity.
-
-### Generating Monthly Chargeback Summaries
-
-The most common use case for extracting rated data is to generate a summary of consumption and associated costs for a specific period, typically a month. This summary forms the basis for showback reports or internal chargebacks.
-
-#### Hands-on Activity: Extracting Your Project's Monthly Chargeback Summary
-
-In this activity, you will use the OpenStack client to retrieve a summary of your project's rated usage for a specific month. This simulates how a tenant or a FinOps tool would gather data for reporting.
-
-.Prerequisites
-Ensure you have:
+</div>
+</div>
+<div class="sect1">
+<h2 id="generating-chargeback-reports"><a class="anchor" href="#generating-chargeback-reports"></a>Generating Chargeback Reports and Analyzing Consumption Data</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>While the term "invoice" often conjures images of formal billing documents, it&#8217;s crucial to understand CloudKitty&#8217;s specific role in the financial operations (FinOps) ecosystem. CloudKitty is not an invoicing system itself; rather, it functions as a powerful data engine that processes raw usage metrics, applies predefined rating rules, and then generates detailed <strong>chargeback reports</strong> or <strong>rated data</strong>. This data is then readily consumable by your existing FinOps, showback, or full billing middleware solutions to produce the final invoices.</p>
+</div>
+<div class="paragraph">
+<p>CloudKitty&#8217;s primary purpose is to provide the critical translation layer between technical resource consumption (e.g., VM uptime, storage usage) and assignable costs. This capability is foundational for achieving:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Transparent Cost Recovery:</strong> By providing a clear, itemized breakdown of resource usage per tenant, project, or service, CloudKitty enables organizations to accurately recoup operational expenses. This transparency helps avoid "bill shock" and fosters trust among internal customers.</p>
+</li>
+<li>
+<p><strong>Informed Optimization:</strong> When tenants are presented with detailed reports showing how their consumption directly impacts their costs (broken down by metrics like flavor, storage type, or network traffic), they are empowered to make data-driven decisions. This can lead to optimizations such as archiving stale data, rightsizing VMs, or adjusting usage patterns to reduce expenditure.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>CloudKitty does not actively enforce budgets or block resource creation. Its strength lies in providing the visibility and data required for informed financial management and accountability.</p>
+</div>
+<div class="sect2">
+<h3 id="_understanding_cloudkittys_data_output"><a class="anchor" href="#_understanding_cloudkittys_data_output"></a>Understanding CloudKitty&#8217;s Data Output</h3>
+<div class="paragraph">
+<p>After rating rules are set and metrics are collected, CloudKitty stores and exposes the processed, rated data. This data is designed for programmatic access and integration, making it ideal for automation and feeding into other systems.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Data Format:</strong> CloudKitty primarily provides rated data in a parsable JSON format.</p>
+</li>
+<li>
+<p><strong>Access Methods:</strong></p>
+</li>
+<li>
+<p><strong>REST API:</strong> The CloudKitty API allows direct programmatic access to rated data.</p>
+</li>
+<li>
+<p><strong>OpenStack Client:</strong> The <code>openstack rating</code> command-line interface provides a convenient way for users and scripts to query and extract summaries of rated data.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>One of CloudKitty&#8217;s inherent security features is its tenant-aware access control. When an administrator or a tenant queries for usage data, CloudKitty ensures that users can only access information pertinent to their own projects or the projects they are authorized to view. Any attempts to access data from other tenants are automatically blocked or ignored by the API, maintaining data privacy and integrity.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_generating_monthly_chargeback_summaries"><a class="anchor" href="#_generating_monthly_chargeback_summaries"></a>Generating Monthly Chargeback Summaries</h3>
+<div class="paragraph">
+<p>The most common use case for extracting rated data is to generate a summary of consumption and associated costs for a specific period, typically a month. This summary forms the basis for showback reports or internal chargebacks.</p>
+</div>
+<div class="sect3">
+<h4 id="_hands_on_activity_extracting_your_projects_monthly_chargeback_summary"><a class="anchor" href="#_hands_on_activity_extracting_your_projects_monthly_chargeback_summary"></a>Hands-on Activity: Extracting Your Project&#8217;s Monthly Chargeback Summary</h4>
+<div class="paragraph">
+<p>In this activity, you will use the OpenStack client to retrieve a summary of your project&#8217;s rated usage for a specific month. This simulates how a tenant or a FinOps tool would gather data for reporting.</p>
+</div>
+<div class="paragraph">
+<div class="title">Prerequisites</div>
+<p>Ensure you have:
 *   Access to an OpenStack environment with CloudKitty deployed and active.
 *   CloudKitty rating rules already configured and applied.
 *   Metrics being actively collected and rated by CloudKitty.
-*   Your OpenStack environment variables sourced (e.g., `source &lt;your-project&gt;-openrc.sh`).
-
-.Steps
-
-.  **Identify a reporting period:** Choose a start and end date for which you want to generate the report. For this example, we'll use a hypothetical period in February 2026.
-.  **Execute the `openstack rating summary get` command:** Use the OpenStack client to request the summary for your current project.
-+
-[source,bash]
-----
-openstack rating summary get --begin 2026-02-01 --end 2026-03-01
-----
-+
-This command queries CloudKitty for all rated data within the specified date range for the project associated with your current OpenStack authentication context.
-
-.  **Analyze the output:** The command will return a JSON object (or a table, depending on your client's default output format) containing the aggregated rated data.
-+
-[NOTE]
+*   Your OpenStack environment variables sourced (e.g., <code>source &lt;your-project&gt;-openrc.sh</code>).</p>
+</div>
+<div class="olist arabic">
+<div class="title">Steps</div>
+<ol class="arabic">
+<li>
+<p><strong>Identify a reporting period:</strong> Choose a start and end date for which you want to generate the report. For this example, we&#8217;ll use a hypothetical period in February 2026.</p>
+</li>
+<li>
+<p><strong>Execute the <code>openstack rating summary get</code> command:</strong> Use the OpenStack client to request the summary for your current project.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">openstack rating summary get --begin 2026-02-01 --end 2026-03-01</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This command queries CloudKitty for all rated data within the specified date range for the project associated with your current OpenStack authentication context.</p>
+</div>
+</li>
+<li>
+<p><strong>Analyze the output:</strong> The command will return a JSON object (or a table, depending on your client&#8217;s default output format) containing the aggregated rated data.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
 The exact output structure may vary slightly depending on your CloudKitty version and the specific rating rules configured. However, you can expect to see aggregated costs and quantities for different services or metrics.
-
-.Example Output (simplified for illustration):
-+
-[source,json]
-----
-{
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<div class="title">Example Output (simplified for illustration):</div>
+<p>+</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
     "begin": "2026-02-01T00:00:00Z",
     "end": "2026-03-01T00:00:00Z",
     "total": 125.50,
@@ -332,21 +380,52 @@ The exact output structure may vary slightly depending on your CloudKitty versio
             ]
         }
     ]
-}
-----
-
-.  **Interpret the data:**
-    *   `begin` and `end`: Confirm the reporting period.
-    *   `total`: The overall calculated cost for your project within the specified period.
-    *   `services`: A breakdown by service type (e.g., compute, volume).
-    *   `metrics`: Within each service, a further breakdown by individual rated metrics, showing the `quantity` consumed and the calculated `cost`.
-
-This structured data is what your external FinOps tools or custom scripts would consume. They can then parse this JSON, format it into a human-readable report, or integrate it into larger financial dashboards and invoicing systems.
-
-[TIP]
-For a deeper, interactive look at how CloudKitty rating data is verified and how monthly summaries are extracted, you can refer to the uncut asciinema recording: link:https://asciinema.org/a/P11NR7CEqfiewF4R[Verifying the chargeback dataframes and extracting the monthly summary]. This resource provides granular detail on the underlying commands and data structures.
-
-By leveraging CloudKitty's robust data engine, organizations gain unparalleled visibility into resource consumption and associated costs, laying the groundwork for effective cost management and accountability across their cloud infrastructure.</code></pre>
+}</code></pre>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Interpret the data:</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>begin</code> and <code>end</code>: Confirm the reporting period.</p>
+</li>
+<li>
+<p><code>total</code>: The overall calculated cost for your project within the specified period.</p>
+</li>
+<li>
+<p><code>services</code>: A breakdown by service type (e.g., compute, volume).</p>
+</li>
+<li>
+<p><code>metrics</code>: Within each service, a further breakdown by individual rated metrics, showing the <code>quantity</code> consumed and the calculated <code>cost</code>.</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>This structured data is what your external FinOps tools or custom scripts would consume. They can then parse this JSON, format it into a human-readable report, or integrate it into larger financial dashboards and invoicing systems.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+For a deeper, interactive look at how CloudKitty rating data is verified and how monthly summaries are extracted, you can refer to the uncut asciinema recording: <a href="https://asciinema.org/a/P11NR7CEqfiewF4R">Verifying the chargeback dataframes and extracting the monthly summary</a>. This resource provides granular detail on the underlying commands and data structures.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>By leveraging CloudKitty&#8217;s robust data engine, organizations gain unparalleled visibility into resource consumption and associated costs, laying the groundwork for effective cost management and accountability across their cloud infrastructure.</p>
+</div>
+</div>
+</div>
 </div>
 </div>
 <nav class="pagination">

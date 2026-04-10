@@ -24,7 +24,7 @@
     </div>
     <div id="topbar-nav" class="navbar-menu">
       <div class="navbar-end">
-        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/rhoso-chargeback-v2/issues" target="_blank">Report Issues</a>
       </div>
     </div>
   </nav>
@@ -230,74 +230,155 @@
 </aside>
 <article class="doc">
 <h1 class="page">Key features of RHOSO Observability</h1>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-asciidoc hljs" data-lang="asciidoc">= Key Features of RHOSO Observability
-:navtitle: Key Features of Observability
-:page-aliases: observability:rhoso-observability-features.adoc
-
-[abstract]
+<h1 id="_key_features_of_rhoso_observability" class="sect0"><a class="anchor" href="#_key_features_of_rhoso_observability"></a>Key Features of RHOSO Observability</h1>
+<div class="quoteblock abstract">
+<blockquote>
 Red Hat OpenStack Services on OpenShift (RHOSO) Observability provides a robust and comprehensive solution for monitoring and managing your OpenStack environment running on OpenShift. This document delves into the key features that make RHOSO Observability a powerful tool for administrators and operators, emphasizing its hybrid approach and deep integration capabilities.
-
-RHOSO Observability is designed to give you unparalleled insight into your OpenStack workloads deployed on an OpenShift platform, ensuring operational efficiency, proactive issue detection, and streamlined resource management.
-
-== Unified Observability Architecture
-
-One of the foundational strengths of RHOSO Observability is its innovative hybrid architecture. It intelligently combines the proven observability tools from Red Hat OpenShift Container Platform (RHOCP) with the long-standing and essential telemetry solutions native to OpenStack. This approach offers the best of both worlds: leveraging familiar and powerful OpenShift tools while retaining critical OpenStack-specific monitoring capabilities.
-
-=== Leveraging OpenShift Observability Components
-
-RHOSO Observability integrates deeply with the OpenShift ecosystem, utilizing several key components that are well-known to OpenShift administrators for their comprehensive monitoring capabilities:
-
-*   *Cluster Observability Operator (COO):* The COO plays a central role in managing and maintaining the OpenShift monitoring stack. In the RHOSO context, it orchestrates the collection and processing of metrics from both OpenShift and the underlying OpenStack services, ensuring a consistent and robust monitoring pipeline.
-*   *Cluster Logging Operator (CLO):* For centralized log management, RHOSO Observability leverages the CLO. This enables automatic collection, aggregation, and storage of logs from all components across the RHOSO environment, including OpenStack services running within OpenShift. This simplifies log analysis and troubleshooting significantly.
-*   *OpenShift Console UI:* The rich and intuitive OpenShift Console provides a unified interface for visualizing metrics, logs, and alerts. This means that administrators can use a single pane of glass to monitor the health and performance of their entire RHOSO deployment, including OpenShift infrastructure and OpenStack services, thereby streamlining operational workflows.
-*   *Prometheus and Grafana:* Underneath the hood, OpenShift Observability relies on industry-standard tools like Prometheus for powerful metric collection and Grafana for sophisticated data visualization. RHOSO Observability extends this capability to OpenStack metrics, allowing for the creation of custom dashboards and alerts tailored to specific operational needs.
-
-These integrations provide a consistent and powerful observability experience for customers already familiar with OpenShift, reducing the learning curve and improving operational efficiency.
-
-=== Retaining OpenStack Telemetry Solutions
-
-While integrating with OpenShift, RHOSO Observability does not abandon the critical telemetry solutions that have been central to OpenStack management for years. It intelligently incorporates them to ensure comprehensive coverage:
-
-*   *Ceilometer:* This native OpenStack project continues to serve as a vital component for collecting metering and event data from OpenStack services and resources. Ceilometer's role in gathering granular data on resource usage (e.g., virtual machine hours, disk I/O, network traffic, CPU utilization) is crucial for resource accounting, chargeback, and capacity planning within OpenStack.
-*   *AODH (Alarming and Notification service for OpenStack):* AODH works in conjunction with Ceilometer, allowing administrators to define alarms based on collected metrics. When predefined thresholds are breached, AODH can trigger notifications (e.g., emails, webhooks) or automated actions, enabling proactive problem resolution and performance management specific to OpenStack resources.
-
-By retaining Ceilometer and AODH, RHOSO Observability ensures that OpenStack administrators can continue to leverage their existing knowledge and configurations for detailed resource accounting and operational alerting within the OpenStack layer, ensuring continuity and leveraging battle-tested components.
-
-== Enhanced Logging and Monitoring Capabilities
-
-RHOSO Observability significantly enhances the logging and monitoring capabilities of the OpenStack environment by providing deep visibility across the entire stack:
-
-*   *Centralized Log Collection:* Through the Cluster Logging Operator (CLO), logs from all OpenStack components and the underlying OpenShift platform are collected, aggregated, and made available for searching and analysis in a unified manner. This drastically simplifies troubleshooting, auditing, and compliance efforts.
-*   *Control Plane Logging:* A critical feature is that *RHOSO observability logging is enabled on the control plane*. This ensures that vital logs from OpenStack control plane services (e.g., Nova API, Glance API, Neutron API, Keystone) are consistently captured and available for diagnostics, providing deep and immediate insight into the core operations and health of the OpenStack environment.
-*   *Comprehensive Metric Collection:* Leveraging Prometheus, RHOSO Observability collects a wide array of metrics from OpenShift, Kubernetes, and OpenStack services. This includes performance metrics, resource utilization, and operational health indicators, providing a holistic and real-time view of the system's state.
-*   *Robust Alerting and Event Management:* With integrated Prometheus Alertmanager and AODH, RHOSO Observability offers robust and customizable alerting capabilities. Administrators can configure custom alerts based on various metrics and log patterns, ensuring they are notified promptly of potential issues or anomalous behavior across the entire RHOSO stack.
-
-== Deep Integration with the OpenShift Ecosystem
-
-The tight integration between RHOSO Observability and the OpenShift ecosystem offers several strategic advantages, fostering consistency and efficiency:
-
-*   *Familiar Tooling:* For organizations already utilizing OpenShift, RHOSO Observability provides a consistent monitoring experience, significantly reducing the need for operators to learn and manage new, separate observability tools. This enhances productivity and simplifies day-to-day operations.
-*   *Unified Platform Management:* By leveraging OpenShift's observability stack, RHOSO environments benefit from the continuous development, security enhancements, and feature improvements made to OpenShift's monitoring, logging, and alerting components, ensuring a future-proof solution.
-*   *Improved Automation:* The integrated nature allows for better automation workflows, where observability data can feed directly into CI/CD pipelines, auto-scaling solutions, or self-healing mechanisms, further enhancing the reliability, agility, and responsiveness of the RHOSO deployment.
-
-== Streamlined Deployment and Management
-
-RHOSO Observability simplifies the deployment and management of monitoring infrastructure compared to previous solutions, emphasizing a more native and integrated approach:
-
-*   *Replacement for Service Telemetry Framework (STF):* RHOSO Observability is the direct replacement for the Service Telemetry Framework (STF) in RHOSO 18 and beyond. This signifies an evolution towards a more integrated and streamlined observability approach, leveraging OpenShift native capabilities more effectively for easier deployment and maintenance.
-*   *Simplified Architecture:* The core architecture of RHOSO Observability is anchored by the `COO` (Cluster Observability Operator) and a dedicated `telemetry-operator`. This design simplifies the overall deployment, configuration, and lifecycle management of the observability components, making it easier to install, configure, and maintain the entire monitoring solution.
-
-== Practical Implications and Benefits
-
-The key features of RHOSO Observability translate into significant practical benefits for organizations deploying and managing OpenStack on OpenShift:
-
-*   *Reduced Operational Overhead:* By unifying observability tools and streamlining management processes, operational teams can achieve more with fewer resources, focusing on value-add activities rather than managing disparate monitoring systems.
-*   *Faster Troubleshooting and Resolution:* Centralized logs and comprehensive metrics, combined with powerful visualization tools in the OpenShift Console, enable quicker identification, diagnosis, and resolution of issues, minimizing downtime and service disruption.
-*   *Enhanced Resource Optimization:* Detailed telemetry from Ceilometer provides a clear understanding of resource consumption across OpenStack projects, aiding in effective capacity planning, resource allocation, and cost management, which is a foundational element for chargeback.
-*   *Proactive Issue Detection:* Robust and configurable alerting mechanisms ensure that potential problems are identified and addressed proactively before they can escalate and impact users, significantly improving service availability and reliability.
-*   *Consistency and Standardization:* Leveraging OpenShift's proven observability stack brings a high degree of consistency and standardization to monitoring practices across different workloads within the enterprise, simplifying training and operational consistency.</code></pre>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>RHOSO Observability is designed to give you unparalleled insight into your OpenStack workloads deployed on an OpenShift platform, ensuring operational efficiency, proactive issue detection, and streamlined resource management.</p>
+</div>
+<div class="sect1">
+<h2 id="_unified_observability_architecture"><a class="anchor" href="#_unified_observability_architecture"></a>Unified Observability Architecture</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>One of the foundational strengths of RHOSO Observability is its innovative hybrid architecture. It intelligently combines the proven observability tools from Red Hat OpenShift Container Platform (RHOCP) with the long-standing and essential telemetry solutions native to OpenStack. This approach offers the best of both worlds: leveraging familiar and powerful OpenShift tools while retaining critical OpenStack-specific monitoring capabilities.</p>
+</div>
+<div class="sect2">
+<h3 id="_leveraging_openshift_observability_components"><a class="anchor" href="#_leveraging_openshift_observability_components"></a>Leveraging OpenShift Observability Components</h3>
+<div class="paragraph">
+<p>RHOSO Observability integrates deeply with the OpenShift ecosystem, utilizing several key components that are well-known to OpenShift administrators for their comprehensive monitoring capabilities:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Cluster Observability Operator (COO):</strong> The COO plays a central role in managing and maintaining the OpenShift monitoring stack. In the RHOSO context, it orchestrates the collection and processing of metrics from both OpenShift and the underlying OpenStack services, ensuring a consistent and robust monitoring pipeline.</p>
+</li>
+<li>
+<p><strong>Cluster Logging Operator (CLO):</strong> For centralized log management, RHOSO Observability leverages the CLO. This enables automatic collection, aggregation, and storage of logs from all components across the RHOSO environment, including OpenStack services running within OpenShift. This simplifies log analysis and troubleshooting significantly.</p>
+</li>
+<li>
+<p><strong>OpenShift Console UI:</strong> The rich and intuitive OpenShift Console provides a unified interface for visualizing metrics, logs, and alerts. This means that administrators can use a single pane of glass to monitor the health and performance of their entire RHOSO deployment, including OpenShift infrastructure and OpenStack services, thereby streamlining operational workflows.</p>
+</li>
+<li>
+<p><strong>Prometheus and Grafana:</strong> Underneath the hood, OpenShift Observability relies on industry-standard tools like Prometheus for powerful metric collection and Grafana for sophisticated data visualization. RHOSO Observability extends this capability to OpenStack metrics, allowing for the creation of custom dashboards and alerts tailored to specific operational needs.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>These integrations provide a consistent and powerful observability experience for customers already familiar with OpenShift, reducing the learning curve and improving operational efficiency.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_retaining_openstack_telemetry_solutions"><a class="anchor" href="#_retaining_openstack_telemetry_solutions"></a>Retaining OpenStack Telemetry Solutions</h3>
+<div class="paragraph">
+<p>While integrating with OpenShift, RHOSO Observability does not abandon the critical telemetry solutions that have been central to OpenStack management for years. It intelligently incorporates them to ensure comprehensive coverage:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Ceilometer:</strong> This native OpenStack project continues to serve as a vital component for collecting metering and event data from OpenStack services and resources. Ceilometer&#8217;s role in gathering granular data on resource usage (e.g., virtual machine hours, disk I/O, network traffic, CPU utilization) is crucial for resource accounting, chargeback, and capacity planning within OpenStack.</p>
+</li>
+<li>
+<p><strong>AODH (Alarming and Notification service for OpenStack):</strong> AODH works in conjunction with Ceilometer, allowing administrators to define alarms based on collected metrics. When predefined thresholds are breached, AODH can trigger notifications (e.g., emails, webhooks) or automated actions, enabling proactive problem resolution and performance management specific to OpenStack resources.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>By retaining Ceilometer and AODH, RHOSO Observability ensures that OpenStack administrators can continue to leverage their existing knowledge and configurations for detailed resource accounting and operational alerting within the OpenStack layer, ensuring continuity and leveraging battle-tested components.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_enhanced_logging_and_monitoring_capabilities"><a class="anchor" href="#_enhanced_logging_and_monitoring_capabilities"></a>Enhanced Logging and Monitoring Capabilities</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>RHOSO Observability significantly enhances the logging and monitoring capabilities of the OpenStack environment by providing deep visibility across the entire stack:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Centralized Log Collection:</strong> Through the Cluster Logging Operator (CLO), logs from all OpenStack components and the underlying OpenShift platform are collected, aggregated, and made available for searching and analysis in a unified manner. This drastically simplifies troubleshooting, auditing, and compliance efforts.</p>
+</li>
+<li>
+<p><strong>Control Plane Logging:</strong> A critical feature is that <strong>RHOSO observability logging is enabled on the control plane</strong>. This ensures that vital logs from OpenStack control plane services (e.g., Nova API, Glance API, Neutron API, Keystone) are consistently captured and available for diagnostics, providing deep and immediate insight into the core operations and health of the OpenStack environment.</p>
+</li>
+<li>
+<p><strong>Comprehensive Metric Collection:</strong> Leveraging Prometheus, RHOSO Observability collects a wide array of metrics from OpenShift, Kubernetes, and OpenStack services. This includes performance metrics, resource utilization, and operational health indicators, providing a holistic and real-time view of the system&#8217;s state.</p>
+</li>
+<li>
+<p><strong>Robust Alerting and Event Management:</strong> With integrated Prometheus Alertmanager and AODH, RHOSO Observability offers robust and customizable alerting capabilities. Administrators can configure custom alerts based on various metrics and log patterns, ensuring they are notified promptly of potential issues or anomalous behavior across the entire RHOSO stack.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_deep_integration_with_the_openshift_ecosystem"><a class="anchor" href="#_deep_integration_with_the_openshift_ecosystem"></a>Deep Integration with the OpenShift Ecosystem</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The tight integration between RHOSO Observability and the OpenShift ecosystem offers several strategic advantages, fostering consistency and efficiency:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Familiar Tooling:</strong> For organizations already utilizing OpenShift, RHOSO Observability provides a consistent monitoring experience, significantly reducing the need for operators to learn and manage new, separate observability tools. This enhances productivity and simplifies day-to-day operations.</p>
+</li>
+<li>
+<p><strong>Unified Platform Management:</strong> By leveraging OpenShift&#8217;s observability stack, RHOSO environments benefit from the continuous development, security enhancements, and feature improvements made to OpenShift&#8217;s monitoring, logging, and alerting components, ensuring a future-proof solution.</p>
+</li>
+<li>
+<p><strong>Improved Automation:</strong> The integrated nature allows for better automation workflows, where observability data can feed directly into CI/CD pipelines, auto-scaling solutions, or self-healing mechanisms, further enhancing the reliability, agility, and responsiveness of the RHOSO deployment.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_streamlined_deployment_and_management"><a class="anchor" href="#_streamlined_deployment_and_management"></a>Streamlined Deployment and Management</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>RHOSO Observability simplifies the deployment and management of monitoring infrastructure compared to previous solutions, emphasizing a more native and integrated approach:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Replacement for Service Telemetry Framework (STF):</strong> RHOSO Observability is the direct replacement for the Service Telemetry Framework (STF) in RHOSO 18 and beyond. This signifies an evolution towards a more integrated and streamlined observability approach, leveraging OpenShift native capabilities more effectively for easier deployment and maintenance.</p>
+</li>
+<li>
+<p><strong>Simplified Architecture:</strong> The core architecture of RHOSO Observability is anchored by the <code>COO</code> (Cluster Observability Operator) and a dedicated <code>telemetry-operator</code>. This design simplifies the overall deployment, configuration, and lifecycle management of the observability components, making it easier to install, configure, and maintain the entire monitoring solution.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_practical_implications_and_benefits"><a class="anchor" href="#_practical_implications_and_benefits"></a>Practical Implications and Benefits</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The key features of RHOSO Observability translate into significant practical benefits for organizations deploying and managing OpenStack on OpenShift:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Reduced Operational Overhead:</strong> By unifying observability tools and streamlining management processes, operational teams can achieve more with fewer resources, focusing on value-add activities rather than managing disparate monitoring systems.</p>
+</li>
+<li>
+<p><strong>Faster Troubleshooting and Resolution:</strong> Centralized logs and comprehensive metrics, combined with powerful visualization tools in the OpenShift Console, enable quicker identification, diagnosis, and resolution of issues, minimizing downtime and service disruption.</p>
+</li>
+<li>
+<p><strong>Enhanced Resource Optimization:</strong> Detailed telemetry from Ceilometer provides a clear understanding of resource consumption across OpenStack projects, aiding in effective capacity planning, resource allocation, and cost management, which is a foundational element for chargeback.</p>
+</li>
+<li>
+<p><strong>Proactive Issue Detection:</strong> Robust and configurable alerting mechanisms ensure that potential problems are identified and addressed proactively before they can escalate and impact users, significantly improving service availability and reliability.</p>
+</li>
+<li>
+<p><strong>Consistency and Standardization:</strong> Leveraging OpenShift&#8217;s proven observability stack brings a high degree of consistency and standardization to monitoring practices across different workloads within the enterprise, simplifying training and operational consistency.</p>
+</li>
+</ul>
+</div>
 </div>
 </div>
 <nav class="pagination">
