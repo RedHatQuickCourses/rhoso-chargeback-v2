@@ -240,6 +240,11 @@
 <div class="paragraph">
 <p>The RHOSO observability architecture leverages a hybrid approach, combining established OpenShift tooling with native OpenStack telemetry solutions. This integration ensures robust metric collection and logging across the entire stack.</p>
 </div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/rhoso-observability-architectural-overview.png" alt="rhoso observability architectural overview">
+</div>
+</div>
 <div class="sect2">
 <h3 id="_openshift_native_observability_components"><a class="anchor" href="#_openshift_native_observability_components"></a>OpenShift-Native Observability Components</h3>
 <div class="paragraph">
@@ -289,110 +294,9 @@
 <p><strong>Within Red Hat OpenShift Container Platform (RHOCP)</strong>: services like COO, CLO, and the Telemetry Operator run directly within the OpenShift cluster, managing the overarching observability framework.</p>
 </li>
 <li>
-<p><strong>On Dataplane Nodes</strong>: services on your OpenStack Dataplane nodes are responsible for providing node-specific metrics and logs ensuring full coverage of your data plane.</p>
+<p><strong>On RHOSO Dataplane Nodes</strong>: services on your OpenStack Dataplane nodes are responsible for providing node-specific metrics and logs ensuring full coverage of your data plane.</p>
 </li>
 </ul>
-</div>
-<div class="paragraph">
-<p>By default, RHOSO observability logging is enabled on the control plane components. However, for comprehensive monitoring, you can extend logging to the data plane.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_benefits_of_the_rhoso_observability_architecture"><a class="anchor" href="#_benefits_of_the_rhoso_observability_architecture"></a>Benefits of the RHOSO Observability Architecture</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>This hybrid architectural approach offers several significant advantages:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Leveraging Proven OpenShift Tooling</strong>: It utilizes tools and operators within OpenShift that are robust, scalable, and well-understood by OpenShift customers.</p>
-</li>
-<li>
-<p><strong>Familiarity for OpenShift Administrators</strong>: Operators and UI elements familiar to OpenShift users contribute to a reduced learning curve and smoother operations.</p>
-</li>
-<li>
-<p><strong>Enhanced Integration with OpenShift Ecosystem</strong>: Tighter integration allows for a more unified operational experience, where OpenStack metrics and logs are seamlessly part of the broader OpenShift monitoring landscape.</p>
-</li>
-<li>
-<p><strong>Retaining OpenStack Administrator Solutions</strong>: By keeping components like Ceilometer and AODH, it ensures that administrators familiar with traditional OpenStack telemetry can continue to leverage their existing knowledge and tools.</p>
-</li>
-<li>
-<p><strong>Centralized Logging and Monitoring</strong>: Provides a single pane of glass for both OpenShift infrastructure and OpenStack workloads, simplifying troubleshooting and performance analysis.</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_enabling_data_plane_logging_hands_on_activity"><a class="anchor" href="#_enabling_data_plane_logging_hands_on_activity"></a>Enabling Data Plane Logging (Hands-on Activity)</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>While control plane logging is enabled by default, extending observability to the data plane is a critical step for comprehensive monitoring of your RHOSO environment. This involves configuring your <code>OpenStackDataPlaneNodeSet</code> Custom Resources (CRs).</p>
-</div>
-<div class="sect2">
-<h3 id="_step_by_step_guide_enable_data_plane_logging"><a class="anchor" href="#_step_by_step_guide_enable_data_plane_logging"></a>Step-by-Step Guide: Enable Data Plane Logging</h3>
-<div class="paragraph">
-<p>To enable Red Hat OpenStack Services on OpenShift (RHOSO) observability logging on the data plane, you must add the <code>OpenStackDataPlaneService logging</code> service to the <code>services</code> list of each <code>OpenStackDataPlaneNodeSet</code> custom resource (CR) defined for your data plane.</p>
-</div>
-<div class="paragraph">
-<div class="title">Prerequisites</div>
-<p>Ensure you have <code>oc</code> (OpenShift CLI) configured and access to your RHOCP cluster where RHOSO is deployed.</p>
-</div>
-<div class="olist arabic">
-<div class="title">Procedure</div>
-<ol class="arabic">
-<li>
-<p><strong>Identify your <code>OpenStackDataPlaneNodeSet</code> CRs:</strong>
-First, list your <code>OpenStackDataPlaneNodeSet</code> resources to identify which ones manage your data plane nodes.
-<code><code>bash
-oc get OpenStackDataPlaneNodeSet -n openstack
-</code></code></p>
-</li>
-<li>
-<p><strong>Edit the <code>OpenStackDataPlaneNodeSet</code> CR:</strong>
-For each data plane node set where you want to enable logging, edit its CR. Replace <code>example-dataplanenodeset</code> with the actual name of your node set.
-<code><code>bash
-oc edit OpenStackDataPlaneNodeSet example-dataplanenodeset -n openstack
-</code></code></p>
-</li>
-<li>
-<p><strong>Add the <code>logging</code> service:</strong>
-Locate the <code>spec.services</code> section within the CR. Add <code>logging</code> to the list of services.</p>
-<div class="literalblock">
-<div class="content">
-<pre>[source,yaml]
-----
-# ... (other parts of the CR)
-spec:
-  services:
-    - repo-setup
-    - sshd
-    - ovn
-    - neutron_ovs
-    - nova
-    - nova_libvirt
-    - logging <i class="conum" data-value="1"></i><b>(1)</b>
-# ... (other parts of the CR)
-----
-&lt;1&gt; Add `logging` to enable data plane observability logging.</pre>
-</div>
-</div>
-</li>
-<li>
-<p><strong>Save the changes:</strong>
-Save and exit the editor. The OpenStackDataPlane Operator will detect the change and reconcile the <code>OpenStackDataPlaneNodeSet</code> CR, deploying the necessary logging components to the specified data plane nodes.</p>
-</li>
-<li>
-<p><strong>Verify successful activation:</strong>
-Monitor the status of your <code>OpenStackDataPlaneNodeSet</code> CR and the pods on your data plane nodes. You should observe new logging-related pods or agents being deployed and running, indicating successful activation. You can also verify by checking logs from a data plane compute node using OpenShift&#8217;s logging tools (e.g., in the OpenShift console or via <code>oc logs</code>).</p>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p>This architectural overview provides the foundation for understanding how RHOSO operates and how its observability is designed, setting the stage for deeper dives into specific features like Chargeback.</p>
 </div>
 </div>
 </div>
