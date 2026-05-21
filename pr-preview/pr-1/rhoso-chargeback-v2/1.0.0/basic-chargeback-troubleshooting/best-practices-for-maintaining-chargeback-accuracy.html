@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Best practices for maintaining Chargeback accuracy :: RHOSO Chargeback and Observability Fundamentals</title>
+    <link rel="prev" href="analyzing-logs-for-chargeback-components.html">
+    <link rel="next" href="../appendix/appendix.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">RHOSO Chargeback and Observability Fundamentals</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/rhoso-chargeback-v2/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="rhoso-chargeback-v2" data-version="1.0.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../basics-of-rhoso-observability/basics-of-rhoso-observability.html">Basics of RHOSO Observability</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/introduction-to-rhoso-and-its-purpose.html">Introduction to RHOSO and its purpose</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/core-functionalities-and-use-cases-of-rhoso.html">RHOSO Observability Core Functionalities and Use Cases</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/rhoso-architectural-overview.html">RHOSO architectural overview</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/introduction-to-rhoso-chargeback.html">Introduction to RHOSO Chargeback</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/understanding-the-chargeback-feature-in-rhoso.html">Understanding the Chargeback feature in RHOSO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/business-value-and-benefits-of-chargeback.html">Business value and benefits of Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/overview-of-the-chargeback-process-flow.html">Overview of the chargeback process flow</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/integration-of-chargeback-with-rhoso-observability.html">Integration of Chargeback with RHOSO Observability</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/enabling-chargeback-in-rhosp.html">Enabling Chargeback in RHOSP</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/prerequisites-for-chargeback-deployment-in-rhosp.html">Prerequisites for Chargeback deployment in RHOSP</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/step-by-step-guide-to-enable-chargeback.html">Step-by-step guide to enable Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/configuration-parameters-and-settings.html">Configuration parameters and settings</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/verifying-successful-chargeback-activation.html">Verifying successful Chargeback activation</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../using-the-chargeback-feature/using-the-chargeback-feature.html">Using the Chargeback Feature</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/understanding-rating-definitions-and-components.html">Understanding rating definitions and components</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/creating-and-managing-rating-rules.html">Creating and managing rating rules</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/generating-chargeback-reports-and-invoices.html">Generating chargeback reports and invoices</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/analyzing-chargeback-data-and-consumption.html">Analyzing chargeback data and consumption</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/hands-on-lab-implementing-your-first-chargeback-rating.html">Hands-on Lab: Implementing Your First Chargeback Rating</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/setting-up-the-lab-environment-for-chargeback.html">Setting up the lab environment for Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/defining-a-basic-rating-rule-for-a-service.html">Defining a basic rating rule for a service</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/applying-the-defined-rating-rule-to-resources.html">Applying the defined rating rule to resources</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/reviewing-the-generated-charges-and-reports.html">Reviewing the generated charges and reports</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="basic-chargeback-troubleshooting.html">Basic Chargeback Troubleshooting</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="identifying-common-issues-during-chargeback-configuration.html">Identifying common issues during Chargeback configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="diagnosing-incorrect-charge-calculations.html">Diagnosing incorrect charge calculations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="analyzing-logs-for-chargeback-components.html">Analyzing logs for Chargeback components</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="best-practices-for-maintaining-chargeback-accuracy.html">Best practices for maintaining Chargeback accuracy</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">RHOSO Chargeback and Observability Fundamentals</span>
+    <span class="version">1.0.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">RHOSO Chargeback and Observability Fundamentals</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.0.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></li>
+    <li><a href="basic-chargeback-troubleshooting.html">Basic Chargeback Troubleshooting</a></li>
+    <li><a href="best-practices-for-maintaining-chargeback-accuracy.html">Best practices for maintaining Chargeback accuracy</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Best practices for maintaining Chargeback accuracy</h1>
+<h1 id="_best_practices_for_maintaining_chargeback_accuracy" class="sect0"><a class="anchor" href="#_best_practices_for_maintaining_chargeback_accuracy"></a>Best practices for maintaining Chargeback accuracy</h1>
+<div class="paragraph">
+<p>Accuracy is the cornerstone of any effective chargeback system. In the context of RHOSO, ensuring the precision of CloudKitty&#8217;s charge calculations is paramount for fostering trust, enabling transparent cost recovery, and driving optimization among your internal tenants. Inaccurate chargeback data can lead to disputes, undermine financial planning, and negate the very benefits CloudKitty aims to provide.</p>
+</div>
+<div class="sect1">
+<h2 id="_ensuring_data_integrity_and_collection_accuracy"><a class="anchor" href="#_ensuring_data_integrity_and_collection_accuracy"></a>Ensuring Data Integrity and Collection Accuracy</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The foundation of accurate chargeback begins with reliable metric collection. Think of CloudKitty as the "meter reader"; it sits between your collected metrics and your FinOps solution. If the raw technical data it consumes is flawed, the output charges will also be incorrect.</p>
+</div>
+<div class="ulist">
+<div class="title">Key Practices:</div>
+<ul>
+<li>
+<p><strong>Verify Metric Sources</strong>: Regularly check that all intended resource metrics (e.g., VM uptime, storage consumption) are being consistently collected by the underlying observability components.</p>
+</li>
+<li>
+<p><strong>Monitor Telemetry Operator Scrape Configurations</strong>: The <code>telemetry-operator</code> configures the scraping of all metric sources through <code>scrapeconfig</code> Custom Resources (CRs). These configurations dictate what metrics are collected and how. Looking at these may provide crucial information when troubleshooting missing metrics or incorrect data.</p>
+</li>
+<li>
+<p><strong>Address Missing or Erroneous Data</strong>: Implement monitoring to detect gaps or anomalies in metric streams. Promptly investigate and resolve any issues that lead to incomplete or incorrect metric data.</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_hands_on_activity_reviewing_telemetry_operator_scrape_configs"><a class="anchor" href="#_hands_on_activity_reviewing_telemetry_operator_scrape_configs"></a>Hands-on Activity: Reviewing Telemetry Operator Scrape Configs</h3>
+<div class="paragraph">
+<p>Understanding how metrics are collected and processed is crucial for troubleshooting and ensuring accuracy. Let&#8217;s inspect the <code>scrapeconfig</code> CRs managed by the <code>telemetry-operator</code>.</p>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure:</div>
+<ol class="arabic">
+<li>
+<p><strong>Access your OpenShift Cluster</strong>:
+Ensure you are logged into your OpenShift cluster with the <code>oc</code> CLI.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc login --token=&lt;your_token&gt; --server=&lt;your_api_server&gt;</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>List <code>ScrapeConfig</code> Custom Resources</strong>:
+The <code>telemetry-operator</code> creates and manages <code>ScrapeConfig</code> resources. List them to understand what metrics are being scraped across your environment.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get scrapeconfig -A</code></pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>You will see a list of `ScrapeConfig` resources, often deployed in namespaces like `openshift-telemetry-operator` or `openstack-operators`. These CRs define how metrics are discovered and ingested.</pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Inspect a specific <code>ScrapeConfig</code></strong>:
+Pick one <code>ScrapeConfig</code> relevant to the services you are charging back (e.g., related to Nova for VM metrics, Cinder for storage metrics). Examine its YAML definition to understand its targets and metric paths.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get scrapeconfig &lt;scrapeconfig-name&gt; -n &lt;namespace&gt; -o yaml</code></pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>*Interpretation*: Focus on sections like `endpoints`, `metric_relabel_configs`, and `target_relabel_configs`. Ensure that the correct metrics are being targeted and that any necessary relabeling is occurring as expected. If metrics are missing or appear incorrect in CloudKitty, discrepancies in these configurations are a common cause.</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_robust_rating_rule_management"><a class="anchor" href="#_robust_rating_rule_management"></a>Robust Rating Rule Management</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>CloudKitty empowers you to apply "specific rating rules" to collected metrics, translating raw technical data into transparent costs. The clarity, consistency, and diligent maintenance of these rules directly impact chargeback accuracy and user trust.</p>
+</div>
+<div class="ulist">
+<div class="title">Key Practices:</div>
+<ul>
+<li>
+<p><strong>Clear and Consistent Rule Definitions</strong>: Develop rating rules that are unambiguous and easily understandable. Avoid overly complex rules that can lead to misinterpretations or errors, both in calculation and communication. Document your rules thoroughly.</p>
+</li>
+<li>
+<p><strong>Regular Rule Review and Updates</strong>: As services evolve, operational costs change, or new resources are introduced, rating rules must be reviewed and updated to remain relevant and accurate. Schedule periodic audits of your rating rules.</p>
+</li>
+<li>
+<p><strong>Version Control for Rules</strong>: Treat your rating rule definitions (e.g., CloudKitty <code>rating.d</code> files or API payloads) as critical configuration assets. Store them in a version control system (like Git) to track changes, enable rollbacks if necessary, and ensure historical accuracy.</p>
+</li>
+<li>
+<p><strong>Test New Rules Thoroughly</strong>: Before deploying new or modified rating rules to production, test them rigorously in a staging environment. Compare expected charges with actual generated charges using historical data or simulated usage to catch any misconfigurations.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_transparent_reporting_and_reconciliation"><a class="anchor" href="#_transparent_reporting_and_reconciliation"></a>Transparent Reporting and Reconciliation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Generating reports is just one step in the chargeback process; understanding, verifying, and communicating them are equally vital. Transparency and reconciliation build trust with your tenants.</p>
+</div>
+<div class="ulist">
+<div class="title">Key Practices:</div>
+<ul>
+<li>
+<p><strong>Regular Report Generation and Review</strong>: Generate chargeback reports frequently (e.g., daily, weekly, monthly) and review them for anomalies or unexpected values. Early detection of discrepancies is key to maintaining accuracy.</p>
+</li>
+<li>
+<p><strong>Reconcile with Resource Usage</strong>: Cross-reference chargeback reports with actual resource consumption data from RHOSO (e.g., Nova instance lists, Cinder volume sizes reported by OpenStack). This helps ensure that the billed resources match what was actually consumed.</p>
+</li>
+<li>
+<p><strong>Audit Mechanisms</strong>: Implement an internal auditing process to periodically verify the calculations performed by CloudKitty. This might involve manually tracing a few sample charges from raw metric data through the applied rating rule to the final billed amount.</p>
+</li>
+<li>
+<p><strong>Provide Tenant Visibility</strong>: Make chargeback reports easily accessible and understandable to tenants. When tenants can clearly see how their consumption (broken down by project, flavor, and metric) affects their cost, they can make informed decisions and are more likely to trust the system.</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_hands_on_activity_verifying_cloudkitty_dataframes"><a class="anchor" href="#_hands_on_activity_verifying_cloudkitty_dataframes"></a>Hands-on Activity: Verifying CloudKitty Dataframes</h3>
+<div class="paragraph">
+<p>CloudKitty stores its processed data in internal dataframes before generating final reports. Reviewing these dataframes can help confirm that the rating rules are being applied correctly and that the data is as expected. This provides granular insight into the charging process.</p>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure:</div>
+<ol class="arabic">
+<li>
+<p><strong>Access CloudKitty Dataframes</strong>:
+The provided <code>asciinema</code> recordings offer excellent, interactive examples of how to interact with CloudKitty&#8217;s data programmatically. You&#8217;ll typically need to connect to the CloudKitty service or use its API to query the stored dataframes.
+(Refer to: <a href="https://asciinema.org/a/P11RfiewF4R">Verifying the chargeback dataframes and extracting the monthly summary</a> for detailed command examples that access CloudKitty&#8217;s processed data).</p>
+</li>
+<li>
+<p><strong>Inspect Processed Data</strong>:
+Using CloudKitty&#8217;s CLI or API, query the processed dataframes for a specific period or tenant. Look for <code>usage</code> and <code>rated</code> data points.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># Example conceptual commands (actual commands will vary based on CloudKitty client/API)
+# List processed dataframes for a specific period
+cloudkitty dataframe list --start-date &lt;YYYY-MM-DD&gt; --end-date &lt;YYYY-MM-DD&gt;
+
+# Get a summary of charges, grouped by tenant, to quickly spot anomalies
+cloudkitty report summary --start-date &lt;YYYY-MM-DD&gt; --end-date &lt;YYYY-MM-DD&gt; --groupby tenant_id</code></pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>*Interpretation*: Compare the `usage` values in the dataframes with your expectations based on raw resource consumption. Then, critically verify that the `rated` values accurately reflect the application of your defined rating rules. If there's a discrepancy, it could point to an issue with either the incoming metrics, the rating rule definition itself, or a configuration error in CloudKitty's processing pipeline.</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_continuous_monitoring_and_troubleshooting_preparedness"><a class="anchor" href="#_continuous_monitoring_and_troubleshooting_preparedness"></a>Continuous Monitoring and Troubleshooting Preparedness</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Proactive monitoring and a well-defined troubleshooting strategy are indispensable for catching issues before they significantly impact chargeback accuracy.</p>
+</div>
+<div class="ulist">
+<div class="title">Key Practices:</div>
+<ul>
+<li>
+<p><strong>Set Up Alerts</strong>: Configure robust alerts for critical CloudKitty components and for significant deviations in expected chargeback values. For example, alert if CloudKitty&#8217;s processing queue grows excessively, if no charge data is generated for a specified period, or if charges for a specific service drastically drop or increase unexpectedly.</p>
+</li>
+<li>
+<p><strong>Leverage Logging</strong>: CloudKitty, Telemetry Operator, and other RHOSO components generate extensive logs. Configure centralized logging (e.g., using OpenShift&#8217;s logging stack) and regularly review logs for errors, warnings, or unusual activities related to metric collection or rating. Analyzing logs is a primary step for diagnosing incorrect charge calculations or service outages.</p>
+</li>
+<li>
+<p><strong>Develop Troubleshooting Runbooks</strong>: Document common issues, their symptoms, and step-by-step resolutions. This includes troubleshooting scenarios like missing metrics (referencing <code>Scrape Configs</code>), diagnosing incorrect charge calculations (by inspecting rules and dataframes), and resolving component failures within the CloudKitty ecosystem.</p>
+</li>
+<li>
+<p><strong>Regular Health Checks</strong>: Implement automated health checks for CloudKitty services to ensure they are running, responsive, and processing data as expected. Integrate these checks into your existing monitoring dashboards.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>By adhering to these best practices, you can build and maintain a robust and accurate chargeback system within your RHOSO environment, ensuring fair cost allocation, fostering trust, and maximizing the value of your cloud resources.</p>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="analyzing-logs-for-chargeback-components.html">Analyzing logs for Chargeback components</a></span>
+  <span class="next"><a href="../appendix/appendix.html">Appendix</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
