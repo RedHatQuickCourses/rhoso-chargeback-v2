@@ -7,7 +7,7 @@ nav:
 
 - modules/basics-of-rhoso-observability/nav.adoc
 
-- modules/introduction-to-rhoso-chargeback/nav.adoc
+- modules/introduction-to-rating/nav.adoc
 
 - modules/enabling-chargeback-in-rhosp/nav.adoc
 
