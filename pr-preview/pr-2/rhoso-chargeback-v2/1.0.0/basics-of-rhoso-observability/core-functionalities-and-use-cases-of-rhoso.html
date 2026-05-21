@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Core functionalities and use cases of RHOSO :: RHOSO Chargeback and Observability Fundamentals</title>
+    <link rel="prev" href="introduction-to-rhoso-and-its-purpose.html">
+    <link rel="next" href="rhoso-architectural-overview.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">RHOSO Chargeback and Observability Fundamentals</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/rhoso-chargeback-v2/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="rhoso-chargeback-v2" data-version="1.0.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="basics-of-rhoso-observability.html">Basics of RHOSO Observability</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="introduction-to-rhoso-and-its-purpose.html">Introduction to RHOSO and its purpose</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="core-functionalities-and-use-cases-of-rhoso.html">Core functionalities and use cases of RHOSO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="rhoso-architectural-overview.html">RHOSO architectural overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="key-features-of-rhoso-observability.html">Key features of RHOSO Observability</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/enabling-chargeback-in-rhosp.html">Enabling Chargeback in RHOSP</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/prerequisites-for-chargeback-deployment-in-rhosp.html">Prerequisites for Chargeback deployment in RHOSP</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/step-by-step-guide-to-enable-chargeback.html">Step-by-step guide to enable Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/configuration-parameters-and-settings.html">Configuration parameters and settings</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/verifying-successful-chargeback-activation.html">Verifying successful Chargeback activation</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../using-the-chargeback-feature/using-the-chargeback-feature.html">Using the Chargeback Feature</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/understanding-rating-definitions-and-components.html">Understanding rating definitions and components</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/creating-and-managing-rating-rules.html">Creating and managing rating rules</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/generating-chargeback-reports-and-invoices.html">Generating chargeback reports and invoices</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/analyzing-chargeback-data-and-consumption.html">Analyzing chargeback data and consumption</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/hands-on-lab-implementing-your-first-chargeback-rating.html">Hands-on Lab: Implementing Your First Chargeback Rating</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/setting-up-the-lab-environment-for-chargeback.html">Setting up the lab environment for Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/defining-a-basic-rating-rule-for-a-service.html">Defining a basic rating rule for a service</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/applying-the-defined-rating-rule-to-resources.html">Applying the defined rating rule to resources</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/reviewing-the-generated-charges-and-reports.html">Reviewing the generated charges and reports</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/basic-chargeback-troubleshooting.html">Basic Chargeback Troubleshooting</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/identifying-common-issues-during-chargeback-configuration.html">Identifying common issues during Chargeback configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/diagnosing-incorrect-charge-calculations.html">Diagnosing incorrect charge calculations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/analyzing-logs-for-chargeback-components.html">Analyzing logs for Chargeback components</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/best-practices-for-maintaining-chargeback-accuracy.html">Best practices for maintaining Chargeback accuracy</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">RHOSO Chargeback and Observability Fundamentals</span>
+    <span class="version">1.0.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">RHOSO Chargeback and Observability Fundamentals</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.0.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></li>
+    <li><a href="basics-of-rhoso-observability.html">Basics of RHOSO Observability</a></li>
+    <li><a href="core-functionalities-and-use-cases-of-rhoso.html">Core functionalities and use cases of RHOSO</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Core functionalities and use cases of RHOSO</h1>
+<h1 id="_core_functionalities_and_use_cases_of_rhoso_observability" class="sect0"><a class="anchor" href="#_core_functionalities_and_use_cases_of_rhoso_observability"></a>Core Functionalities and Use Cases of RHOSO Observability</h1>
+<div class="paragraph">
+<p>This section details the fundamental capabilities and practical applications of Red Hat OpenStack Services on OpenShift (RHOSO) Observability. Understanding these core functionalities and use cases is crucial for effectively managing, troubleshooting, and optimizing your RHOSO environment.</p>
+</div>
+<div class="sect1">
+<h2 id="_core_functionalities_of_rhoso_observability"><a class="anchor" href="#_core_functionalities_of_rhoso_observability"></a>Core Functionalities of RHOSO Observability</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>RHOSO Observability provides a comprehensive solution for gaining deep insights into your OpenStack deployment running on OpenShift. It achieves this by strategically integrating and leveraging both OpenShift&#8217;s robust observability stack and OpenStack&#8217;s native telemetry tools.</p>
+</div>
+<div class="sect2">
+<h3 id="_integrated_telemetry_collection"><a class="anchor" href="#_integrated_telemetry_collection"></a>Integrated Telemetry Collection</h3>
+<div class="paragraph">
+<p>One of the primary functionalities of RHOSO Observability is its ability to collect diverse telemetry data from various layers of your RHOSO environment. This unified approach ensures no blind spots exist across the complex stack.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Metrics:</strong> RHOSO Observability collects performance metrics from both the underlying OpenShift components (e.g., CPU utilization, memory consumption, network I/O of pods and nodes) and the OpenStack services themselves (e.g., virtual machine resource utilization via Ceilometer, storage usage from Cinder, network traffic from Neutron).</p>
+</li>
+<li>
+<p><strong>Logs:</strong> It provides comprehensive log aggregation from OpenShift control plane and data plane components, alongside all OpenStack services. This enables centralized log collection, storage, and analysis, critical for debugging and auditing.</p>
+</li>
+<li>
+<p><strong>Alerts:</strong> Integration with OpenShift&#8217;s native alerting framework allows for proactive notifications based on predefined thresholds or anomalous behavior detected across the entire RHOSO stack, ensuring rapid response to critical events.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The context highlights that "RHOSO Observability leverages much of tooling in OpenShift Observability, like COO, CLO and Console UI, while also keeping the native OpenStack telemetry solutions, like Ceilometer and AODH." This synergistic approach ensures a holistic view of the infrastructure by combining the strengths of both platforms.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_unified_data_storage_and_analysis"><a class="anchor" href="#_unified_data_storage_and_analysis"></a>Unified Data Storage and Analysis</h3>
+<div class="paragraph">
+<p>RHOSO Observability consolidates the collected telemetry data into a unified platform, primarily leveraging OpenShift&#8217;s robust observability components for storage and initial processing.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>OpenShift Container Platform (RHOCP) Observability Tools:</strong> It uses core OpenShift components such as the Cluster Observability Operator (COO) for managing metrics and the Cluster Logging Operator (CLO) for log collection and storage. The <code>telemetry-operator</code> plays a crucial role in facilitating the integration, bridging the gap to ensure OpenStack-specific data is correctly routed and processed within the OpenShift observability framework.</p>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>As stated in the context, "RHOSO observability &#8594; COO + telemetry-operator." This indicates a core architectural choice to integrate OpenStack telemetry seamlessly into the OpenShift observability framework, streamlining management and reducing operational overhead.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p><strong>Centralized Monitoring Interface:</strong> The OpenShift Console UI serves as a central point for visualizing dashboards, querying metrics, and reviewing logs across your entire RHOSO deployment. This provides a consistent and familiar user experience for administrators already accustomed to OpenShift.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_enhanced_troubleshooting_and_diagnostics"><a class="anchor" href="#_enhanced_troubleshooting_and_diagnostics"></a>Enhanced Troubleshooting and Diagnostics</h3>
+<div class="paragraph">
+<p>With its integrated approach to metrics and logs, RHOSO Observability significantly enhances the ability to troubleshoot and diagnose issues efficiently across the entire RHOSO environment.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Root Cause Analysis:</strong> By correlating events, metrics, and logs from both OpenShift and OpenStack components, administrators can quickly pinpoint the root cause of performance degradation, service outages, or misconfigurations, reducing mean time to resolution (MTTR).</p>
+</li>
+<li>
+<p><strong>Real-time Monitoring:</strong> Intuitive dashboards provide real-time visibility into the health and performance of critical services, allowing for proactive identification of potential problems before they escalate and impact end-users.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_data_plane_logging_capabilities"><a class="anchor" href="#_data_plane_logging_capabilities"></a>Data Plane Logging Capabilities</h3>
+<div class="paragraph">
+<p>RHOSO Observability extends its reach to the data plane, enabling the collection of crucial logs from OpenStack Compute nodes and other data plane services.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Configurable Logging:</strong> As described in the context, "You can enable Red Hat OpenStack Services on OpenShift (RHOSO) observability logging on the data plane by adding the <code>OpenStackDataPlaneService</code> logging service to the services list of each <code>OpenStackDataPlaneNodeSet</code> custom resource (CR) defined for the data plane." This provides granular control, allowing administrators to specify which data plane logs are collected and integrated into the central observability solution, ensuring comprehensive coverage without unnecessary overhead.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_use_cases_of_rhoso_observability"><a class="anchor" href="#_use_cases_of_rhoso_observability"></a>Use Cases of RHOSO Observability</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>RHOSO Observability is an indispensable tool for a variety of operational and strategic use cases, providing the necessary data and insights to maintain a healthy, efficient, and cost-effective OpenStack cloud running on OpenShift.</p>
+</div>
+<div class="sect2">
+<h3 id="_proactive_monitoring_and_alerting"><a class="anchor" href="#_proactive_monitoring_and_alerting"></a>Proactive Monitoring and Alerting</h3>
+<div class="paragraph">
+<p>One of the most critical use cases is the continuous, proactive monitoring of the RHOSO environment to ensure high availability and optimal performance.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>System Health Checks:</strong> Administrators can monitor the health and operational status of all OpenStack services (e.g., Nova, Neutron, Cinder, Glance, Keystone) and the underlying OpenShift infrastructure (e.g., pods, nodes, network, storage resources).</p>
+</li>
+<li>
+<p><strong>Threshold-based Alerts:</strong> Configure custom alerts for deviations from normal behavior, such as high CPU utilization on a compute node, low disk space on storage, API service failures, or network saturation, enabling rapid response to potential issues.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_performance_optimization_and_capacity_planning"><a class="anchor" href="#_performance_optimization_and_capacity_planning"></a>Performance Optimization and Capacity Planning</h3>
+<div class="paragraph">
+<p>Observability data is vital for understanding resource consumption patterns and making informed decisions about future growth and resource allocation.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Resource Utilization Analysis:</strong> Analyze historical data to understand trends in CPU, memory, network, and storage usage across different OpenStack projects, tenants, and services. This helps in identifying underutilized or overutilized resources.</p>
+</li>
+<li>
+<p><strong>Bottleneck Identification:</strong> Pinpoint performance bottlenecks within the OpenStack application layer or the underlying OpenShift infrastructure that might be impacting workload performance and user experience.</p>
+</li>
+<li>
+<p><strong>Informed Scaling Decisions:</strong> Use consumption patterns and growth projections to make data-driven decisions about scaling your RHOSO environment, ensuring adequate resources are available for future demands without unnecessary overprovisioning.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_troubleshooting_and_debugging"><a class="anchor" href="#_troubleshooting_and_debugging"></a>Troubleshooting and Debugging</h3>
+<div class="paragraph">
+<p>When issues arise, RHOSO Observability provides the tools necessary for quick and effective resolution, minimizing downtime.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Accelerated Root Cause Analysis:</strong> Aggregated logs and metrics from across the entire stack drastically reduce the time spent sifting through disparate data sources, speeding up the identification of the problem&#8217;s origin, whether it lies in OpenStack or OpenShift.</p>
+</li>
+<li>
+<p><strong>Historical Data Review:</strong> Review past performance metrics and log data to understand when an issue started, what changes occurred around that time, and how the problem evolved, aiding in post-mortem analysis and preventing recurrence.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_security_auditing_and_compliance"><a class="anchor" href="#_security_auditing_and_compliance"></a>Security Auditing and Compliance</h3>
+<div class="paragraph">
+<p>The comprehensive logs collected by RHOSO Observability are invaluable for maintaining security posture and demonstrating compliance.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Activity Auditing:</strong> Track user activities, API calls, and system events within both OpenStack and OpenShift to monitor for unauthorized access, suspicious behavior, or policy violations.</p>
+</li>
+<li>
+<p><strong>Compliance Reporting:</strong> Generate reports based on log data to demonstrate adherence to internal policies and external regulatory requirements for data access, system changes, and operational procedures.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_strategic_transition_and_modernization"><a class="anchor" href="#_strategic_transition_and_modernization"></a>Strategic Transition and Modernization</h3>
+<div class="paragraph">
+<p>For organizations transitioning from previous OpenStack deployments, RHOSO Observability represents a significant evolution.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Replacement for Service Telemetry Framework (STF):</strong> It&#8217;s important to note that "RHOSO Observability is the replacement of the Service Telemetry Framework in RHOSO 18 and beyond." This signifies a strategic shift towards a more integrated, OpenShift-native approach for telemetry collection and analysis, streamlining operations for environments running OpenStack on OpenShift and aligning with modern cloud-native observability practices.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="introduction-to-rhoso-and-its-purpose.html">Introduction to RHOSO and its purpose</a></span>
+  <span class="next"><a href="rhoso-architectural-overview.html">RHOSO architectural overview</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

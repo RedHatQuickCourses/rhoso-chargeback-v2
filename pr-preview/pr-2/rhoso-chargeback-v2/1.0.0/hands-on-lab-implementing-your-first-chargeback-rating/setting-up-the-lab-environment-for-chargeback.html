@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Setting up the lab environment for Chargeback :: RHOSO Chargeback and Observability Fundamentals</title>
+    <link rel="prev" href="hands-on-lab-implementing-your-first-chargeback-rating.html">
+    <link rel="next" href="defining-a-basic-rating-rule-for-a-service.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">RHOSO Chargeback and Observability Fundamentals</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/rhoso-chargeback-v2/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="rhoso-chargeback-v2" data-version="1.0.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../basics-of-rhoso-observability/basics-of-rhoso-observability.html">Basics of RHOSO Observability</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/introduction-to-rhoso-and-its-purpose.html">Introduction to RHOSO and its purpose</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/core-functionalities-and-use-cases-of-rhoso.html">Core functionalities and use cases of RHOSO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/rhoso-architectural-overview.html">RHOSO architectural overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/key-features-of-rhoso-observability.html">Key features of RHOSO Observability</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/enabling-chargeback-in-rhosp.html">Enabling Chargeback in RHOSP</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/prerequisites-for-chargeback-deployment-in-rhosp.html">Prerequisites for Chargeback deployment in RHOSP</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/step-by-step-guide-to-enable-chargeback.html">Step-by-step guide to enable Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/configuration-parameters-and-settings.html">Configuration parameters and settings</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/verifying-successful-chargeback-activation.html">Verifying successful Chargeback activation</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../using-the-chargeback-feature/using-the-chargeback-feature.html">Using the Chargeback Feature</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/understanding-rating-definitions-and-components.html">Understanding rating definitions and components</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/creating-and-managing-rating-rules.html">Creating and managing rating rules</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/generating-chargeback-reports-and-invoices.html">Generating chargeback reports and invoices</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/analyzing-chargeback-data-and-consumption.html">Analyzing chargeback data and consumption</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="hands-on-lab-implementing-your-first-chargeback-rating.html">Hands-on Lab: Implementing Your First Chargeback Rating</a>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="setting-up-the-lab-environment-for-chargeback.html">Setting up the lab environment for Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="defining-a-basic-rating-rule-for-a-service.html">Defining a basic rating rule for a service</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="applying-the-defined-rating-rule-to-resources.html">Applying the defined rating rule to resources</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="reviewing-the-generated-charges-and-reports.html">Reviewing the generated charges and reports</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/basic-chargeback-troubleshooting.html">Basic Chargeback Troubleshooting</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/identifying-common-issues-during-chargeback-configuration.html">Identifying common issues during Chargeback configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/diagnosing-incorrect-charge-calculations.html">Diagnosing incorrect charge calculations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/analyzing-logs-for-chargeback-components.html">Analyzing logs for Chargeback components</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/best-practices-for-maintaining-chargeback-accuracy.html">Best practices for maintaining Chargeback accuracy</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">RHOSO Chargeback and Observability Fundamentals</span>
+    <span class="version">1.0.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">RHOSO Chargeback and Observability Fundamentals</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.0.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></li>
+    <li><a href="hands-on-lab-implementing-your-first-chargeback-rating.html">Hands-on Lab: Implementing Your First Chargeback Rating</a></li>
+    <li><a href="setting-up-the-lab-environment-for-chargeback.html">Setting up the lab environment for Chargeback</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Setting up the lab environment for Chargeback</h1>
+<h1 id="_setting_up_the_lab_environment_for_rhoso_chargeback" class="sect0"><a class="anchor" href="#_setting_up_the_lab_environment_for_rhoso_chargeback"></a>Setting up the Lab Environment for RHOSO Chargeback</h1>
+<div class="paragraph">
+<p>In this lab, you will prepare your Red Hat OpenShift Service on OpenStack (RHOSO) environment to leverage the powerful Chargeback capabilities provided by CloudKitty, the Rating service integrated with the Telemetry Operator. By the end of this lab, you will have CloudKitty actively monitoring and collecting resource usage data, laying the groundwork for transparent cost recovery and optimization.</p>
+</div>
+<div class="sect1">
+<h2 id="_prerequisites"><a class="anchor" href="#_prerequisites"></a>Prerequisites</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Before you begin, ensure you have met the following prerequisites:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Access to an RHOSO Cluster</strong>: You need <code>kubeconfig</code> access to a running Red Hat OpenShift Service on OpenStack environment with administrator privileges.</p>
+</li>
+<li>
+<p><strong>OpenShift CLI (<code>oc</code>)</strong>: The <code>oc</code> command-line tool configured to interact with your RHOSO cluster.</p>
+</li>
+<li>
+<p><strong>Telemetry Operator</strong>: The Telemetry Operator must be installed and running within your RHOSO environment. Chargeback functionality (CloudKitty) is enabled and managed through this operator.</p>
+</li>
+<li>
+<p><strong>Sufficient Permissions</strong>: You need appropriate permissions to modify Custom Resources (CRs) managed by the Telemetry Operator.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_understanding_cloudkitty_the_rhoso_chargeback_engine"><a class="anchor" href="#_understanding_cloudkitty_the_rhoso_chargeback_engine"></a>Understanding CloudKitty: The RHOSO Chargeback Engine</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>At the heart of RHOSO&#8217;s chargeback functionality lies <strong>CloudKitty</strong>, which the context describes as the "meter reader" for your cloud resources. CloudKitty acts as a critical translation layer, transforming raw technical metrics (such as VM uptime, storage consumption, or network traffic) into meaningful, quantifiable charges based on your predefined rating rules.</p>
+</div>
+<div class="paragraph">
+<p>As highlighted in our introduction to Chargeback, CloudKitty empowers organizations to achieve two major goals:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Transparent Cost Recovery</strong>: It provides clear, itemized breakdowns of resource usage per tenant, enabling accurate recoupment of operational expenses without surprising internal customers with opaque charges.</p>
+</li>
+<li>
+<p><strong>Trust and Optimization</strong>: When tenants see how their consumption (broken down by project, flavor, and metric) affects their cost, they can make informed decisions, fostering efficiency and promoting better resource utilization.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>It&#8217;s crucial to understand that CloudKitty functions purely as a visibility and rating engine. It does <strong>not</strong> actively enforce budgets or block resource creation (like Nova instances) if a tenant exceeds a certain cost threshold. Its role is to provide the data necessary for informed financial management.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_enabling_the_chargeback_cloudkitty_service"><a class="anchor" href="#_enabling_the_chargeback_cloudkitty_service"></a>Enabling the Chargeback (CloudKitty) Service</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Chargeback feature in RHOSO is provided by the Rating service (CloudKitty), which you enable and manage through the Telemetry Operator. To activate CloudKitty in your lab environment, you will modify the <code>Telemetry</code> custom resource (CR) to include the <code>cloudkitty</code> component. This modification instructs the Telemetry Operator to deploy and configure all necessary CloudKitty components.</p>
+</div>
+<div class="sect2">
+<h3 id="_hands_on_activity_deploying_cloudkitty_via_telemetry_operator"><a class="anchor" href="#_hands_on_activity_deploying_cloudkitty_via_telemetry_operator"></a>Hands-on Activity: Deploying CloudKitty via Telemetry Operator</h3>
+<div class="paragraph">
+<p>In this activity, you will enable the CloudKitty service by patching the <code>telemetry-operator&#8217;s `Telemetry</code> custom resource. This action will trigger the operator to deploy the required CloudKitty infrastructure in your RHOSO environment.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Identify the Telemetry CR</strong>
+First, you need to identify the exact name of your <code>Telemetry</code> Custom Resource. It is typically named <code>telemetry-sample</code> or a similar identifier within the <code>openshift-telemetry-operator</code> namespace.</p>
+<div class="literalblock">
+<div class="content">
+<pre>```bash
+oc get telemetry -n openshift-telemetry-operator
+```
+.Expected Output
+```
+NAME                 NAMESPACE                   PHASE      AGE
+telemetry-sample     openshift-telemetry-operator Running    2h
+```
+Note down the `NAME` of your `Telemetry` resource (e.g., `telemetry-sample`).</pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Patch the Telemetry CR to Enable CloudKitty</strong>
+Execute the following <code>oc patch</code> command. Remember to replace <code>&lt;TELEMETRY_CR_NAME&gt;</code> with the actual name you identified in the previous step. This command specifically adds <code>cloudkitty</code> to the <code>spec.components</code> list within the <code>Telemetry</code> CR, instructing the operator to deploy it.</p>
+<div class="literalblock">
+<div class="content">
+<pre>```bash
+oc patch telemetry &lt;TELEMETRY_CR_NAME&gt; -n openshift-telemetry-operator --type='json' -p='[{"op": "add", "path": "/spec/components/-", "value": "cloudkitty"}]'
+```
+.Example Output
+```
+telemetry.telemetry.openstack.org/telemetry-sample patched
+```
+This command uses a JSON patch to append `cloudkitty` to the `components` array in the `Telemetry` resource's specification.</pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Verify CloudKitty Deployment</strong>
+After patching the <code>Telemetry</code> CR, the Telemetry Operator will start deploying the CloudKitty pods. It may take a few minutes for all components to become fully operational. Monitor the <code>openshift-telemetry-operator</code> namespace to ensure the new CloudKitty components transition to a <code>Running</code> state.</p>
+<div class="literalblock">
+<div class="content">
+<pre>```bash
+oc get pods -n openshift-telemetry-operator -w | grep cloudkitty
+```
+.Expected Output (once pods are running)
+```
+cloudkitty-api-xxxxxxxxx-xxxxx   1/1     Running   0          5m
+cloudkitty-processor-xxxxxxxxx-xxxxx 1/1     Running   0          5m
+cloudkitty-worker-xxxxxxxxx-xxxxx 1/1     Running   0          5m
+```
+You should see pods for `cloudkitty-api`, `cloudkitty-processor`, and `cloudkitty-worker` eventually reaching a `Running` status.</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The deployment process involves creating several CloudKitty components, including API services for external interaction, a processor to apply rating rules, and worker pods to handle metric collection and processing, along with associated services and routes.
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Confirm CloudKitty Service Availability</strong>
+Finally, confirm that the CloudKitty API service, which allows interaction with CloudKitty, is available within the cluster.</p>
+<div class="literalblock">
+<div class="content">
+<pre>```bash
+oc get svc -n openshift-telemetry-operator | grep cloudkitty-api
+```
+.Expected Output
+```
+cloudkitty-api          ClusterIP   172.30.XXX.YYY   &lt;none&gt;        8889/TCP      5m
+```
+You should see an entry for `cloudkitty-api` with a `ClusterIP`, indicating the service is ready.</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_initial_data_collection_and_scrape_configs"><a class="anchor" href="#_initial_data_collection_and_scrape_configs"></a>Initial Data Collection and Scrape Configs</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Once CloudKitty is successfully deployed and running, it immediately begins collecting metrics from your RHOSO environment. The Telemetry Operator intelligently configures the scraping of all metric sources through <code>ScrapeConfig</code> Custom Resources (CRs).</p>
+</div>
+<div class="paragraph">
+<p>While you won&#8217;t modify these in this lab, understanding <code>ScrapeConfig</code> CRs is crucial for troubleshooting potential issues, particularly if you suspect missing metrics or incorrect data collection later on. If you ever need to diagnose why CloudKitty isn&#8217;t receiving certain data, inspecting these CRs can provide valuable diagnostic information regarding the configured metric endpoints and collection intervals.</p>
+</div>
+<div class="paragraph">
+<p>You can list these <code>ScrapeConfig</code> resources with the following command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get scrapeconfig -n openshift-telemetry-operator</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This command will show you the various configurations the Telemetry Operator uses to gather data for CloudKitty.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_whats_next"><a class="anchor" href="#_whats_next"></a>What&#8217;s Next?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>With CloudKitty successfully enabled and confirmed to be running, your lab environment is now fully prepared for the next crucial steps. The system will begin accumulating usage data, which will be processed according to the rating rules you will define in subsequent labs. You are now ready to delve into creating and managing your first chargeback rating definitions.</p>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="hands-on-lab-implementing-your-first-chargeback-rating.html">Hands-on Lab: Implementing Your First Chargeback Rating</a></span>
+  <span class="next"><a href="defining-a-basic-rating-rule-for-a-service.html">Defining a basic rating rule for a service</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
