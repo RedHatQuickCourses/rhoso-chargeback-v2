@@ -2,4 +2,3 @@
 ** xref:introduction-to-rhoso-and-its-purpose.adoc[]
 ** xref:core-functionalities-and-use-cases-of-rhoso.adoc[]
 ** xref:rhoso-architectural-overview.adoc[]
-** xref:key-features-of-rhoso-observability.adoc[]

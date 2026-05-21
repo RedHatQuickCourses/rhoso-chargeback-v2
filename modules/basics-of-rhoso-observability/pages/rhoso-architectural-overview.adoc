@@ -1,43 +1,33 @@
 #  RHOSO architectural overview
 
-= RHOSO Architectural Overview
-
-This section provides a detailed look into the architectural design of Red Hat OpenStack Services on OpenShift (RHOSO), with a particular focus on its observability components. Understanding this architecture is crucial for effectively managing, monitoring, and troubleshooting your RHOSO environment.
-
-== Introduction to RHOSO Architecture
-
-Red Hat OpenStack Services on OpenShift (RHOSO) represents a significant evolution in deploying OpenStack, where the entire OpenStack platform runs as a workload on top of Red Hat OpenShift Container Platform (RHOCP). This fundamental shift necessitated a re-evaluation of how core services, especially observability, are implemented.
-
-The RHOSO observability architecture is designed to provide comprehensive insight into your environment by integrating services from both the underlying Red Hat OpenShift Container Platform and the OpenStack Compute nodes. It serves as the primary observability solution for the latest OpenStack Platform (OSP) releases, specifically replacing the Service Telemetry Framework in RHOSO 18 and beyond.
+This section provides a detailed look into Red Hat OpenStack Services on OpenShift (RHOSO) architecture, with a particular focus on its observability components. Understanding this architecture is crucial for effectively managing, monitoring, and troubleshooting your RHOSO environment.
 
 == Core Architectural Components
 
-The RHOSO observability architecture leverages a hybrid approach, combining established OpenShift tooling with native OpenStack telemetry solutions. This integration ensures robust metric collection, logging, and alerting capabilities across the entire RHOSO stack.
+The RHOSO observability architecture leverages a hybrid approach, combining established OpenShift tooling with native OpenStack telemetry solutions. This integration ensures robust metric collection and logging across the entire stack.
 
 === OpenShift-Native Observability Components
 
 Within RHOCP, RHOSO utilizes several core OpenShift observability services:
 
-*   **Red Hat OpenShift Observability (COO)**: This refers to the suite of tools and operators within OpenShift that manage the collection, storage, and visualization of cluster metrics, logs, and alerts. For RHOSO, this forms the backbone of the monitoring infrastructure.
-*   **Cluster Logging Operator (CLO)**: Responsible for managing the lifecycle and configuration of logging components within OpenShift, including the collection, forwarding, and storage of logs from RHOSO services running on RHOCP.
-*   **OpenShift Console UI**: Provides a unified graphical interface for visualizing metrics, logs, and alerts collected by the OpenShift observability stack, offering a central point for operational insight into RHOSO.
-*   **Telemetry Operator**: This operator acts as a crucial bridge, integrating OpenStack-specific telemetry data into the OpenShift observability ecosystem. It ensures that metrics and logs from OpenStack services are properly collected and exposed to the OpenShift monitoring tools.
+*   **Cluster Observability Operator (COO)**: COO is an optional component of the OpenShift Container Platform designed for creating and managing highly customizable monitoring stacks.
+*   **Cluster Logging Operator (CLO)**: CLO provides a set of APIs to control collection and forwarding of logs from all pods and nodes in a cluster. This includes application logs (from regular pods), infrastructure logs (from system pods and node logs), and audit logs (special node logs with legal/security implications)
+*   **OpenShift Console UI**: provides a unified graphical interface for visualizing metrics, logs, alerts and dashboards in the OpenShift observability stack. 
+*   **Telemetry Operator**: TO acts as a crucial bridge, integrating OpenStack-specific telemetry data into the OpenShift observability ecosystem. It ensures that metrics and logs from OpenStack services are properly collected and exposed to the OpenShift monitoring tools.
 
 === OpenStack-Native Telemetry Components
 
 While leveraging OpenShift's strengths, RHOSO also retains key OpenStack telemetry solutions that have been proven and familiar to OpenStack administrators:
 
-*   **Ceilometer**: The traditional OpenStack telemetry service responsible for collecting various types of data (performance, events, usage) from OpenStack components. Ceilometer continues to play a role in gathering OpenStack-specific metrics.
-*   **AODH (Alarming-on-Demand-for-Heat)**: The OpenStack alarming service, which processes metrics from Ceilometer and other sources to trigger alerts based on defined rules.
-
-The combination of `COO + telemetry-operator` encapsulates the primary mechanism for RHOSO Observability, demonstrating how OpenShift tools are extended to cover OpenStack workloads.
+*   **Ceilometer**: the OpenStack telemetry service  is a data collection service that provides the ability to normalise and transform data across all current OpenStack core components  Ceilometer continues to play a role in gathering OpenStack-specific metrics.
+*   **AODH**: the OpenStack Alarming service, provides a service that enables the ability to trigger actions based on defined rules against metric or event data collected by Ceilometer
 
 === Deployment and Scope
 
 The services comprising the RHOSO observability architecture are deployed across different layers of your infrastructure:
 
-*   **Within Red Hat OpenShift Container Platform (RHOCP)**: Services like COO, CLO, and the Telemetry Operator run directly within the OpenShift cluster, managing the overarching observability framework.
-*   **On Compute Nodes**: Services on your OpenStack Compute nodes are responsible for providing node-specific metrics, logs, and alerts, ensuring full coverage of your data plane.
+*   **Within Red Hat OpenShift Container Platform (RHOCP)**: services like COO, CLO, and the Telemetry Operator run directly within the OpenShift cluster, managing the overarching observability framework.
+*   **On Dataplane Nodes**: services on your OpenStack Dataplane nodes are responsible for providing node-specific metrics and logs ensuring full coverage of your data plane.
 
 By default, RHOSO observability logging is enabled on the control plane components. However, for comprehensive monitoring, you can extend logging to the data plane.
 
