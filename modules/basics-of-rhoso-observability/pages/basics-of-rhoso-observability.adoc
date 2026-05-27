@@ -8,4 +8,4 @@ Key aspects include:
 *   **Architecture:** Leverages Red Hat OpenShift Container Platform (RHOCP) Observability tools (e.g., COO, CLO, OpenShift Console UI) alongside native OpenStack telemetry solutions (e.g., Ceilometer, AODH).
 *   **Advantages:** Integrates with the OpenShift ecosystem using proven and familiar tools while retaining OpenStack compatible solutions.
 *   **Functionality:** Collects metrics and logs from services running on the OpenStack control plane and on the OpenStack data plane nodes.
-*   **Product replacement:** It replaces Service Telemetry Framework (STF) used in previous RHOSP versions.
+*   **Product replacement:** It replaces Service Telemetry Framework (STF) used in previous RHOSP versions. Observability is now fully integrated in RHOSO and it is no longer an external service with its own configuration, deployment and release cycle.

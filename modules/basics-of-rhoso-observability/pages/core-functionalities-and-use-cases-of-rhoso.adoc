@@ -8,21 +8,21 @@ This section details the fundamental capabilities and practical applications of 
 
 One of the primary functionalities of RHOSO Observability is its ability to collect diverse telemetry data from various layers of your RHOSO environment. This unified approach ensures no blind spots exist across the stack.
 
-*   *Metrics:* It collects metrics from both the underlying OpenShift components running the OpenStack control plane (e.g., CPU utilization, memory consumption, network I/O of pods and nodes) and the OpenStack services themselves (e.g., compute usage, storage usage, network traffic).
+*   *Metrics:* It collects technical metrics from both the running workloads (e.g., CPU utilization, memory consumption, network I/O of pods and nodes) and the OpenStack cloud data (e.g., compute usage, storage usage, network traffic).
 *   *Logs:* It provides comprehensive log aggregation from the OpenStack control plane running on OpenShift and OpenStack data plane components, alongside all OpenStack services. This enables centralized log collection and storage, critical for debugging and auditing.
 
 === Unified Data Storage and Analysis
 
 RHOSO Observability consolidates the collected telemetry data into a unified platform, primarily leveraging OpenShift's robust observability components for storage and initial processing.
 
-*   *OpenShift Container Platform (RHOCP) Observability:* It uses core OpenShift components such as the Cluster Observability Operator (COO) for storing and processing metrics and alerts and the Cluster Logging Operator (CLO) for log collection and storage. The `telemetry-operator` plays a crucial role in facilitating the integration, bridging the gap to ensure OpenStack-specific data is correctly routed and processed within the OpenShift observability framework.
-*   *Centralized Monitoring Interface:* The OpenShift Console UI serves as a central point for visualizing dashboards, querying metrics, and reviewing logs across your entire RHOSO deployment. This provides a consistent and familiar user experience for administrators already familiar with OpenShift.
+*   *OpenShift Container Platform (RHOCP) Observability:* Cluster Observability Operator (COO) and Cluster Logging Operator (CLO) are used to provision the necessary tools to collect, store and process metrics and logs. The `telemetry-operator` plays a crucial role in facilitating the integration, bridging the gap to ensure OpenStack-specific data is correctly routed and processed within the OpenShift observability framework.
+*   *Centralized Monitoring Interface:* The OpenShift Console UI serves as a central point for visualizing dashboards and reviewing logs across your entire RHOSO deployment. This provides a consistent and familiar user experience for administrators already familiar with OpenShift.
 
 === Enhanced Troubleshooting and Diagnostics
 
 With its integrated approach to metrics and logs, RHOSO Observability significantly enhances the ability to troubleshoot and diagnose issues efficiently across the entire RHOSO environment.
 
-*   *Root Cause Analysis:* By correlating events, metrics, and logs from both OpenShift and OpenStack components, administrators can quickly pinpoint the root cause of performance degradation, service outages, or misconfigurations, reducing mean time to resolution (MTTR).
+*   *Root Cause Analysis:* events, metrics, and logs from both OpenShift and OpenStack components, can be used by administrators to quickly pinpoint the root cause of performance degradation, service outages, or misconfigurations, reducing mean time to resolution (MTTR).
 *   *Real-time Monitoring:* Intuitive dashboards provide real-time visibility into the health and performance of critical services, allowing for proactive identification of potential problems before they escalate and impact end-users.
 
 == Use Cases of RHOSO Observability
@@ -38,16 +38,14 @@ One of the most critical use cases is the continuous, proactive monitoring of th
 
 Observability data is vital for understanding resource consumption patterns and making informed decisions about future growth and resource allocation.
 
-*   *Resource Utilization Analysis:* Analyze historical data to understand trends in CPU, memory, network, and storage usage across different OpenStack projects. This helps in identifying misutilized resources.
 *   *Bottleneck Identification:* Pinpoint performance bottlenecks within the OpenStack application layer or the underlying OpenShift infrastructure that might be impacting workload performance and user experience.
-*   *Informed Scaling Decisions:* Use consumption patterns and growth projections to make data-driven decisions about scaling your RHOSO environment, ensuring adequate resources are available for future demands without unnecessary overprovisioning.
+*   *Informed Scaling Decisions:* Use consumption patterns and growth projections to make data-driven decisions about scaling your RHOSO environment, ensuring adequate resources are available for future demands without unnecessary overprovisioning. This is the mission of the OpenStack Watcher service, a component that is not part of RHOSO Observability and won't be covered in this training.
 
 === Troubleshooting and Debugging
 
 When issues arise, RHOSO Observability provides the tools necessary for quick and effective resolution, minimizing downtime.
 
-*   *Accelerated Root Cause Analysis:* Aggregated logs and metrics from across the entire stack drastically reduce the time spent sifting through various data sources, speeding up the identification of the problem's origin, whether it lies in OpenStack or OpenShift.
-*   *Historical Data Review:* Review past performance metrics and log data to understand when an issue started, what changes occurred around that time, and how the problem evolved, aiding in post-mortem analysis and preventing recurrence.
+*   *Accelerated Root Cause Analysis:* Aggregated logs from across the entire stack drastically reduce the time spent sifting through various data sources, speeding up the identification of the problem's origin.
 
 === Security Auditing and Compliance
 
