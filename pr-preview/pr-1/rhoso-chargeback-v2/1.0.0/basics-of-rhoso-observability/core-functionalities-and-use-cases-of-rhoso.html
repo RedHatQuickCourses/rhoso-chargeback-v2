@@ -245,7 +245,7 @@
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Metrics:</strong> It collects metrics from both the underlying OpenShift components running the OpenStack control plane (e.g., CPU utilization, memory consumption, network I/O of pods and nodes) and the OpenStack services themselves (e.g., compute usage, storage usage, network traffic).</p>
+<p><strong>Metrics:</strong> It collects technical metrics from both the running workloads (e.g., CPU utilization, memory consumption, network I/O of pods and nodes) and the OpenStack cloud data (e.g., compute usage, storage usage, network traffic).</p>
 </li>
 <li>
 <p><strong>Logs:</strong> It provides comprehensive log aggregation from the OpenStack control plane running on OpenShift and OpenStack data plane components, alongside all OpenStack services. This enables centralized log collection and storage, critical for debugging and auditing.</p>
@@ -261,10 +261,10 @@
 <div class="ulist">
 <ul>
 <li>
-<p><strong>OpenShift Container Platform (RHOCP) Observability:</strong> It uses core OpenShift components such as the Cluster Observability Operator (COO) for storing and processing metrics and alerts and the Cluster Logging Operator (CLO) for log collection and storage. The <code>telemetry-operator</code> plays a crucial role in facilitating the integration, bridging the gap to ensure OpenStack-specific data is correctly routed and processed within the OpenShift observability framework.</p>
+<p><strong>OpenShift Container Platform (RHOCP) Observability:</strong> Cluster Observability Operator (COO) and Cluster Logging Operator (CLO) are used to provision the necessary tools to collect, store and process metrics and logs. The <code>telemetry-operator</code> plays a crucial role in facilitating the integration, bridging the gap to ensure OpenStack-specific data is correctly routed and processed within the OpenShift observability framework.</p>
 </li>
 <li>
-<p><strong>Centralized Monitoring Interface:</strong> The OpenShift Console UI serves as a central point for visualizing dashboards, querying metrics, and reviewing logs across your entire RHOSO deployment. This provides a consistent and familiar user experience for administrators already familiar with OpenShift.</p>
+<p><strong>Centralized Monitoring Interface:</strong> The OpenShift Console UI serves as a central point for visualizing dashboards and reviewing logs across your entire RHOSO deployment. This provides a consistent and familiar user experience for administrators already familiar with OpenShift.</p>
 </li>
 </ul>
 </div>
@@ -277,7 +277,7 @@
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Root Cause Analysis:</strong> By correlating events, metrics, and logs from both OpenShift and OpenStack components, administrators can quickly pinpoint the root cause of performance degradation, service outages, or misconfigurations, reducing mean time to resolution (MTTR).</p>
+<p><strong>Root Cause Analysis:</strong> events, metrics, and logs from both OpenShift and OpenStack components, can be used by administrators to quickly pinpoint the root cause of performance degradation, service outages, or misconfigurations, reducing mean time to resolution (MTTR).</p>
 </li>
 <li>
 <p><strong>Real-time Monitoring:</strong> Intuitive dashboards provide real-time visibility into the health and performance of critical services, allowing for proactive identification of potential problems before they escalate and impact end-users.</p>
@@ -314,13 +314,10 @@
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Resource Utilization Analysis:</strong> Analyze historical data to understand trends in CPU, memory, network, and storage usage across different OpenStack projects. This helps in identifying misutilized resources.</p>
-</li>
-<li>
 <p><strong>Bottleneck Identification:</strong> Pinpoint performance bottlenecks within the OpenStack application layer or the underlying OpenShift infrastructure that might be impacting workload performance and user experience.</p>
 </li>
 <li>
-<p><strong>Informed Scaling Decisions:</strong> Use consumption patterns and growth projections to make data-driven decisions about scaling your RHOSO environment, ensuring adequate resources are available for future demands without unnecessary overprovisioning.</p>
+<p><strong>Informed Scaling Decisions:</strong> Use consumption patterns and growth projections to make data-driven decisions about scaling your RHOSO environment, ensuring adequate resources are available for future demands without unnecessary overprovisioning. This is the mission of the OpenStack Watcher service, a component that is not part of RHOSO Observability and won&#8217;t be covered in this training.</p>
 </li>
 </ul>
 </div>
@@ -333,10 +330,7 @@
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Accelerated Root Cause Analysis:</strong> Aggregated logs and metrics from across the entire stack drastically reduce the time spent sifting through various data sources, speeding up the identification of the problem&#8217;s origin, whether it lies in OpenStack or OpenShift.</p>
-</li>
-<li>
-<p><strong>Historical Data Review:</strong> Review past performance metrics and log data to understand when an issue started, what changes occurred around that time, and how the problem evolved, aiding in post-mortem analysis and preventing recurrence.</p>
+<p><strong>Accelerated Root Cause Analysis:</strong> Aggregated logs from across the entire stack drastically reduce the time spent sifting through various data sources, speeding up the identification of the problem&#8217;s origin.</p>
 </li>
 </ul>
 </div>
