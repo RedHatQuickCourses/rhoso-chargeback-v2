@@ -1,13 +1,11 @@
 #  Basics of RHOSO Observability
 
-=== Basics of RHOSO Observability
-
-RHOSO Observability is the comprehensive solution for monitoring Red Hat OpenStack Services on OpenShift (RHOSO). It provides insight into the RHOSO environment by collecting, storing, and searching metrics, logs, and alerts.
+RHOSO Observability is the monitoring solution for Red Hat OpenStack Services on OpenShift (RHOSO). It provides insight into a RHOSO deployment by collecting and storing metrics and logs.
 
 Key aspects include:
 
-*   **Purpose:** To provide observability for the latest OpenStack Platform (OSP) release, where OSP runs as a workload on OpenShift.
-*   **Architecture:** Leverages Red Hat OpenShift Container Platform (RHOCP) Observability tools (e.g., COO, CLO, Console UI) alongside native OpenStack telemetry solutions (e.g., Ceilometer, AODH).
-*   **Advantages:** Integrates with the OpenShift ecosystem using proven tools while retaining familiar OpenStack administration solutions.
-*   **Functionality:** Collects metrics, logs, and alerts from services within RHOCP and on Compute nodes. Observability logging is enabled on the control plane.
-*   **Replacement:** It replaces the Service Telemetry Framework in RHOSO 18 and beyond.
+*   **Goal:** To provide observability for RHOSO, where OSP runs as a workload on OpenShift.
+*   **Architecture:** Leverages Red Hat OpenShift Container Platform (RHOCP) Observability tools (e.g., COO, CLO, OpenShift Console UI) alongside native OpenStack telemetry solutions (e.g., Ceilometer, AODH).
+*   **Advantages:** Integrates with the OpenShift ecosystem using proven and familiar tools while retaining OpenStack compatible solutions.
+*   **Functionality:** Collects metrics and logs from services running on the OpenStack control plane and on the OpenStack data plane nodes.
+*   **Product replacement:** It replaces Service Telemetry Framework (STF) used in previous RHOSP versions. Observability is now fully integrated in RHOSO and it is no longer an external service with its own configuration, deployment and release cycle.
