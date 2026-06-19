@@ -9,7 +9,7 @@ nav:
 
 - modules/introduction-to-rating/nav.adoc
 
-- modules/enabling-chargeback-in-rhoso/nav.adoc
+- modules/enabling-rating-in-rhoso/nav.adoc
 
 - modules/using-the-chargeback-feature/nav.adoc
 
