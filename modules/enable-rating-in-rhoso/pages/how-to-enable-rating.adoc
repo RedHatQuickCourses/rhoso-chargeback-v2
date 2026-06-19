@@ -52,7 +52,7 @@ All `cloudkitty` pods (e.g., `cloudkitty-api`, `cloudkitty-proc`) should be in `
 
 [source,bash]
 ----
-$ oc get -n openstack CloudKitty \
+oc get -n openstack CloudKitty \
     -o jsonpath="{.items[0].status.conditions[?(@.type=='Ready')]}" | jq 
 ----
 

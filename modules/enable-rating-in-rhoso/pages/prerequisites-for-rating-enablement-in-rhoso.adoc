@@ -15,15 +15,15 @@ While a direct "hands-on activity" for verifying the entire RHOSO environment is
 ----
 # Check the OpenStack Control Plane is ready
 # The message field should read "Setup Complete"
-$ oc get -n openstack OpenStackControlPlane \
+oc get -n openstack OpenStackControlPlane \
     -o jsonpath="{.items[0].status.conditions[?(@.type=='Ready')]}" | jq
 
 # Check all OpenStack Operators are up and running
-$ oc get pods -n openstack-operators
+oc get pods -n openstack-operators
 
 # Check OpenStack Data Plane Deployment is complete
 # The message field should read "Setup Complete"
-$ oc get -n openstack OpenStackDataPlaneDeployment \
+oc get -n openstack OpenStackDataPlaneDeployment \
     -o jsonpath="{.items[0].status.conditions[?(@.type=='Ready')]}" | jq
 ----
 --
@@ -40,16 +40,16 @@ Ensure the Telemetry Operator is available in your RHOSO deployment, that Ceilom
 [source,bash]
 ----
 # Check Telemetry is enabled
-$ oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.enabled}" | jq
+oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.enabled}" | jq
 
 # Check Ceilometer is enabled
-$ oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.ceilometer.enabled}" | jq
+oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.ceilometer.enabled}" | jq
 
 # Check that Telemetry is deployed and ready
-$ oc get telemetry
+oc get telemetry
 
 # Check that Ceilometer is deployed and ready
-$ oc get ceilometer
+oc get ceilometer
 ----
 --
 
@@ -64,10 +64,10 @@ Check that the MetricStorage is enabled and that the Prometheus instance is depl
 [source,bash]
 ----
 # Check MetricStorage is enabled
-$ oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.metricStorage.enabled}" | jq
+oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.metricStorage.enabled}" | jq
 
 # Check that MetricStorage is deployed and ready
-$ oc get metricstorage
+oc get metricstorage
 ----
 --
 
@@ -82,10 +82,10 @@ Verify that a Loki instance designated for Cloudkitty's use is deployed and acce
 [source,bash]
 ----
 # Check that loki-operator is installed
-$ oc get csv | grep loki
+oc get csv | grep loki
 
 # Check that LokiStack is created
-$ oc get lokistack
+oc get lokistack
 ----
 --
 
@@ -100,6 +100,6 @@ Verify that the OpenStack Secret has been updated to include CloudKitty credenti
 [source,bash]
 ----
 # Check that osp-secret includes CloudKitty credentials
-$ oc get secret -o yaml osp-secret | grep CloudKitty
+oc get secret -o yaml osp-secret | grep CloudKitty
 ----
 --
