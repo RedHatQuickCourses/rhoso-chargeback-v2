@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Prerequisites for Chargeback deployment in RHOSO :: RHOSO Chargeback and Observability Fundamentals</title>
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">RHOSO Chargeback and Observability Fundamentals</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/rhoso-chargeback-v2/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="rhoso-chargeback-v2" data-version="1.0.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../basics-of-rhoso-observability/basics-of-rhoso-observability.html">Basics of RHOSO Observability</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/introduction-to-rhoso-and-its-purpose.html">Introduction to RHOSO and its purpose</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/core-functionalities-and-use-cases-of-rhoso.html">RHOSO Observability Core Functionalities and Use Cases</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/rhoso-architectural-overview.html">RHOSO architectural overview</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-rating/introduction-to-rating.html">Introduction to the Rating Service</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rating/understanding-chargeback-usecase.html">Understanding the chargeback usecase</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rating/overview-of-the-chargeback-process-flow.html">Overview of the chargeback process flow</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#enabling-chargeback-in-rhosp.adoc">enabling-chargeback-in-rhosp.adoc</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#prerequisites-for-chargeback-deployment-in-rhoso.adoc">prerequisites-for-chargeback-deployment-in-rhoso.adoc</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="how-to-enable-chargeback.html">How To Enable Chargeback</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../using-the-chargeback-feature/using-the-chargeback-feature.html">Using the Chargeback Feature</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/understanding-rating-definitions-and-components.html">Understanding rating definitions and components</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/creating-and-managing-rating-rules.html">Creating and managing rating rules</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/generating-chargeback-reports-and-invoices.html">Generating chargeback reports and invoices</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/analyzing-chargeback-data-and-consumption.html">Analyzing chargeback data and consumption</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/hands-on-lab-implementing-your-first-chargeback-rating.html">Hands-on Lab: Implementing Your First Chargeback Rating</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/setting-up-the-lab-environment-for-chargeback.html">Setting up the lab environment for Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/defining-a-basic-rating-rule-for-a-service.html">Defining a basic rating rule for a service</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/applying-the-defined-rating-rule-to-resources.html">Applying the defined rating rule to resources</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/reviewing-the-generated-charges-and-reports.html">Reviewing the generated charges and reports</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/basic-chargeback-troubleshooting.html">Basic Chargeback Troubleshooting</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/identifying-common-issues-during-chargeback-configuration.html">Identifying common issues during Chargeback configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/diagnosing-incorrect-charge-calculations.html">Diagnosing incorrect charge calculations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/analyzing-logs-for-chargeback-components.html">Analyzing logs for Chargeback components</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/best-practices-for-maintaining-chargeback-accuracy.html">Best practices for maintaining Chargeback accuracy</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">RHOSO Chargeback and Observability Fundamentals</span>
+    <span class="version">1.0.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">RHOSO Chargeback and Observability Fundamentals</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.0.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></li>
+    <li><a href="prerequisites-for-chargeback-deployment-in-rhosp.html">Prerequisites for Chargeback deployment in RHOSO</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Prerequisites for Chargeback deployment in RHOSO</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>To successfully deploy and activate the Chargeback feature in your RHOSP environment, the following prerequisites must be met:</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_1_red_hat_openstack_services_on_openshift_rhoso_environment"><a class="anchor" href="#_1_red_hat_openstack_services_on_openshift_rhoso_environment"></a>1. Red Hat OpenStack Services on OpenShift (RHOSO) Environment</h3>
+<div class="paragraph">
+<p>The foundation for enabling chargeback is a fully functional and stable RHOSO environment.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Verification:</strong>
+While a direct "hands-on activity" for verifying the entire RHOSO environment is beyond the scope of a single prerequisite, you would typically verify its health using <code>oc</code> commands and checking the status of the OpenStackControlPlane and OpenStackDataPlane instances.</p>
+<div class="literalblock">
+<div class="content">
+<pre>----
+# Check the OpenStack Control Plane is ready
+# The message field should read "Setup Complete"
+$ oc get -n openstack OpenStackControlPlane \
+    -o jsonpath="{.items[0].status.conditions[?(@.type=='Ready')]}" | jq</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre># Check all OpenStack Operators are up and running
+$ oc get pods -n openstack-operators</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre># Check OpenStack Data Plane Deployment is complete
+# The message field should read "Setup Complete"
+$ oc get -n openstack OpenStackDataPlaneDeployment \
+    -o jsonpath="{.items[0].status.conditions[?(@.type=='Ready')]}" | jq
+----</pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2_ceilometer_is_enabled"><a class="anchor" href="#_2_ceilometer_is_enabled"></a>2. Ceilometer Is Enabled</h3>
+<div class="paragraph">
+<p>The Telemetry Operator is the primary interface for deploying and managing the Cloudkitty service. Make sure that the Telemetry service is enabled, that the Ceilometer service is enabled and that there is a MetricStorage available.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Verification:</strong>
+Ensure the Telemetry Operator is available in your RHOSO deployment, that Ceilometer is enabled and that a MetricStorage is configured.</p>
+<div class="literalblock">
+<div class="content">
+<pre>----
+# Check Telemetry is enabled
+$ oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.enabled}" | jq</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre># Check Ceilometer is enabled
+$ oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.ceilometer.enabled}" | jq</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre># Check that Telemetry is deployed and ready
+$ oc get telemetry</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre># Check that Ceilometer is deployed and ready
+$ oc get ceilometer
+----</pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_3_metric_storage_prometheus_is_enabled"><a class="anchor" href="#_3_metric_storage_prometheus_is_enabled"></a>3. Metric Storage (Prometheus) Is Enabled</h3>
+<div class="paragraph">
+<p>CloudKitty relies on collected metrics to perform its rating calculations. Prometheus is the primary data storage for these metrics in RHOSO.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Verification:</strong>
+Check that the MetricStorage is enabled and that the Prometheus instance is deployed and ready.</p>
+<div class="literalblock">
+<div class="content">
+<pre>----
+# Check MetricStorage is enabled
+$ oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.metricStorage.enabled}" | jq</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre># Check that MetricStorage is deployed and ready
+$ oc get metricstorage
+----</pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_4_loki_instance_is_available"><a class="anchor" href="#_4_loki_instance_is_available"></a>4. Loki Instance Is Available</h3>
+<div class="paragraph">
+<p>After retrieving metrics and applying rating rules, Cloudkitty stores the resulting rated data in a Loki instance.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Verification:</strong>
+Verify that a Loki instance designated for Cloudkitty&#8217;s use is deployed and accessible. Its configuration should be part of the Telemetry Operator&#8217;s <code>OpenStackTelemetry</code> custom resource definition (CRD).</p>
+<div class="literalblock">
+<div class="content">
+<pre>----
+# Check that loki-operator is installed
+$ oc get csv | grep loki</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre># Check that LokiStack is created
+$ oc get lokistack
+----</pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_5_update_openstack_secret_with_cloudkitty_credentials"><a class="anchor" href="#_5_update_openstack_secret_with_cloudkitty_credentials"></a>5. Update OpenStack Secret with CloudKitty Credentials</h3>
+<div class="paragraph">
+<p>In order to ensure secure access to CloudKitty services pods, a user and password for CloudKitty must be included in the global OpenStack Secret.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Verification:</strong>
+Verify that the OpenStack Secret has been updated to include CloudKitty credentials.</p>
+<div class="literalblock">
+<div class="content">
+<pre>----
+# Check that osp-secret includes CloudKitty credentials
+$ oc get secret -o yaml osp-secret | grep CloudKitty
+----</pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
