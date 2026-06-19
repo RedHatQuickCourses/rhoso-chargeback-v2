@@ -3,7 +3,9 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Lab Environment :: RHOSO Chargeback and Observability Fundamentals</title>
+    <title>Overview of the chargeback process flow :: RHOSO Chargeback and Observability Fundamentals</title>
+    <link rel="prev" href="understanding-chargeback-usecase.html">
+    <link rel="next" href="../enabling-chargeback-in-rhosp/enabling-chargeback-in-rhosp.html">
     <meta name="generator" content="Antora 3.1.3">
     <link rel="stylesheet" href="../../../_/css/site.css">
     <script>var uiRootPath = '../../../_'</script>
@@ -45,7 +47,7 @@
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="index.html">Lab Environment</a>
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
   </li>
 </ul>
   </li>
@@ -72,13 +74,13 @@
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="../introduction-to-rating/introduction-to-rating.html">Introduction to the Rating Service</a>
+    <a class="nav-link" href="introduction-to-rating.html">Introduction to the Rating Service</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="../introduction-to-rating/understanding-chargeback-usecase.html">Understanding the chargeback usecase</a>
+    <a class="nav-link" href="understanding-chargeback-usecase.html">Understanding the chargeback usecase</a>
   </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="../introduction-to-rating/overview-of-the-chargeback-process-flow.html">Overview of the chargeback process flow</a>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="overview-of-the-chargeback-process-flow.html">Overview of the chargeback process flow</a>
   </li>
 </ul>
   </li>
@@ -208,7 +210,8 @@
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></li>
-    <li><a href="index-lab-demo.html">Lab Environment</a></li>
+    <li><a href="introduction-to-rating.html">Introduction to the Rating Service</a></li>
+    <li><a href="overview-of-the-chargeback-process-flow.html">Overview of the chargeback process flow</a></li>
   </ul>
 </nav>
 </div>
@@ -217,80 +220,176 @@
   <div class="toc-menu"></div>
 </aside>
 <article class="doc">
-<h1 class="page">Lab Environment</h1>
+<h1 class="page">Overview of the chargeback process flow</h1>
 <div class="sect1">
-<h2 id="_instructions_to_launch_your_lab_on_the_red_hat_demo_platform_rhdp"><a class="anchor" href="#_instructions_to_launch_your_lab_on_the_red_hat_demo_platform_rhdp"></a>Instructions to Launch Your Lab on the Red Hat Demo Platform (RHDP)</h2>
+<h2 id="_the_core_chargeback_workflow"><a class="anchor" href="#_the_core_chargeback_workflow"></a>The Core Chargeback Workflow</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>At its heart, the chargeback process in RHOSO can be simplified into a three-step workflow:</p>
+</div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Log in</strong> to the <a href="#RHDP-Portal-Links">RHDP portal</a></p>
+<p>Set Rating Rules</p>
 </li>
 <li>
-<p><strong>Search</strong> for the catalog entry: <strong>FIXME Lab Catalog Name</strong>.</p>
+<p>Collect Metrics</p>
 </li>
 <li>
-<p><strong>Click</strong> on the catalog entry in the search results.</p>
-</li>
-<li>
-<p>On the catalog page, <strong>click</strong> the <strong>Order</strong> button.</p>
-</li>
-<li>
-<p><strong>Fill out</strong> the required details in the order form.</p>
-</li>
-<li>
-<p><strong>Review the warning</strong> at the bottom of the form and <strong>check the box</strong> labeled:<br>
-<strong>“I confirm that I understand the above warnings.”</strong></p>
-</li>
-<li>
-<p><strong>Click</strong> the <strong>Order</strong> button to place your lab order.</p>
+<p>Generate Rating Reports</p>
 </li>
 </ol>
 </div>
+<div class="paragraph">
+<p>Let&#8217;s delve into each of these steps to understand how usage is transformed into actionable cost data.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/chargeback-process-flow.png" alt="chargeback process flow">
+</div>
+</div>
 <div class="sect2">
-<h3 id="_important_notes"><a class="anchor" href="#_important_notes"></a>Important Notes:</h3>
+<h3 id="_1_defining_and_setting_rating_rules"><a class="anchor" href="#_1_defining_and_setting_rating_rules"></a>1. Defining and Setting Rating Rules</h3>
+<div class="paragraph">
+<p>The initial and perhaps most critical step in the chargeback process is defining the <strong>rating rules</strong>. These rules act as the "translation layer" that converts abstract technical usage data (like CPU hours or storage consumption) into concrete monetary values. Without these rules, raw metrics lack financial context.</p>
+</div>
 <div class="ulist">
 <ul>
 <li>
-<p>This lab may take approximately <strong>FIXME minutes</strong> to become ready.</p>
+<p><strong>Technical Explanation:</strong> Rating rules are configured within CloudKitty to specify how different resource types and their attributes should be costed. For example, you might define a rule that charges <code>$0.05</code> per CPU hour for a specific virtual machine (VM) flavor, or <code>$0.01</code> per GB per month for block storage. These rules can be highly granular, allowing for differentiation based on resource type (<code>res_type</code>), specific attributes (like <code>flavor_id</code>), or even time-based usage.</p>
 </li>
 <li>
-<p>You will receive an <strong>email with access details</strong> once your lab environment is ready.</p>
+<p><strong>Purpose:</strong> These rules are essential for:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Providing a clear pricing model for internal cloud services.</p>
 </li>
 <li>
-<p>You can also <strong>retrieve lab access</strong> directly from the RHDP portal.</p>
+<p>Allowing for flexible cost allocation based on business needs and service tiers.</p>
+</li>
+<li>
+<p>Enabling accurate cost recovery by linking actual consumption to predefined rates.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+The concept of defining rating rules is foundational. Complex chargeback scenarios often involve multiple, layered rules to accurately reflect varying service costs and agreements.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2_collecting_usage_metrics"><a class="anchor" href="#_2_collecting_usage_metrics"></a>2. Collecting Usage Metrics</h3>
+<div class="paragraph">
+<p>Once rating rules are in place, the system needs continuous streams of usage data to apply these rules against. RHOSO&#8217;s Rating service integrates with the underlying OpenStack monitoring infrastructure to gather these essential metrics.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Technical Explanation:</strong> CloudKitty acts as a consumer of various metrics generated by OpenStack services. Typically, Ceilometer collect performance and usage data from across the OpenStack environment, such as CPU utilization, disk I/O, network traffic, and instance uptime. CloudKitty ingests this raw technical data, like how many hours a VM ran (<code>ceilometer_cpu</code>) or how much storage was consumed.</p>
+</li>
+<li>
+<p><strong>Purpose:</strong> This step ensures that the chargeback calculations are based on actual, observed resource consumption, providing an objective basis for billing.</p>
 </li>
 </ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_how_to_access_your_lab_via_the_rhdp_portal"><a class="anchor" href="#_how_to_access_your_lab_via_the_rhdp_portal"></a>How to Access Your Lab via the RHDP Portal:</h3>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>On the RHDP portal, <strong>click</strong> on the <strong>Services</strong> option in the left-hand menu.</p>
-</li>
-<li>
-<p><strong>Select your lab</strong> from the listings on the right-hand side of the page to view access details.</p>
-</li>
-</ol>
+<h3 id="_3_generating_chargeback_reports"><a class="anchor" href="#_3_generating_chargeback_reports"></a>3. Generating Chargeback Reports</h3>
+<div class="paragraph">
+<p>With rating rules defined and usage metrics continuously flowing, CloudKitty&#8217;s core function comes into play: processing the metrics against the rules to generate comprehensive chargeback reports.</p>
 </div>
-</div>
-<div class="sect2">
-<h3 id="RHDP-Portal-Links"><a class="anchor" href="#RHDP-Portal-Links"></a>RHDP Portal Links</h3>
 <div class="ulist">
 <ul>
 <li>
-<p>RedHat associates: <a href="https://demo.redhat.com/" target="_blank" rel="noopener">https://demo.redhat.com/</a></p>
+<p><strong>Technical Explanation:</strong> CloudKitty&#8217;s rating engine continuously evaluates the incoming usage metrics against the active rating rules. It then calculates the cost associated with each resource&#8217;s consumption based on the configured rates. The output of this process is structured chargeback data, often aggregated and formatted for easy consumption by financial systems. These reports typically include details such as tenant ID, resource type, consumption period, and the calculated cost (<code>rate</code>).</p>
 </li>
 <li>
-<p>RedHat partners: <a href="https://partner.demo.redhat.com/" target="_blank" rel="noopener">https://partner.demo.redhat.com/</a></p>
+<p><strong>Illustrating Report Generation:</strong>
+You can query CloudKitty&#8217;s API to retrieve aggregated chargeback summaries. The <code>report/summary</code> endpoint, for instance, provides a high-level overview.</p>
+<div class="literalblock">
+<div class="content">
+<pre>[source,bash]
+----
+curl -X GET \
+  -H "X-Auth-Token: $TENANT_TOKEN" \
+  "http://localhost:8888/v1/report/summary?begin=2026-02-01T00:00:00&amp;end=2026-03-01T00:00:00&amp;groupby=res_type"
+----</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>The output is typically a JSON object that cleanly lays out the resource type, the time period, and the total calculated units/cost:</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>[source,json]
+----
+{
+  "summary": [
+    {
+      "tenant_id": "MoD-project-uuid",
+      "res_type": "ceilometer_cpu",
+      "begin": "2026-02-01T00:00:00",
+      "end": "2026-03-01T00:00:00",
+      "rate": 125.50
+    }
+  ]
+}
+----</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>In this example, for the "MoD-project-uuid" tenant, `ceilometer_cpu` usage between February 1st and March 1st, 2026, incurred a total charge of `125.50` units (which could represent dollars, credits, or any defined monetary unit).</pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>CLI and Formatting Flexibility</strong>: In addition to direct API queries, you can utilize the OpenStack CLI to generate these reports. The CLI natively supports extracting chargeback data into several formats to match your workflow requirements: {csv, df-to-csv, json, table, value, yaml}.</p>
+</li>
+<li>
+<p><strong>Purpose:</strong> These reports, accessible via both the API and CLI, serve as the primary output for financial reconciliation. They provide the transparent, itemized breakdown necessary for internal billing, cost recovery, and financial analysis.</p>
 </li>
 </ul>
 </div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+While CloudKitty generates detailed chargeback reports, it acts purely as a visibility and rating engine. It does <strong>not</strong> actively enforce budgets or block resource creation (e.g., Nova instances) if a tenant exceeds a certain cost threshold. Its role is to provide the data, not to manage policies.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_4_closing_the_loop_integration_with_financial_systems"><a class="anchor" href="#_4_closing_the_loop_integration_with_financial_systems"></a>4. Closing the Loop: Integration with Financial Systems</h3>
+<div class="paragraph">
+<p>The final, crucial step in the chargeback process flow is the integration of these generated reports with an enterprise&#8217;s broader financial software. By funneling this structured, aggregated JSON data directly into your existing FinOps or billing solutions, you successfully close the loop between raw infrastructure consumption and cost accountability.</p>
 </div>
 </div>
 </div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="understanding-chargeback-usecase.html">Understanding the chargeback usecase</a></span>
+  <span class="next"><a href="../enabling-chargeback-in-rhosp/enabling-chargeback-in-rhosp.html">Enabling Chargeback in RHOSP</a></span>
+</nav>
 </article>
   </div>
 </main>
