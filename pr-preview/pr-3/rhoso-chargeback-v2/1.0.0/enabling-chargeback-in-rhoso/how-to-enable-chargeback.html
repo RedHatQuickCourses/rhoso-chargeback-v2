@@ -289,6 +289,9 @@ Always back up your CR definition before making any modifications. Incorrect cha
 <li>
 <p><strong>Check CloudKitty Pod Status:</strong> Confirm that the <code>cloudkitty</code> pods are up and running</p>
 </li>
+<li>
+<p><strong>Review CloudKitty CR Status:</strong> Check the status of the <code>CloudKitty</code> Custom Resource to ensure the setup is complete.</p>
+</li>
 </ol>
 </div>
 <div class="listingblock">
@@ -300,13 +303,6 @@ oc logs -f &lt;cloudkitty-api-pod-name&gt; -n openstack # To check specific pod 
 <div class="paragraph">
 <p>All <code>cloudkitty</code> pods (e.g., <code>cloudkitty-api</code>, <code>cloudkitty-proc</code>) should be in <code>Running</code> state.</p>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p><strong>Review CloudKitty CR Status:</strong> Check the status of the <code>CloudKitty</code> Custom Resource to ensure the setup is complete.</p>
-</li>
-</ol>
-</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ oc get -n openstack CloudKitty \
@@ -314,8 +310,14 @@ oc logs -f &lt;cloudkitty-api-pod-name&gt; -n openstack # To check specific pod 
 </div>
 </div>
 <div class="paragraph">
-<p>Look for conditions or status fields within the YAML output that indicate <code>cloudkitty&#8217;s operational state and successful deployment.
-. <strong>Perform a Basic Rating Rule Test (Future Lab):</strong> While this section focuses on enabling, a definitive verification involves creating a simple rating rule and observing if `cloudkitty</code> successfully processes metrics and generates initial reports. This practical application will be covered in detail in the "Hands-on Lab: Implementing Your First Chargeback Rating."</p>
+<p>Look for conditions or status fields within the YAML output that indicate `cloudkitty&#8217;s operational state and successful deployment.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Perform a Basic Rating Rule Test (Future Lab):</strong> While this section focuses on enabling, a definitive verification involves creating a simple rating rule and observing if <code>cloudkitty</code> successfully processes metrics and generates initial reports. This practical application will be covered in detail in the "Hands-on Lab: Implementing Your First Chargeback Rating."</p>
+</li>
+</ol>
 </div>
 </div>
 </div>
