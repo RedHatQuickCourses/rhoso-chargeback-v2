@@ -8,7 +8,7 @@ Once the prerequisites have been met, you can proceed to enable the Rating featu
 
 [source,bash]
 ----
-$ oc edit OpenStackControlPlane -n openstack
+oc edit OpenStackControlPlane -n openstack
 ----
 
 [source,yaml]
