@@ -1,5 +1,0 @@
-* xref:enabling-chargeback-in-rhosp.adoc[]
-** xref:prerequisites-for-chargeback-deployment-in-rhosp.adoc[]
-** xref:step-by-step-guide-to-enable-chargeback.adoc[]
-** xref:configuration-parameters-and-settings.adoc[]
-** xref:verifying-successful-chargeback-activation.adoc[]

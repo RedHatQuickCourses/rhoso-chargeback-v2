@@ -1,0 +1,88 @@
+#  Prerequisites for Chargeback deployment in RHOSO
+
+To successfully deploy and activate the Chargeback feature in your RHOSP environment, the following prerequisites must be met:
+
+=== 1. Red Hat OpenStack Services on OpenShift (RHOSO) Environment
+
+The foundation for enabling chargeback is a fully functional and stable RHOSO environment.
+
+*   **Verification:**
+    While a direct "hands-on activity" for verifying the entire RHOSO environment is beyond the scope of a single prerequisite, you would typically verify its health using `oc` commands and checking the status of the OpenStackControlPlane and OpenStackDataPlane instances.
+
+    ----
+    # Check the OpenStack Control Plane is ready
+    # The message field should read "Setup Complete"
+    $ oc get -n openstack OpenStackControlPlane \
+        -o jsonpath="{.items[0].status.conditions[?(@.type=='Ready')]}" | jq 
+
+    # Check all OpenStack Operators are up and running
+    $ oc get pods -n openstack-operators
+
+    # Check OpenStack Data Plane Deployment is complete
+    # The message field should read "Setup Complete"
+    $ oc get -n openstack OpenStackDataPlaneDeployment \
+        -o jsonpath="{.items[0].status.conditions[?(@.type=='Ready')]}" | jq 
+    ----
+
+=== 2. Ceilometer Is Enabled
+
+The Telemetry Operator is the primary interface for deploying and managing the Cloudkitty service. Make sure that the Telemetry service is enabled, that the Ceilometer service is enabled and that there is a MetricStorage available.
+
+*   **Verification:**
+    Ensure the Telemetry Operator is available in your RHOSO deployment, that Ceilometer is enabled and that a MetricStorage is configured.
+
+    ----
+    # Check Telemetry is enabled
+    $ oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.enabled}" | jq
+
+    # Check Ceilometer is enabled
+    $ oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.ceilometer.enabled}" | jq
+
+    # Check that Telemetry is deployed and ready
+    $ oc get telemetry
+
+    # Check that Ceilometer is deployed and ready
+    $ oc get ceilometer
+    ----
+
+=== 3. Metric Storage (Prometheus) Is Enabled
+
+CloudKitty relies on collected metrics to perform its rating calculations. Prometheus is the primary data storage for these metrics in RHOSO.
+
+*   **Verification:**
+    Check that the MetricStorage is enabled and that the Prometheus instance is deployed and ready.
+
+    ----
+    # Check MetricStorage is enabled
+    $ oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.metricStorage.enabled}" | jq
+
+    # Check that MetricStorage is deployed and ready
+    $ oc get metricstorage
+    ----
+
+=== 4. Loki Instance Is Available
+
+After retrieving metrics and applying rating rules, Cloudkitty stores the resulting rated data in a Loki instance.
+
+*   **Verification:**
+    Verify that a Loki instance designated for Cloudkitty's use is deployed and accessible. Its configuration should be part of the Telemetry Operator's `OpenStackTelemetry` custom resource definition (CRD).
+
+    ----
+    # Check that loki-operator is installed
+    $ oc get csv | grep loki
+
+    # Check that LokiStack is created
+    $ oc get lokistack
+    ----
+
+=== 5. Update OpenStack Secret with CloudKitty Credentials
+
+In order to ensure secure access to CloudKitty services pods, a user and password for CloudKitty must be included in the global OpenStack Secret.
+
+*   **Verification:**
+    Verify that the OpenStack Secret has been updated to include CloudKitty credentials.
+
+    ----
+    # Check that osp-secret includes CloudKitty credentials
+    $ oc get secret -o yaml osp-secret | grep CloudKitty
+    ----
