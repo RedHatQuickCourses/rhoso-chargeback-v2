@@ -1,3 +1,3 @@
-* xref:enabling-chargeback-in-rhosp.adoc[]
+* xref:enabling-chargeback-in-rhoso.adoc[]
 ** xref:prerequisites-for-chargeback-deployment-in-rhoso.adoc[]
 ** xref:how-to-enable-chargeback.adoc[]

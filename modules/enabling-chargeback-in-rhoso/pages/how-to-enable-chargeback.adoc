@@ -29,7 +29,7 @@ $ oc edit OpenStackControlPlane -n openstack
 ----
 
 [WARNING]
-Always back up your CR definition before making any modifications. Incorrect changes can disrupt your Telemetry services and impact the stability of your RHOSP environment.
+Always back up your CR definition before making any modifications. Incorrect changes can disrupt your Telemetry services and impact the stability of your RHOSO environment.
 
 . *Apply the Changes:* Save the modified OpenStackControlPlane CR YAML. The Telemetry Operator will detect this change and initiate the reconciliation process, deploying or configuring `cloudkitty` accordingly.
 

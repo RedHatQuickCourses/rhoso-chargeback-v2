@@ -1,6 +1,6 @@
 #  Prerequisites for Chargeback deployment in RHOSO
 
-To successfully deploy and activate the Chargeback feature in your RHOSP environment, the following prerequisites must be met:
+To successfully deploy and activate the Chargeback feature in your RHOSO environment, the following prerequisites must be met:
 
 === 1. Red Hat OpenStack Services on OpenShift (RHOSO) Environment
 
