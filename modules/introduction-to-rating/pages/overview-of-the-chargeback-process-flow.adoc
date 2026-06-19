@@ -66,7 +66,9 @@ With rating rules defined and usage metrics continuously flowing, CloudKitty's c
 
     In this example, for the "MoD-project-uuid" tenant, `ceilometer_cpu` usage between February 1st and March 1st, 2026, incurred a total charge of `125.50` units (which could represent dollars, credits, or any defined monetary unit).
 
-*   *Purpose:* These reports serve as the primary output for financial reconciliation. They provide the transparent, itemized breakdown necessary for internal billing, cost recovery, and financial analysis.
+*   *CLI and Formatting Flexibility*: In addition to direct API queries, you can utilize the OpenStack CLI to generate these reports. The CLI natively supports extracting chargeback data into several formats to match your workflow requirements: {csv, df-to-csv, json, table, value, yaml}.
+
+*   *Purpose:* These reports, accessible via both the API and CLI, serve as the primary output for financial reconciliation. They provide the transparent, itemized breakdown necessary for internal billing, cost recovery, and financial analysis.
 
 WARNING: While CloudKitty generates detailed chargeback reports, it acts purely as a visibility and rating engine. It does *not* actively enforce budgets or block resource creation (e.g., Nova instances) if a tenant exceeds a certain cost threshold. Its role is to provide the data, not to manage policies.
 

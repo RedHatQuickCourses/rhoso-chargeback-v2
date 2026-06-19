@@ -5,5 +5,5 @@ The Rating Service (CloudKitty) available with RHOSO Observability provides char
 Key points:
 
 *   CloudKitty bridges raw OpenStack telemetry data with enterprise FinOps middleware, providing structured and reliable data for financial analysis.
-*   It leverages the Telemetry Operator to gather necessary data for its rating and chargeback calculations.
+*   It leverages RHOSO Observability to gather necessary data for its rating and chargeback calculations.
 *   It has been added to RHOSO Observability since RHOSO 18 FR5.
