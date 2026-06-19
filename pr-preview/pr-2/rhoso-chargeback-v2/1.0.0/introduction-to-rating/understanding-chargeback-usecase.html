@@ -61,13 +61,10 @@
     <a class="nav-link" href="../basics-of-rhoso-observability/introduction-to-rhoso-and-its-purpose.html">Introduction to RHOSO and its purpose</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="../basics-of-rhoso-observability/core-functionalities-and-use-cases-of-rhoso.html">Core functionalities and use cases of RHOSO</a>
+    <a class="nav-link" href="../basics-of-rhoso-observability/core-functionalities-and-use-cases-of-rhoso.html">RHOSO Observability Core Functionalities and Use Cases</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="../basics-of-rhoso-observability/rhoso-architectural-overview.html">RHOSO architectural overview</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="../basics-of-rhoso-observability/key-features-of-rhoso-observability.html">Key features of RHOSO Observability</a>
   </li>
 </ul>
   </li>
@@ -290,19 +287,16 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Data Collection:</strong> The <code>telemetry operator</code> continuously collects usage metrics (e.g., CPU hours, GB of RAM, GB of storage, network egress) from various OpenStack services within the RHOSO environment.</p>
-</li>
-<li>
-<p><strong>Data Ingestion and Processing:</strong> CloudKitty ingests this raw telemetry data. It processes and normalizes the data, preparing it for rating.</p>
+<p><strong>Data Collection:</strong> RHOSO Observability continuously collects usage metrics (e.g., CPU hours, GB of RAM, GB of storage, network egress) from various OpenStack services within the RHOSO environment.</p>
 </li>
 <li>
 <p><strong>Rating Rule Application:</strong> Administrators define <strong>rating rules</strong> (also known as rating definitions) that specify how different resource consumptions should be priced. These rules can be complex, incorporating varying rates based on resource type, project, time of day, or other custom attributes.</p>
 </li>
 <li>
-<p><strong>Charge Calculation:</strong> Based on the collected usage data and the applied rating rules, CloudKitty calculates the monetary charges for each consuming entity (e.g., a project or tenant).</p>
+<p><strong>Charge Calculation:</strong> Based on the applied rating rules, CloudKitty collects data and calculates the monetary charges for each consuming entity (e.g., a project or tenant).</p>
 </li>
 <li>
-<p><strong>Reporting and Analysis:</strong> The calculated charges are then made available through reports and invoices, allowing administrators and users to analyze consumption patterns, review costs, and ensure accountability. This data can also be integrated into external FinOps or billing systems.</p>
+<p><strong>Data Availability:</strong> The calculated charges are then made available via API endpoints that then can be feed to FinOps or billing systems. This empowers administrators to leverage their own tools to analyze consumption patterns, review costs, and ensure accountability.</p>
 </li>
 </ol>
 </div>
@@ -312,7 +306,7 @@
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Observability Platform Limitations:</strong> "The observability platform available with RHOSO does not guarantee metrics delivery. Metrics are exposed for scraping but they are not cached. If data is dropped there is no ability to retrospectively fill in gaps in the data, which might result in incomplete metrics."</p>
+<p><strong>Observability Platform Limitations:</strong> "The observability platform available with RHOSO does not guarantee metrics delivery. Metrics are exposed strictly for scraping and are not cached. If data is dropped, there is no mechanism to retrospectively backfill the gaps. This can result in incomplete metrics, which will directly lead to gaps or inaccuracies in your financial and chargeback reporting."</p>
 </li>
 </ul>
 </div>
@@ -321,9 +315,6 @@
 </div>
 <div class="ulist">
 <ul>
-<li>
-<p><strong>Monitor Data Flow:</strong> Regularly monitor the health and performance of your telemetry collection and CloudKitty ingestion processes.</p>
-</li>
 <li>
 <p><strong>Understand Impact of Gaps:</strong> Be aware that any gaps in metric data could lead to under-reporting of resource consumption and, consequently, inaccurate charge calculations.</p>
 </li>
