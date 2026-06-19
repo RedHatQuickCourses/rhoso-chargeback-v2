@@ -1,0 +1,48 @@
+#  Understanding the chargeback usecase
+
+== What does chargeback mean?
+
+At its core, "chargeback" refers to the process of allocating the cost of IT services and resources consumed back to the business units, departments, or projects that used them.
+
+In a traditional IT environment, this might involve tracking hardware, software licenses, and personnel time.
+
+In a dynamic cloud environment like RHOSO, chargeback focuses on quantifying the usage of virtual resources such as CPU, RAM, storage, network bandwidth, and specific services.
+
+The primary goals of implementing chargeback in a cloud environment include:
+
+*   **Cost Recovery:** Recouping the operational expenses of the cloud from the internal consumers.
+*   **Cost Visibility and Transparency:** Providing clear visibility into who is consuming what resources and at what cost, fostering better resource management decisions.
+*   **Resource Optimization:** Encouraging users to optimize their resource consumption when they are aware of the associated costs.
+*   **Budgeting and Planning:** Supplying data for accurate future budgeting and capacity planning.
+
+== Leveraging CloudKitty for chargeback
+
+RHOSO Observability now integrates a powerful and flexible service known as *CloudKitty* (OpenStack Rating service) to deliver its chargeback capabilities.
+
+CloudKitty is an OpenStack-native project designed specifically to collect, process, and rate telemetry data, making it an ideal fit for the RHOSO ecosystem.
+
+CloudKitty can be enabled through the `telemetry operator`` in RHOSO clouds. This integration allows RHOSO to:
+
+*   **Bridge Telemetry and FinOps:** CloudKitty acts as a vital link, transforming the raw telemetry data collected from your OpenStack environment into structured, reliable data for financial operations (FinOps) middleware.
+*   **Provide Structured Data:** CloudKitty ensures you have the accurate, granular data required to make informed financial decisions.
+*   **Enable Customization:** CloudKitty is highly customizable. Administrators can define flexible rating rules that align with their specific business models and cost allocation policies.
+
+=== Chargeback flow in RHOSO
+
+The chargeback process in RHOSO follows these steps:
+
+.   **Data Collection:** RHOSO Observability continuously collects usage metrics (e.g., CPU hours, GB of RAM, GB of storage, network egress) from various OpenStack services within the RHOSO environment.
+.   **Rating Rule Application:** Administrators define *rating rules* (also known as rating definitions) that specify how different resource consumptions should be priced. These rules can be complex, incorporating varying rates based on resource type, project, time of day, or other custom attributes.
+.   **Charge Calculation:** Based on the applied rating rules, CloudKitty collects data and calculates the monetary charges for each consuming entity (e.g., a project or tenant).
+.   **Data Availability:** The calculated charges are then made available via API endpoints that then can be feed to FinOps or billing systems. This empowers administrators to leverage their own tools to analyze consumption patterns, review costs, and ensure accountability.
+
+=== Chargeback usage considerations
+
+*   *Observability Platform Limitations:* "The observability platform available with RHOSO does not guarantee metrics delivery. Metrics are exposed strictly for scraping and are not cached. If data is dropped, there is no mechanism to retrospectively backfill the gaps. This can result in incomplete metrics, which will directly lead to gaps or inaccuracies in your financial and chargeback reporting."
+
+This means that while the observability platform *exposes* metrics for consumption by services like CloudKitty, it does not inherently guarantee 100% data fidelity or provide mechanisms for historical data recovery in case of drops. This is a critical consideration for maintaining the accuracy and integrity of your chargeback reports. When planning and implementing chargeback, it's essential to:
+
+*   **Understand Impact of Gaps:** Be aware that any gaps in metric data could lead to under-reporting of resource consumption and, consequently, inaccurate charge calculations.
+*   **Develop Reconciliation Strategies:** Consider implementing strategies to reconcile potential data discrepancies or to clearly communicate the potential for minor variations to stakeholders.
+
+By understanding these aspects, organizations can effectively leverage RHOSO's chargeback feature to gain unprecedented control and transparency over their cloud costs.
