@@ -6,12 +6,12 @@ Once the prerequisites have been met, you can proceed to enable the Rating featu
 
 . *Locate the service definition for telemetry in the OpenStackControlPlane CR:* Telemetry Operator can be configured via the OpenStackControlPlane CR. Add the following configuration in the telemetry section of the OpenStackControlPlane CR to enable the CloudKitty service.
 
-[,bash]
+[source,bash]
 ----
 $ oc edit OpenStackControlPlane -n openstack
 ----
 
-[,yaml]
+[source,yaml]
 ----
   telemetry:
     enabled: true
@@ -42,7 +42,7 @@ After enabling and configuring `cloudkitty`, it is crucial to verify that the Ra
 . *Check CloudKitty Pod Status:* Confirm that the `cloudkitty` pods are up and running
 . *Review CloudKitty CR Status:* Check the status of the `CloudKitty` Custom Resource to ensure the setup is complete.
 
-[,bash]
+[source,bash]
 ----
 oc get pods -n openstack | grep cloudkitty
 oc logs -f <cloudkitty-api-pod-name> -n openstack # To check specific pod logs
@@ -50,7 +50,7 @@ oc logs -f <cloudkitty-api-pod-name> -n openstack # To check specific pod logs
 
 All `cloudkitty` pods (e.g., `cloudkitty-api`, `cloudkitty-proc`) should be in `Running` state.
 
-[,bash]
+[source,bash]
 ----
 $ oc get -n openstack CloudKitty \
     -o jsonpath="{.items[0].status.conditions[?(@.type=='Ready')]}" | jq 
