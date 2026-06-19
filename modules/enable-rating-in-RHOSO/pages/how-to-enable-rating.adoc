@@ -1,8 +1,8 @@
-# How To Enable Chargeback
+# How To Enable Rating
 
-Once the prerequisites have been met, you can proceed to enable the Chargeback feature in your RHOSO environment. This involves activating and configuring the Rating service (CloudKitty) within the OpenStackControlPlane.
+Once the prerequisites have been met, you can proceed to enable the Rating feature in your RHOSO environment. This involves activating and configuring the Rating service (CloudKitty) within the OpenStackControlPlane.
 
-== Step-by-Step to Enable Chargeback
+== Step-by-Step to Enable Rating
 
 . *Locate the service definition for telemetry in the OpenStackControlPlane CR:* Telemetry Operator can be configured via the OpenStackControlPlane CR. Add the following configuration in the telemetry section of the OpenStackControlPlane CR to enable the CloudKitty service.
 
@@ -35,9 +35,9 @@ Always back up your CR definition before making any modifications. Incorrect cha
 
 . *Monitor Deployment:* Monitor the deployment of the `cloudkitty` pods to ensure they start correctly.
 
-== Verifying Successful Chargeback Activation
+== Verifying Successful Rating Activation
 
-After enabling and configuring `cloudkitty`, it is crucial to verify that the Chargeback functionality is active and working correctly.
+After enabling and configuring `cloudkitty`, it is crucial to verify that the Rating service is active and working correctly.
 
 . *Check CloudKitty Pod Status:* Confirm that the `cloudkitty` pods are up and running
 . *Review CloudKitty CR Status:* Check the status of the `CloudKitty` Custom Resource to ensure the setup is complete.

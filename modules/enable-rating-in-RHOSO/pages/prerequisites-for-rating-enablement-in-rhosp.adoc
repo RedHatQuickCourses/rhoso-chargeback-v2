@@ -1,10 +1,10 @@
-#  Prerequisites for Chargeback deployment in RHOSO
+#  Prerequisites for Rating enablement in RHOSO
 
-To successfully deploy and activate the Chargeback feature in your RHOSO environment, the following prerequisites must be met:
+To successfully deploy and activate the Rating service in your RHOSO environment, the following prerequisites must be met:
 
 === 1. Red Hat OpenStack Services on OpenShift (RHOSO) Environment
 
-The foundation for enabling chargeback is a fully functional and stable RHOSO environment.
+The foundation for enabling rating is a fully functional and stable RHOSO environment.
 
 *   **Verification:**
     While a direct "hands-on activity" for verifying the entire RHOSO environment is beyond the scope of a single prerequisite, you would typically verify its health using `oc` commands and checking the status of the OpenStackControlPlane and OpenStackDataPlane instances.
