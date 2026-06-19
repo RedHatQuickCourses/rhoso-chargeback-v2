@@ -40,6 +40,7 @@ Always back up your CR definition before making any modifications. Incorrect cha
 After enabling and configuring `cloudkitty`, it is crucial to verify that the Chargeback functionality is active and working correctly.
 
 . *Check CloudKitty Pod Status:* Confirm that the `cloudkitty` pods are up and running
+. *Review CloudKitty CR Status:* Check the status of the `CloudKitty` Custom Resource to ensure the setup is complete.
 
 [,bash]
 ----
@@ -49,8 +50,6 @@ oc logs -f <cloudkitty-api-pod-name> -n openstack # To check specific pod logs
 
 All `cloudkitty` pods (e.g., `cloudkitty-api`, `cloudkitty-proc`) should be in `Running` state.
 
-. *Review CloudKitty CR Status:* Check the status of the `CloudKitty` Custom Resource to ensure the setup is complete.
-
 [,bash]
 ----
 $ oc get -n openstack CloudKitty \
@@ -58,4 +57,5 @@ $ oc get -n openstack CloudKitty \
 ----
 
 Look for conditions or status fields within the YAML output that indicate `cloudkitty`'s operational state and successful deployment.
+
 . *Perform a Basic Rating Rule Test (Future Lab):* While this section focuses on enabling, a definitive verification involves creating a simple rating rule and observing if `cloudkitty` successfully processes metrics and generates initial reports. This practical application will be covered in detail in the "Hands-on Lab: Implementing Your First Chargeback Rating."
