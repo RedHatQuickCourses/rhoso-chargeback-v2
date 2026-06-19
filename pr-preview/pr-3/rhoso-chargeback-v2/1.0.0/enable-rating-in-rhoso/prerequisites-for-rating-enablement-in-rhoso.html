@@ -222,160 +222,169 @@
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_1_red_hat_openstack_services_on_openshift_rhoso_environment"><a class="anchor" href="#_1_red_hat_openstack_services_on_openshift_rhoso_environment"></a>1. Red Hat OpenStack Services on OpenShift (RHOSO) Environment</h3>
+<div class="sect1">
+<h2 id="_1_red_hat_openstack_services_on_openshift_rhoso_environment"><a class="anchor" href="#_1_red_hat_openstack_services_on_openshift_rhoso_environment"></a>1. Red Hat OpenStack Services on OpenShift (RHOSO) Environment</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>The foundation for enabling rating is a fully functional and stable RHOSO environment.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Verification:</strong>
-While a direct "hands-on activity" for verifying the entire RHOSO environment is beyond the scope of a single prerequisite, you would typically verify its health using <code>oc</code> commands and checking the status of the OpenStackControlPlane and OpenStackDataPlane instances.</p>
-<div class="literalblock">
+<p><strong>Verification:</strong></p>
+<div class="openblock">
 <div class="content">
-<pre>----
-# Check the OpenStack Control Plane is ready
+<div class="paragraph">
+<p>While a direct "hands-on activity" for verifying the entire RHOSO environment is beyond the scope of a single prerequisite, you would typically verify its health using <code>oc</code> commands and checking the status of the OpenStackControlPlane and OpenStackDataPlane instances.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># Check the OpenStack Control Plane is ready
 # The message field should read "Setup Complete"
 $ oc get -n openstack OpenStackControlPlane \
-    -o jsonpath="{.items[0].status.conditions[?(@.type=='Ready')]}" | jq</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre># Check all OpenStack Operators are up and running
-$ oc get pods -n openstack-operators</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre># Check OpenStack Data Plane Deployment is complete
+    -o jsonpath="{.items[0].status.conditions[?(@.type=='Ready')]}" | jq
+
+# Check all OpenStack Operators are up and running
+$ oc get pods -n openstack-operators
+
+# Check OpenStack Data Plane Deployment is complete
 # The message field should read "Setup Complete"
 $ oc get -n openstack OpenStackDataPlaneDeployment \
-    -o jsonpath="{.items[0].status.conditions[?(@.type=='Ready')]}" | jq
-----</pre>
+    -o jsonpath="{.items[0].status.conditions[?(@.type=='Ready')]}" | jq</code></pre>
+</div>
+</div>
 </div>
 </div>
 </li>
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_2_ceilometer_is_enabled"><a class="anchor" href="#_2_ceilometer_is_enabled"></a>2. Ceilometer Is Enabled</h3>
+</div>
+<div class="sect1">
+<h2 id="_2_ceilometer_is_enabled"><a class="anchor" href="#_2_ceilometer_is_enabled"></a>2. Ceilometer Is Enabled</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>The Telemetry Operator is the primary interface for deploying and managing the Cloudkitty service. Make sure that the Telemetry service is enabled, that the Ceilometer service is enabled and that there is a MetricStorage available.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Verification:</strong>
-Ensure the Telemetry Operator is available in your RHOSO deployment, that Ceilometer is enabled and that a MetricStorage is configured.</p>
-<div class="literalblock">
+<p><strong>Verification:</strong></p>
+<div class="openblock">
 <div class="content">
-<pre>----
-# Check Telemetry is enabled
-$ oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.enabled}" | jq</pre>
+<div class="paragraph">
+<p>Ensure the Telemetry Operator is available in your RHOSO deployment, that Ceilometer is enabled and that a MetricStorage is configured.</p>
 </div>
-</div>
-<div class="literalblock">
+<div class="listingblock">
 <div class="content">
-<pre># Check Ceilometer is enabled
-$ oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.ceilometer.enabled}" | jq</pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># Check Telemetry is enabled
+$ oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.enabled}" | jq
+
+# Check Ceilometer is enabled
+$ oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.ceilometer.enabled}" | jq
+
+# Check that Telemetry is deployed and ready
+$ oc get telemetry
+
+# Check that Ceilometer is deployed and ready
+$ oc get ceilometer</code></pre>
 </div>
 </div>
-<div class="literalblock">
-<div class="content">
-<pre># Check that Telemetry is deployed and ready
-$ oc get telemetry</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre># Check that Ceilometer is deployed and ready
-$ oc get ceilometer
-----</pre>
 </div>
 </div>
 </li>
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_3_metric_storage_prometheus_is_enabled"><a class="anchor" href="#_3_metric_storage_prometheus_is_enabled"></a>3. Metric Storage (Prometheus) Is Enabled</h3>
+</div>
+<div class="sect1">
+<h2 id="_3_metric_storage_prometheus_is_enabled"><a class="anchor" href="#_3_metric_storage_prometheus_is_enabled"></a>3. Metric Storage (Prometheus) Is Enabled</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>CloudKitty relies on collected metrics to perform its rating calculations. Prometheus is the primary data storage for these metrics in RHOSO.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Verification:</strong>
-Check that the MetricStorage is enabled and that the Prometheus instance is deployed and ready.</p>
-<div class="literalblock">
+<p><strong>Verification:</strong></p>
+<div class="openblock">
 <div class="content">
-<pre>----
-# Check MetricStorage is enabled
-$ oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.metricStorage.enabled}" | jq</pre>
+<div class="paragraph">
+<p>Check that the MetricStorage is enabled and that the Prometheus instance is deployed and ready.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># Check MetricStorage is enabled
+$ oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.metricStorage.enabled}" | jq
+
+# Check that MetricStorage is deployed and ready
+$ oc get metricstorage</code></pre>
 </div>
 </div>
-<div class="literalblock">
-<div class="content">
-<pre># Check that MetricStorage is deployed and ready
-$ oc get metricstorage
-----</pre>
 </div>
 </div>
 </li>
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_4_loki_instance_is_available"><a class="anchor" href="#_4_loki_instance_is_available"></a>4. Loki Instance Is Available</h3>
+</div>
+<div class="sect1">
+<h2 id="_4_loki_instance_is_available"><a class="anchor" href="#_4_loki_instance_is_available"></a>4. Loki Instance Is Available</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>After retrieving metrics and applying rating rules, Cloudkitty stores the resulting rated data in a Loki instance.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Verification:</strong>
-Verify that a Loki instance designated for Cloudkitty&#8217;s use is deployed and accessible. Its configuration should be part of the Telemetry Operator&#8217;s <code>OpenStackTelemetry</code> custom resource definition (CRD).</p>
-<div class="literalblock">
+<p><strong>Verification:</strong></p>
+<div class="openblock">
 <div class="content">
-<pre>----
-# Check that loki-operator is installed
-$ oc get csv | grep loki</pre>
+<div class="paragraph">
+<p>Verify that a Loki instance designated for Cloudkitty&#8217;s use is deployed and accessible. Its configuration should be part of the Telemetry Operator&#8217;s <code>OpenStackTelemetry</code> custom resource definition (CRD).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># Check that loki-operator is installed
+$ oc get csv | grep loki
+
+# Check that LokiStack is created
+$ oc get lokistack</code></pre>
 </div>
 </div>
-<div class="literalblock">
-<div class="content">
-<pre># Check that LokiStack is created
-$ oc get lokistack
-----</pre>
 </div>
 </div>
 </li>
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_5_update_openstack_secret_with_cloudkitty_credentials"><a class="anchor" href="#_5_update_openstack_secret_with_cloudkitty_credentials"></a>5. Update OpenStack Secret with CloudKitty Credentials</h3>
+</div>
+<div class="sect1">
+<h2 id="_5_update_openstack_secret_with_cloudkitty_credentials"><a class="anchor" href="#_5_update_openstack_secret_with_cloudkitty_credentials"></a>5. Update OpenStack Secret with CloudKitty Credentials</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>In order to ensure secure access to CloudKitty services pods, a user and password for CloudKitty must be included in the global OpenStack Secret.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Verification:</strong>
-Verify that the OpenStack Secret has been updated to include CloudKitty credentials.</p>
-<div class="literalblock">
+<p><strong>Verification:</strong></p>
+<div class="openblock">
 <div class="content">
-<pre>----
-# Check that osp-secret includes CloudKitty credentials
-$ oc get secret -o yaml osp-secret | grep CloudKitty
-----</pre>
+<div class="paragraph">
+<p>Verify that the OpenStack Secret has been updated to include CloudKitty credentials.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># Check that osp-secret includes CloudKitty credentials
+$ oc get secret -o yaml osp-secret | grep CloudKitty</code></pre>
+</div>
+</div>
 </div>
 </div>
 </li>
 </ul>
+</div>
 </div>
 </div>
 <nav class="pagination">
