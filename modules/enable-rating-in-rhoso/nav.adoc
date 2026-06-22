@@ -1,0 +1,3 @@
+* xref:enable-rating-in-rhoso.adoc[]
+** xref:prerequisites-for-rating-enablement-in-rhoso.adoc[]
+** xref:how-to-enable-rating.adoc[]

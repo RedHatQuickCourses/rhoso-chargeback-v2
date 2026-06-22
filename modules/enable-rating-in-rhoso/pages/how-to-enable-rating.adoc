@@ -1,0 +1,61 @@
+# How To Enable Rating
+
+Once the prerequisites have been met, you can proceed to enable the Rating feature in your RHOSO environment. This involves activating and configuring the Rating service (CloudKitty) within the OpenStackControlPlane.
+
+== Step-by-Step to Enable Rating
+
+. *Locate the service definition for telemetry in the OpenStackControlPlane CR:* Telemetry Operator can be configured via the OpenStackControlPlane CR. Add the following configuration in the telemetry section of the OpenStackControlPlane CR to enable the CloudKitty service.
++
+[source,bash]
+----
+oc edit OpenStackControlPlane -n openstack
+----
++
+[source,yaml]
+----
+telemetry:
+  enabled: true
+    template:
+      ...
+      cloudkitty:
+        enabled: true
+        s3StorageConfig:
+          schemas:
+          - effectiveDate: "2024-11-18"
+            version: v13
+          secret:
+            name: cloudkitty-loki-s3
+            type: s3
+----
++
+[WARNING]
+Always back up your CR definition before making any modifications. Incorrect changes can disrupt your Telemetry services and impact the stability of your RHOSO environment.
+
+. *Apply the Changes:* Save the modified OpenStackControlPlane CR YAML. The Telemetry Operator will detect this change and initiate the reconciliation process, deploying or configuring `cloudkitty` accordingly.
+
+. *Monitor Deployment:* Monitor the deployment of the `cloudkitty` pods to ensure they start correctly.
+
+== Verifying Successful Rating Activation
+
+After enabling and configuring `cloudkitty`, it is crucial to verify that the Rating service is active and working correctly.
+
+. *Check CloudKitty Pod Status:* Confirm that the `cloudkitty` pods are up and running
+. *Review CloudKitty CR Status:* Check the status of the `CloudKitty` Custom Resource to ensure the setup is complete.
++
+[source,bash]
+----
+oc get pods -n openstack | grep cloudkitty
+oc logs -f <cloudkitty-api-pod-name> -n openstack # To check specific pod logs
+----
++
+All `cloudkitty` pods (e.g., `cloudkitty-api`, `cloudkitty-proc`) should be in `Running` state.
++
+[source,bash]
+----
+oc get -n openstack CloudKitty \
+    -o jsonpath="{.items[0].status.conditions[?(@.type=='Ready')]}" | jq 
+----
++
+Look for conditions or status fields within the YAML output that indicate `cloudkitty`'s operational state and successful deployment.
++
+. *Perform a Basic Rating Rule Test (Hands-On Activity):* While this section focuses on enabling, a definitive verification involves creating a simple rating rule and observing if `cloudkitty` successfully processes metrics and associates usage with costs. This practical application will be covered in detail in the "Hands-on Lab: Creating Your First Rating."

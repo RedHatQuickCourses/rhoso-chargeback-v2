@@ -1,0 +1,9 @@
+#  Enable Rating in RHOSO
+
+Starting with RHOSO 18.0 Feature Release 5 (FR5), you can utilize chargeback capabilities by enabling the Rating service (CloudKitty) within the Telemetry Operator.
+
+Key points:
+
+*   **Availability**: CloudKitty and its chargeback capabilities are available starting with RHOSO 18.0 FR5.
+*   **Prerequisites**: Activating the service requires an operational RHOSO deployment with Telemetry enabled, a configured `MetricStorage`, and the Loki Operator deployed.
+*   **Activation**: Once all prerequisites are met, CloudKitty is turned on directly via the `OpenStackControlPlane` Custom Resource (CR).
