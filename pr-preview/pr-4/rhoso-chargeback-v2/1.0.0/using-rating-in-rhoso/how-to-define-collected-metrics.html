@@ -112,7 +112,7 @@
     <a class="nav-link" href="understanding-rating-concepts.html">Understanding rating concepts</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="how-to-configure-rating-module.html">Step-by-Step to configure CloudKitty with the Hashmap module</a>
+    <a class="nav-link" href="how-to-configure-rating-module.html">Step-by-Step to Configure CloudKitty with the Hashmap module</a>
   </li>
   <li class="nav-item is-current-page" data-depth="2">
     <a class="nav-link" href="how-to-define-collected-metrics.html">How to Define Collected Metrics</a>
@@ -470,7 +470,7 @@
 <div class="sect2">
 <h3 id="_5_optional_rate_different_aspects_of_the_same_resource"><a class="anchor" href="#_5_optional_rate_different_aspects_of_the_same_resource"></a>5. (Optional) Rate different aspects of the same resource</h3>
 <div class="paragraph">
-<p>To rate different aspects of the same resource type that is collected through the same metric, you can add additional rating types to a single metric. For example, to rate the use of both the flavor and the used CPU time by an instance, define two units for the ceilometer_cpu metric:</p>
+<p>To rate different aspects of the same resource type that is collected through the same metric, you can add additional rating types to a single metric. For example, to rate the use of both the flavor and the used CPU time by an instance, define two units for the <code>ceilometer_cpu</code> metric:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -502,7 +502,7 @@
 <div class="sect2">
 <h3 id="_6_create_the_secret_cr_for_the_rating_service_with_the_custom_configuration_files"><a class="anchor" href="#_6_create_the_secret_cr_for_the_rating_service_with_the_custom_configuration_files"></a>6. Create the Secret CR for the Rating service with the custom configuration files</h3>
 <div class="paragraph">
-<p>After defining the collected metrics in the <code>metrics.yaml</code> file, you need to create a Secret CR in OpenShift to store the custom configuration file. This Secret will be referenced in the OpenStackControlPlane CR to apply the custom configuration to the Rating service (CloudKitty).</p>
+<p>After defining the collected metrics in the <code>metrics.yaml</code> file, you need to create a <code>Secret</code> CR in OpenShift to store the custom configuration file. This <code>Secret</code> will be referenced in the <code>OpenStackControlPlane</code> CR to apply the custom configuration to the Rating service (CloudKitty).</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -511,7 +511,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p>Verify that the Secret has been created successfully:</p>
+<p>Verify that the <code>Secret</code> has been created successfully:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -522,7 +522,7 @@
 <div class="sect2">
 <h3 id="_7_update_the_openstackcontrolplane_cr_to_reference_the_custom_configuration_secret"><a class="anchor" href="#_7_update_the_openstackcontrolplane_cr_to_reference_the_custom_configuration_secret"></a>7. Update the OpenStackControlPlane CR to reference the custom configuration Secret</h3>
 <div class="paragraph">
-<p>Finally, you need to update the OpenStackControlPlane CR to reference the Secret that contains your custom <code>metrics.yaml</code> file. This will ensure that the Rating service (CloudKitty) uses your custom configuration for collecting metrics.</p>
+<p>Finally, you need to update the <code>OpenStackControlPlane</code> CR to reference the <code>Secret</code> that contains your custom <code>metrics.yaml</code> file. This will ensure that the Rating service (CloudKitty) uses your custom configuration for collecting metrics.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -530,7 +530,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p>Add the following configuration in the telemetry section of the OpenStackControlPlane CR to reference the custom <code>metrics.yaml</code> file:</p>
+<p>Add the following configuration in the telemetry section of the <code>OpenStackControlPlane</code> CR to reference the custom <code>metrics.yaml</code> file:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -575,7 +575,7 @@ Always back up your CR definition before making any modifications. Incorrect cha
 </div>
 </div>
 <nav class="pagination">
-  <span class="prev"><a href="how-to-configure-rating-module.html">Step-by-Step to configure CloudKitty with the Hashmap module</a></span>
+  <span class="prev"><a href="how-to-configure-rating-module.html">Step-by-Step to Configure CloudKitty with the Hashmap module</a></span>
   <span class="next"><a href="how-to-create-and-manage-rating-rules.html">How to Create and Manage Rating Rules</a></span>
 </nav>
 </article>

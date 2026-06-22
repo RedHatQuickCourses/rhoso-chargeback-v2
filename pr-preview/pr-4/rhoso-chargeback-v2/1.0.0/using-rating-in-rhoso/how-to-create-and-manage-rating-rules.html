@@ -112,7 +112,7 @@
     <a class="nav-link" href="understanding-rating-concepts.html">Understanding rating concepts</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="how-to-configure-rating-module.html">Step-by-Step to configure CloudKitty with the Hashmap module</a>
+    <a class="nav-link" href="how-to-configure-rating-module.html">Step-by-Step to Configure CloudKitty with the Hashmap module</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="how-to-define-collected-metrics.html">How to Define Collected Metrics</a>
@@ -236,10 +236,10 @@
 <p><strong>How it works:</strong> You target a specific field within a resource and apply different rates depending on what that field says.</p>
 </div>
 <div class="paragraph">
-<p><strong>Example 1:</strong> If you want to charge different rates for virtual machine storage, you create a mapping for the volume_type field. You can then set one rate if the value is High-Speed SSD and a lower rate if the value is Standard HDD.</p>
+<p><strong>Example 1:</strong> If you want to charge different rates for virtual machine storage, you create a mapping for the <code>volume_type</code> field. You can then set one rate if the value is <code>High-Speed SSD</code> and a lower rate if the value is <code>Standard HDD</code>.</p>
 </div>
 <div class="paragraph">
-<p><strong>Example 2:</strong> Mapping the flavor or instance_type field to charge $0.05/hr for a t3.micro vs. $0.20/hr for a t3.large.</p>
+<p><strong>Example 2:</strong> Mapping the <code>flavor</code> or <code>instance_type</code> field to charge $0.05/hr for a <code>t3.micro</code> vs. $0.20/hr for a <code>t3.large</code>.</p>
 </div>
 </div>
 <div class="sect2">
@@ -251,10 +251,10 @@
 <p><strong>How it works:</strong> You map the rating rule straight to the name of the service or the core metric being tracked.</p>
 </div>
 <div class="paragraph">
-<p><strong>Example 1:</strong> Assigning a flat rate directly to a metric like ceilometer_ip_floating. You are charging for allocated public-facing addresses.</p>
+<p><strong>Example 1:</strong> Assigning a flat rate directly to a metric like <code>ceilometer_ip_floating</code>. You are charging for allocated public-facing addresses.</p>
 </div>
 <div class="paragraph">
-<p><strong>Example 2:</strong> Associating a rate directly to a metric name like ceilometer_storage_objects to charge a flat fee per 1,000 operations.</p>
+<p><strong>Example 2:</strong> Associating a rate directly to a metric name like <code>ceilometer_storage_objects</code> to charge a flat fee per 1,000 operations.</p>
 </div>
 </div>
 </div>
@@ -366,7 +366,7 @@
 </td>
 <td class="content">
 <div class="paragraph">
-<p>For the hashmap service creation, the <code>metric_name</code> <strong>must</strong> match the <code>alt_name</code> associated with the metric. If no <code>alt_name</code> is defined, the <code>metric_name</code> <strong>must</strong> match the metric name. This is because it is possible to rate different aspects of the same resource type that is collected through the same metric (e.g. ceilometer_cpu instance flavor and ceilometer_cpu cpu time). Verify the name of the desired resource to measure by running the command in step 2.</p>
+<p>For the hashmap service creation, the <code>metric_name</code> <strong>must</strong> match the <code>alt_name</code> associated with the metric. If no <code>alt_name</code> is defined, the <code>metric_name</code> <strong>must</strong> match the metric name. This is because it is possible to rate different aspects of the same resource type that is collected through the same metric (e.g. <code>ceilometer_cpu</code> instance flavor and <code>ceilometer_cpu</code> cpu time). Verify the name of the desired resource to measure by running the command in step 2.</p>
 </div>
 </td>
 </tr>
@@ -382,7 +382,7 @@
 <p>For example, if you are working with a virtual machine (in the instance service), you can use its flavor (its size or configuration) to define specific rules.</p>
 </div>
 <div class="paragraph">
-<p>You can use any "metadata" attribute or "group by" property defined in your metric configuration as a field. For example, following with the virtual machine resource, the flavor_id could be used as a field.</p>
+<p>You can use any <code>metadata</code> attribute or <code>group by</code> property defined in your metric configuration as a field. For example, following with the virtual machine resource, the <code>flavor_id</code> could be used as a field.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -407,7 +407,7 @@
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Check available fields to use as field_name by listing the metrics collected for your cloud (step 2) and looking at the "metadata" attributes or "group by" properties defined in your metric configuration.</p>
+<p>Check available fields to use as <code>field_name</code> by listing the metrics collected for your cloud (step 2) and looking at the <code>metadata</code> attributes or <code>group by</code> properties defined in your metric configuration.</p>
 </div>
 </td>
 </tr>
