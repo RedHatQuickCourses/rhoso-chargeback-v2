@@ -3,9 +3,9 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Enabling Chargeback in RHOSP :: RHOSO Chargeback and Observability Fundamentals</title>
+    <title>Enable Rating in RHOSO :: RHOSO Chargeback and Observability Fundamentals</title>
     <link rel="prev" href="../introduction-to-rating/overview-of-the-chargeback-process-flow.html">
-    <link rel="next" href="prerequisites-for-chargeback-deployment-in-rhosp.html">
+    <link rel="next" href="prerequisites-for-rating-enablement-in-rhoso.html">
     <meta name="generator" content="Antora 3.1.3">
     <link rel="stylesheet" href="../../../_/css/site.css">
     <script>var uiRootPath = '../../../_'</script>
@@ -90,19 +90,13 @@
 <ul class="nav-list">
   <li class="nav-item is-current-page" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="enabling-chargeback-in-rhosp.html">Enabling Chargeback in RHOSP</a>
+    <a class="nav-link" href="enable-rating-in-rhoso.html">Enable Rating in RHOSO</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="prerequisites-for-chargeback-deployment-in-rhosp.html">Prerequisites for Chargeback deployment in RHOSP</a>
+    <a class="nav-link" href="prerequisites-for-rating-enablement-in-rhoso.html">Prerequisites for Rating enablement in RHOSO</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="step-by-step-guide-to-enable-chargeback.html">Step-by-step guide to enable Chargeback</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="configuration-parameters-and-settings.html">Configuration parameters and settings</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="verifying-successful-chargeback-activation.html">Verifying successful Chargeback activation</a>
+    <a class="nav-link" href="how-to-enable-rating.html">How To Enable Rating</a>
   </li>
 </ul>
   </li>
@@ -213,7 +207,7 @@
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></li>
-    <li><a href="enabling-chargeback-in-rhosp.html">Enabling Chargeback in RHOSP</a></li>
+    <li><a href="enable-rating-in-rhoso.html">Enable Rating in RHOSO</a></li>
   </ul>
 </nav>
 </div>
@@ -222,13 +216,29 @@
   <div class="toc-menu"></div>
 </aside>
 <article class="doc">
-<h1 class="page">Enabling Chargeback in RHOSP</h1>
+<h1 class="page">Enable Rating in RHOSO</h1>
 <div class="paragraph">
-<p>You enable Chargeback in RHOSP by activating the Rating service (cloudkitty) within the Telemetry Operator. This process provides chargeback and rating capabilities to your Red Hat OpenStack Services on OpenShift (RHOSO) cloud environment.</p>
+<p>Starting with RHOSO 18.0 Feature Release 5 (FR5), you can utilize chargeback capabilities by enabling the Rating service (CloudKitty) within the Telemetry Operator.</p>
+</div>
+<div class="paragraph">
+<p>Key points:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Availability</strong>: CloudKitty and its chargeback capabilities are available starting with RHOSO 18.0 FR5.</p>
+</li>
+<li>
+<p><strong>Prerequisites</strong>: Activating the service requires an operational RHOSO deployment with Telemetry enabled, a configured <code>MetricStorage</code>, and the Loki Operator deployed.</p>
+</li>
+<li>
+<p><strong>Activation</strong>: Once all prerequisites are met, CloudKitty is turned on directly via the <code>OpenStackControlPlane</code> Custom Resource (CR).</p>
+</li>
+</ul>
 </div>
 <nav class="pagination">
   <span class="prev"><a href="../introduction-to-rating/overview-of-the-chargeback-process-flow.html">Overview of the chargeback process flow</a></span>
-  <span class="next"><a href="prerequisites-for-chargeback-deployment-in-rhosp.html">Prerequisites for Chargeback deployment in RHOSP</a></span>
+  <span class="next"><a href="prerequisites-for-rating-enablement-in-rhoso.html">Prerequisites for Rating enablement in RHOSO</a></span>
 </nav>
 </article>
   </div>
