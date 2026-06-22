@@ -229,9 +229,6 @@
 <ol class="arabic">
 <li>
 <p><strong>Locate the service definition for telemetry in the OpenStackControlPlane CR:</strong> Telemetry Operator can be configured via the OpenStackControlPlane CR. Add the following configuration in the telemetry section of the OpenStackControlPlane CR to enable the CloudKitty service.</p>
-</li>
-</ol>
-</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc edit OpenStackControlPlane -n openstack</code></pre>
@@ -239,19 +236,19 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">  telemetry:
-    enabled: true
-      template:
-        ...
-        cloudkitty:
-          enabled: true
-          s3StorageConfig:
-            schemas:
-            - effectiveDate: "2024-11-18"
-              version: v13
-            secret:
-              name: cloudkitty-loki-s3
-              type: s3</code></pre>
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">telemetry:
+  enabled: true
+    template:
+      ...
+      cloudkitty:
+        enabled: true
+        s3StorageConfig:
+          schemas:
+          - effectiveDate: "2024-11-18"
+            version: v13
+          secret:
+            name: cloudkitty-loki-s3
+            type: s3</code></pre>
 </div>
 </div>
 <div class="admonitionblock warning">
@@ -266,8 +263,7 @@ Always back up your CR definition before making any modifications. Incorrect cha
 </tr>
 </table>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
+</li>
 <li>
 <p><strong>Apply the Changes:</strong> Save the modified OpenStackControlPlane CR YAML. The Telemetry Operator will detect this change and initiate the reconciliation process, deploying or configuring <code>cloudkitty</code> accordingly.</p>
 </li>
@@ -291,9 +287,6 @@ Always back up your CR definition before making any modifications. Incorrect cha
 </li>
 <li>
 <p><strong>Review CloudKitty CR Status:</strong> Check the status of the <code>CloudKitty</code> Custom Resource to ensure the setup is complete.</p>
-</li>
-</ol>
-</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get pods -n openstack | grep cloudkitty
@@ -312,10 +305,9 @@ oc logs -f &lt;cloudkitty-api-pod-name&gt; -n openstack # To check specific pod 
 <div class="paragraph">
 <p>Look for conditions or status fields within the YAML output that indicate `cloudkitty&#8217;s operational state and successful deployment.</p>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
+</li>
 <li>
-<p><strong>Perform a Basic Rating Rule Test (Future Lab):</strong> While this section focuses on enabling, a definitive verification involves creating a simple rating rule and observing if <code>cloudkitty</code> successfully processes metrics and generates initial reports. This practical application will be covered in detail in the "Hands-on Lab: Implementing Your First Chargeback Rating."</p>
+<p><strong>Perform a Basic Rating Rule Test (Hands-On Activity):</strong> While this section focuses on enabling, a definitive verification involves creating a simple rating rule and observing if <code>cloudkitty</code> successfully processes metrics and associates usage with costs. This practical application will be covered in detail in the "Hands-on Lab: Creating Your First Rating."</p>
 </li>
 </ol>
 </div>
