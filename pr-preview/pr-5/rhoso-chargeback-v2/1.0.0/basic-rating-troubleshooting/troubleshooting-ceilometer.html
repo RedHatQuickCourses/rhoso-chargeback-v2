@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Troubleshooting Ceilometer :: RHOSO Chargeback and Observability Fundamentals</title>
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">RHOSO Chargeback and Observability Fundamentals</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/rhoso-chargeback-v2/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="rhoso-chargeback-v2" data-version="1.0.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../basics-of-rhoso-observability/basics-of-rhoso-observability.html">Basics of RHOSO Observability</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/introduction-to-rhoso-and-its-purpose.html">Introduction to RHOSO and its purpose</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/core-functionalities-and-use-cases-of-rhoso.html">RHOSO Observability Core Functionalities and Use Cases</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/rhoso-architectural-overview.html">RHOSO architectural overview</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-rating/introduction-to-rating.html">Introduction to the Rating Service</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rating/understanding-chargeback-usecase.html">Understanding the chargeback usecase</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rating/overview-of-the-chargeback-process-flow.html">Overview of the chargeback process flow</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../enable-rating-in-rhoso/enable-rating-in-rhoso.html">Enable Rating in RHOSO</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enable-rating-in-rhoso/prerequisites-for-rating-enablement-in-rhoso.html">Prerequisites for Rating enablement in RHOSO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enable-rating-in-rhoso/how-to-enable-rating.html">How To Enable Rating</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../using-rating-in-rhoso/using-the-rating-service.html">Using the Rating Service</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-rating-in-rhoso/understanding-rating-concepts.html">Understanding rating concepts</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-rating-in-rhoso/how-to-configure-rating-module.html">Step-by-Step to Configure CloudKitty with the Hashmap module</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-rating-in-rhoso/how-to-define-collected-metrics.html">How to Define Collected Metrics</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-rating-in-rhoso/how-to-create-and-manage-rating-rules.html">How to Create and Manage Rating Rules</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-rating-in-rhoso/how-to-retrieve-resources-consumption.html">How to Retrieve Resources Consumption</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/hands-on-lab-implementing-your-first-chargeback-rating.html">Hands-on Lab: Implementing Your First Chargeback Rating</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/setting-up-the-lab-environment-for-chargeback.html">Setting up the lab environment for Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/defining-a-basic-rating-rule-for-a-service.html">Defining a basic rating rule for a service</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/applying-the-defined-rating-rule-to-resources.html">Applying the defined rating rule to resources</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/reviewing-the-generated-charges-and-reports.html">Reviewing the generated charges and reports</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">RHOSO Chargeback and Observability Fundamentals</span>
+    <span class="version">1.0.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">RHOSO Chargeback and Observability Fundamentals</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.0.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></li>
+    <li><a href="troubleshooting-ceilometer.html">Troubleshooting Ceilometer</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Troubleshooting Ceilometer</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Ceilometer is the metric source for the Rating service. It collects usage data from OpenStack resources and exposes them as Prometheus metrics. If Ceilometer is not deployed, not exposing metrics, or Prometheus cannot scrape them, the Rating service will have no data to process.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ceilometer_is_not_deployed_correctly"><a class="anchor" href="#_ceilometer_is_not_deployed_correctly"></a>Ceilometer Is Not Deployed Correctly</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_description"><a class="anchor" href="#_description"></a>Description</h3>
+<div class="paragraph">
+<p>Ceilometer may not be enabled or ready on the controlplane and/or the dataplane. This prevents metric collection from starting.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_diagnosis"><a class="anchor" href="#_diagnosis"></a>Diagnosis</h3>
+<div class="paragraph">
+<p>Check that telemetry and Ceilometer are enabled and ready on the controlplane:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.enabled}" | jq
+oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.ceilometer.enabled}" | jq</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Both should return <code>true</code>.</p>
+</div>
+<div class="paragraph">
+<p>Verify that the Telemetry and Ceilometer CRs are deployed and ready:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get telemetry
+oc get ceilometer</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>STATUS</code> column should show <code>True</code> and the <code>MESSAGE</code> column should state <code>Setup complete</code>. If the message does not state "Setup complete", it should point towards what is wrong and possibly suggest a solution.</p>
+</div>
+<div class="paragraph">
+<p>Check that Ceilometer was deployed on the dataplane. Ceilometer is deployed by the "telemetry" dataplane service:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get osdpns openstack-edpm-ipam -oyaml | grep ServiceTelemetryDeploymentReady -B 4</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The output should show <code>status: "True"</code> and <code>message: Deployment ready for telemetry service</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_resolution"><a class="anchor" href="#_resolution"></a>Resolution</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>If telemetry or Ceilometer is not enabled, edit the controlplane CR and set these fields to <code>true</code>.</p>
+</li>
+<li>
+<p>If the CR exists but is not ready, read the condition <code>message</code> and <code>reason</code> fields for guidance on what to fix.</p>
+</li>
+<li>
+<p>If Ceilometer is not deployed on the dataplane, verify that the "telemetry" service is included in the list of services for the nodeset.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_hands_on_exercise_verifying_ceilometer_deployment"><a class="anchor" href="#_hands_on_exercise_verifying_ceilometer_deployment"></a>Hands-on Exercise: Verifying Ceilometer Deployment</h3>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>Access to the OpenShift cluster via <code>oc</code> CLI</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Steps</div>
+<ol class="arabic">
+<li>
+<p>Verify that telemetry is enabled in the controlplane:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.enabled}" | jq</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Verify that Ceilometer is enabled:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.ceilometer.enabled}" | jq</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Check the Telemetry CR status:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get telemetry</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Check the Ceilometer CR status:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get ceilometer</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Verify Ceilometer deployment on the dataplane:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get osdpns openstack-edpm-ipam -oyaml | grep ServiceTelemetryDeploymentReady -B 4</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<div class="title">Expected Outcome</div>
+<p>All commands confirm that telemetry and Ceilometer are enabled, deployed, and ready on both the controlplane and the dataplane.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ceilometer_is_not_exposing_metrics"><a class="anchor" href="#_ceilometer_is_not_exposing_metrics"></a>Ceilometer Is Not Exposing Metrics</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_description_2"><a class="anchor" href="#_description_2"></a>Description</h3>
+<div class="paragraph">
+<p>Ceilometer is deployed and ready, but its agents are not serving metrics at their endpoints. This means Prometheus has nothing to scrape, even if the scrape configuration is correct.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_diagnosis_2"><a class="anchor" href="#_diagnosis_2"></a>Diagnosis</h3>
+<div class="paragraph">
+<p>Check what the Ceilometer central agent is exposing:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient curl https://ceilometer-internal.openstack.svc:3000/metrics</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You should see <code>ceilometer_*</code> metric lines in the output. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre># HELP ceilometer_image_size
+# TYPE ceilometer_image_size gauge
+ceilometer_image_size{counter="image.size",image="98f26736-...",project="32268e96...",resource_name="cirros",unit="B"} 1.6300544e+07</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Check what a Ceilometer compute agent is exposing (replace the IP address with the address of a compute node that has workloads running):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient curl https://192.168.122.100:9101/metrics</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You should see compute-related <code>ceilometer_*</code> metrics such as <code>ceilometer_disk_device_read_bytes</code> or <code>ceilometer_cpu</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_resolution_2"><a class="anchor" href="#_resolution_2"></a>Resolution</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>If the central agent endpoint returns no <code>ceilometer_*</code> metrics even though controlplane resources (Glance images, Cinder volumes) exist, this likely indicates a bug that should be reported.</p>
+</li>
+<li>
+<p>If a compute agent endpoint returns no <code>ceilometer_*</code> metrics even though Nova servers are running on that node, this also likely indicates a bug.</p>
+</li>
+<li>
+<p>Verify that the correct ports are being used (3000 for central, 9101 for compute).</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_hands_on_exercise_querying_ceilometer_endpoints"><a class="anchor" href="#_hands_on_exercise_querying_ceilometer_endpoints"></a>Hands-on Exercise: Querying Ceilometer Endpoints</h3>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>Access to the <code>openstackclient</code> pod via <code>oc rsh</code></p>
+</li>
+<li>
+<p>At least one OpenStack resource exists (image, server, or volume)</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Steps</div>
+<ol class="arabic">
+<li>
+<p>Query the Ceilometer central agent endpoint:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient curl https://ceilometer-internal.openstack.svc:3000/metrics</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Look for <code>ceilometer_*</code> metric lines in the output. If present, the central agent is exposing metrics correctly.</p>
+</li>
+<li>
+<p>Identify a compute node IP that has workloads running and query its Ceilometer compute agent:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient curl https://&lt;compute-node-IP&gt;:9101/metrics</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Look for compute-related <code>ceilometer_*</code> metrics in the output.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<div class="title">Expected Outcome</div>
+<p>Both endpoints return <code>ceilometer_*</code> metrics. If metrics are missing from one or both endpoints despite resources existing, the issue may require a bug report.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_issues_scraping_ceilometer"><a class="anchor" href="#_issues_scraping_ceilometer"></a>Issues Scraping Ceilometer</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_description_3"><a class="anchor" href="#_description_3"></a>Description</h3>
+<div class="paragraph">
+<p>Ceilometer is running and exposing metrics at its endpoints, but the metrics are not available inside Prometheus. This indicates a problem with the scrape configuration or network connectivity between Prometheus and the Ceilometer endpoints.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_diagnosis_3"><a class="anchor" href="#_diagnosis_3"></a>Diagnosis</h3>
+<div class="paragraph">
+<p>Verify that the scrape configurations exist and are correct:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get scrapeconfig telemetry-ceilometer -ojsonpath --template "{.spec.scheme}"
+oc get scrapeconfig telemetry-ceilometer -ojsonpath --template "{.spec.staticConfigs..targets}" | jq</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The scheme should match your TLS configuration (e.g., <code>HTTPS</code>), and the target should point to the Ceilometer central agent endpoint.</p>
+</div>
+<div class="paragraph">
+<p>Check the dataplane scrape configuration:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get scrapeconfig telemetry-ceilometer-compute-prom-exporter-tls -ojsonpath --template "{.spec.scheme}"
+oc get scrapeconfig telemetry-ceilometer-compute-prom-exporter-tls -ojsonpath --template "{.spec.staticConfigs..targets}" | jq</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Verify that all compute nodes are listed as targets.</p>
+</div>
+<div class="paragraph">
+<p>Check if the targets in Prometheus are up:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack metric show up --disable-rbac -c value -c job | grep ceilometer</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>telemetry-ceilometer</code> and <code>telemetry-ceilometer-compute-prom-exporter-tls</code> targets should have a value of <code>1</code>. If a target shows <code>0</code>, query the Prometheus targets API to see the error:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient curl https://metric-storage-prometheus.openstack.svc:9090/api/v1/targets?scrapePool=scrapeConfig/openstack/telemetry-ceilometer | jq ".data.activeTargets"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Pay attention to the <code>lastError</code> field in the output.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_resolution_3"><a class="anchor" href="#_resolution_3"></a>Resolution</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>If the scheme is incorrect (e.g., <code>HTTP</code> when TLS is enabled), update the scrape configuration.</p>
+</li>
+<li>
+<p>If compute nodes are missing from the targets list, verify that the dataplane deployment includes the telemetry service.</p>
+</li>
+<li>
+<p>If the <code>lastError</code> indicates a connection timeout, check network connectivity and firewall rules between the Prometheus pod and the Ceilometer endpoints.</p>
+</li>
+<li>
+<p>If the <code>lastError</code> indicates a TLS error, verify that the certificates used by the scrape configuration are valid and match the ones used by the Ceilometer agents.</p>
+</li>
+<li>
+<p>If all configurations appear correct but scraping still fails, this likely indicates a bug that should be reported.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_hands_on_exercise_diagnosing_scrape_failures"><a class="anchor" href="#_hands_on_exercise_diagnosing_scrape_failures"></a>Hands-on Exercise: Diagnosing Scrape Failures</h3>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>Access to the OpenShift cluster via <code>oc</code> CLI</p>
+</li>
+<li>
+<p>Access to the <code>openstackclient</code> pod via <code>oc rsh</code></p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Steps</div>
+<ol class="arabic">
+<li>
+<p>Check the controlplane scrape configuration:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get scrapeconfig telemetry-ceilometer -ojsonpath --template "{.spec.scheme}"
+oc get scrapeconfig telemetry-ceilometer -ojsonpath --template "{.spec.staticConfigs..targets}" | jq</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Check the dataplane scrape configuration:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get scrapeconfig telemetry-ceilometer-compute-prom-exporter-tls -ojsonpath --template "{.spec.scheme}"
+oc get scrapeconfig telemetry-ceilometer-compute-prom-exporter-tls -ojsonpath --template "{.spec.staticConfigs..targets}" | jq</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Check whether the targets are up in Prometheus:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack metric show up --disable-rbac -c value -c job | grep ceilometer</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>For any target with a value of <code>0</code>, query the Prometheus targets API to see the error details:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient curl https://metric-storage-prometheus.openstack.svc:9090/api/v1/targets?scrapePool=scrapeConfig/openstack/telemetry-ceilometer | jq ".data.activeTargets"</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Examine the <code>lastError</code> and <code>health</code> fields to determine the root cause.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<div class="title">Expected Outcome</div>
+<p>All Ceilometer scrape targets show a value of <code>1</code> (up). If any target is down, the <code>lastError</code> field provides the specific reason for the failure, guiding the next resolution step.</p>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
