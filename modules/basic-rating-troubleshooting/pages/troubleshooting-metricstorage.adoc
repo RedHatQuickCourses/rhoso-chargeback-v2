@@ -1,0 +1,207 @@
+#  Troubleshooting MetricStorage
+
+MetricStorage manages the Prometheus instance that stores all collected metrics. If MetricStorage is not running correctly, no metrics will be available to the Rating service or to Ceilometer scrape targets.
+
+== MetricStorage Is Not Running Correctly
+
+=== Description
+
+The MetricStorage CR exists but its status conditions indicate problems. This prevents Prometheus from being deployed, which blocks the entire metric pipeline.
+
+=== Diagnosis
+
+Check that the MetricStorage CR exists and see its status:
+
+[source,bash]
+----
+oc get metricstorage
+----
+
+The output should show `STATUS: True` and `MESSAGE: Setup complete`. If the message is different, it will often tell you what is wrong.
+
+For more detailed information, inspect the status conditions:
+
+[source,bash]
+----
+oc get metricstorage metric-storage -ojsonpath --template "{.status.conditions}" | jq
+----
+
+Look for conditions with `status: "False"`. The `message` and `reason` fields provide diagnostic information. For example, a message mentioning "customresourcedefinitions.apiextensions.k8s.io \"monitoringstacks.monitoring.rhobs\" not found" indicates that the Cluster Observability Operator is not installed.
+
+=== Resolution
+
+*   Read the condition messages carefully. They often suggest the solution directly.
+*   If the message indicates that the Cluster Observability Operator is not installed, see the "Cluster Observability Operator (COO) Is Not Installed" issue below.
+*   If the message points to a different issue (e.g., network attachments, TLS), address the specific component mentioned in the condition.
+
+=== Hands-on Exercise: Inspecting MetricStorage Status
+
+.Prerequisites
+*   Access to the OpenShift cluster via `oc` CLI
+
+.Steps
+. Check whether the MetricStorage CR exists:
++
+[source,bash]
+----
+oc get metricstorage
+----
+
+. If the CR exists but is not ready, inspect the detailed status conditions:
++
+[source,bash]
+----
+oc get metricstorage metric-storage -ojsonpath --template "{.status.conditions}" | jq
+----
+
+. Identify any conditions with `status: "False"` and read the `message` and `reason` fields.
+
+. Based on the message, determine the root cause (e.g., missing operator, configuration error, network issue).
+
+.Expected Outcome
+
+You can identify the specific condition preventing MetricStorage from reaching "Setup complete" and determine the appropriate resolution step.
+
+== MetricStorage Is Not Enabled
+
+=== Description
+
+MetricStorage is not deployed because it is not enabled in the controlplane CR. Without MetricStorage, there is no Prometheus instance to store metrics.
+
+=== Diagnosis
+
+Check that telemetry and MetricStorage are enabled:
+
+[source,bash]
+----
+oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.enabled}" | jq
+oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.metricStorage.enabled}" | jq
+----
+
+Both should return `true`.
+
+=== Resolution
+
+If either value is `false`, edit the controlplane CR and set them to `true`:
+
+*   `.spec.telemetry.enabled: true`
+*   `.spec.telemetry.template.metricStorage.enabled: true`
+
+=== Hands-on Exercise: Enabling MetricStorage
+
+.Prerequisites
+*   Access to the OpenShift cluster via `oc` CLI
+*   Permissions to edit the OpenStackControlPlane CR
+
+.Steps
+. Verify the current state of the telemetry and MetricStorage flags:
++
+[source,bash]
+----
+oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.enabled}" | jq
+oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.metricStorage.enabled}" | jq
+----
+
+. If either returns `false`, edit the controlplane CR to enable them.
+
+. After editing, verify that the MetricStorage CR is created and reaches the "Setup complete" state:
++
+[source,bash]
+----
+oc get metricstorage
+----
+
+.Expected Outcome
+
+MetricStorage is enabled and deployed, with the `MESSAGE` showing "Setup complete".
+
+== Cluster Observability Operator (COO) Is Not Installed
+
+=== Description
+
+MetricStorage depends on the Cluster Observability Operator (COO) to manage MonitoringStack resources. If COO is not installed, MetricStorage cannot function and its status conditions will show an error about missing `monitoringstacks.monitoring.rhobs` CRD.
+
+=== Diagnosis
+
+Check whether COO is installed by looking at the MetricStorage status conditions:
+
+[source,bash]
+----
+oc get metricstorage metric-storage -ojsonpath --template "{.status.conditions}" | jq
+----
+
+If the `reason` field says "Can't own MonitoringStack resource. The Cluster Observability Operator probably isn't installed", COO needs to be installed.
+
+=== Resolution
+
+Install COO by creating a Subscription CR (create the `openshift-operators` namespace first if it does not exist):
+
+[source,bash]
+----
+oc create -f - <<EOF
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: cluster-observability-operator
+  namespace: openshift-operators
+spec:
+  channel: stable
+  installPlanApproval: Automatic
+  name: cluster-observability-operator
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+EOF
+----
+
+After installation, MetricStorage should automatically reconcile and reach the "Setup complete" state.
+
+=== Hands-on Exercise: Installing the Cluster Observability Operator
+
+.Prerequisites
+*   Access to the OpenShift cluster via `oc` CLI
+*   Cluster admin permissions to install operators
+
+.Steps
+. Confirm that COO is not installed by checking the MetricStorage conditions:
++
+[source,bash]
+----
+oc get metricstorage metric-storage -ojsonpath --template "{.status.conditions}" | jq
+----
+
+. Install COO using the Subscription CR:
++
+[source,bash]
+----
+oc create -f - <<EOF
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: cluster-observability-operator
+  namespace: openshift-operators
+spec:
+  channel: stable
+  installPlanApproval: Automatic
+  name: cluster-observability-operator
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+EOF
+----
+
+. Wait for the operator to install and verify:
++
+[source,bash]
+----
+oc get csv -n openshift-operators | grep observability
+----
+
+. Verify that MetricStorage recovers:
++
+[source,bash]
+----
+oc get metricstorage
+----
+
+.Expected Outcome
+
+COO is installed, and MetricStorage reaches the "Setup complete" state.

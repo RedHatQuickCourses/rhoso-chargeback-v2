@@ -1,0 +1,8 @@
+#  Basic Rating Troubleshooting
+
+Key Points:
+
+*   **RHOSO Observability components are up and running**: Ensure RHOSO Observability is correctly enabled and operational
+*   **Inspect CloudKitty status and configuration**: Examine logs and status messages of Rating components for errors. Pay attention to clear messages that indicate specific problems, such as uninstalled dependencies or configuration issues.
+*   **Ceilometer is operational**: Verify that all required metric sources are being scraped successfully via `ScrapeConfig` resources. Missing or incorrect metric data will lead to inaccurate charge calculations.
+*   **Loki is operational**: Ensure that Loki is running and able to receive logs from the RHOSO Observability components.

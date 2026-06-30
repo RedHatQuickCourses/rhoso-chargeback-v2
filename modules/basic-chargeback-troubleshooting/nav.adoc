@@ -1,5 +1,0 @@
-* xref:basic-chargeback-troubleshooting.adoc[]
-** xref:identifying-common-issues-during-chargeback-configuration.adoc[]
-** xref:diagnosing-incorrect-charge-calculations.adoc[]
-** xref:analyzing-logs-for-chargeback-components.adoc[]
-** xref:best-practices-for-maintaining-chargeback-accuracy.adoc[]

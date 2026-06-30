@@ -1,0 +1,444 @@
+#  Troubleshooting Rating and CloudKitty Configuration
+
+Once CloudKitty is deployed and running, configuration issues can lead to missing or incorrect ratings. This section covers problems where CloudKitty is operational but the rating data it produces is not as expected.
+
+== CloudKitty Is Not Configured Correctly
+
+=== Description
+
+CloudKitty is running and responding to commands, but the rating summary shows problems: expected metrics are missing, quantities are incorrect, or all rates are zero.
+
+=== Diagnosis
+
+Retrieve the rating summary grouped by type:
+
+[source,bash]
+----
+oc rsh openstackclient openstack rating --rating-api-version 2 summary get -g type
+----
+
+Example output:
+
+----
++---------------------------+---------------------------+--------------------+---------------------+-----------------------------------+
+| Begin                     | End                       |                Qty |                Rate | Type                              |
++---------------------------+---------------------------+--------------------+---------------------+-----------------------------------+
+| 2026-01-01T00:00:00+00:00 | 2026-02-01T00:00:00+00:00 |           132942.0 |                 0.0 | ceilometer_network_incoming_bytes |
+| 2026-01-01T00:00:00+00:00 | 2026-02-01T00:00:00+00:00 |               19.0 | 0.19000000000000003 | instance                          |
++---------------------------+---------------------------+--------------------+---------------------+-----------------------------------+
+----
+
+Analyze the output for these symptoms:
+
+*   *A metric is completely missing from the list*: The metric may not be configured in `metrics.yaml`, or it may be missing from the metric store. See the "Incorrect metrics.yaml Contents" issue below or xref:troubleshooting-metric-collection-and-availability.adoc[].
+*   *Qty is not as expected*: There may be an issue with the metric data in the store or the `metrics.yaml` configuration.
+*   *All rates are 0 even though Qty is not 0*: The hashmap module may be disabled. See the "Hashmap Module Is Disabled" issue below.
+*   *A specific rate is 0 while others work*: Rating may not be configured for that particular metric. See the "Rating Configuration Is Missing" issue below.
+*   *A rate is not the expected value*: The rating mapping may be misconfigured. See the "Rating Configuration Is Incorrect" issue below.
+
+=== Resolution
+
+Follow the specific sub-issue identified through the analysis above.
+
+=== Hands-on Exercise: Interpreting Rating Summary Output
+
+.Prerequisites
+*   Access to the `openstackclient` pod via `oc rsh`
+*   CloudKitty deployed and responding to commands
+
+.Steps
+. Retrieve the rating summary:
++
+[source,bash]
+----
+oc rsh openstackclient openstack rating --rating-api-version 2 summary get -g type
+----
+
+. Examine the output and check for each of the symptoms described above:
+.. Are all expected metrics present in the `Type` column?
+.. Do the `Qty` values look reasonable for your deployment?
+.. Are any `Rate` values `0.0` when they should not be?
+
+. Based on your findings, proceed to the relevant issue section below.
+
+.Expected Outcome
+
+You can identify whether the rating data is correct, and if not, determine the specific symptom to guide further troubleshooting.
+
+== Hashmap Module Is Disabled
+
+=== Description
+
+The hashmap module is responsible for applying rating rules. If it is disabled, all rates will be zero regardless of the configured mappings.
+
+=== Diagnosis
+
+Check the status of the rating modules:
+
+[source,bash]
+----
+oc rsh openstackclient openstack rating module list
+----
+
+Example output:
+
+----
++-----------+---------+----------+
+| Module    | Enabled | Priority |
++-----------+---------+----------+
+| hashmap   | True    |      100 |
+| noop      | True    |        1 |
+| pyscripts | False   |        1 |
++-----------+---------+----------+
+----
+
+If the hashmap module shows `Enabled: False`, it needs to be enabled.
+
+=== Resolution
+
+Enable the hashmap module and set its priority:
+
+[source,bash]
+----
+oc rsh openstackclient openstack rating module enable hashmap
+oc rsh openstackclient openstack rating module set priority hashmap 100
+----
+
+=== Hands-on Exercise: Enabling the Hashmap Module
+
+.Prerequisites
+*   Access to the `openstackclient` pod via `oc rsh`
+
+.Steps
+. Check the current module status:
++
+[source,bash]
+----
+oc rsh openstackclient openstack rating module list
+----
+
+. If the hashmap module is disabled, enable it:
++
+[source,bash]
+----
+oc rsh openstackclient openstack rating module enable hashmap
+----
+
+. Set the priority to 100 to ensure it is processed before other modules:
++
+[source,bash]
+----
+oc rsh openstackclient openstack rating module set priority hashmap 100
+----
+
+. Verify the module is now enabled:
++
+[source,bash]
+----
+oc rsh openstackclient openstack rating module list
+----
+
+.Expected Outcome
+
+The hashmap module shows `Enabled: True` with `Priority: 100`. After the next rating period, rates should be calculated based on the configured hashmap mappings.
+
+== Incorrect metrics.yaml Contents
+
+=== Description
+
+The `metrics.yaml` file defines which metrics CloudKitty retrieves from Prometheus. If a metric is not listed in this file, CloudKitty will not process it, and it will not appear in the rating summary. A default configuration is provided, but adjustments are often needed for specific deployments.
+
+=== Diagnosis
+
+Retrieve the current contents of the `metrics.yaml` file from the CloudKitty proc pod:
+
+[source,bash]
+----
+oc rsh cloudkitty-proc-0 cat /etc/cloudkitty/metrics.yaml
+----
+
+Compare the metrics listed in this file against the metrics available in the metric store and the metrics you expect to rate.
+
+=== Resolution
+
+. Retrieve and save the current `metrics.yaml`:
++
+[source,bash]
+----
+oc rsh cloudkitty-proc-0 cat /etc/cloudkitty/metrics.yaml > metrics.yaml
+----
+
+. Edit the file in your preferred editor to add or correct metric definitions.
+
+. Create a Secret from the modified file:
++
+[source,bash]
+----
+oc create secret generic cloudkitty-proc-config-files-modified --from-file metrics.yaml
+----
+
+. Configure the Secret to be used by CloudKitty by editing the controlplane CR and setting `.spec.telemetry.template.cloudkitty.cloudKittyProc.customConfigsSecretName` to `cloudkitty-proc-config-files-modified`.
+
+The CloudKitty proc pod will restart and begin processing the newly added metrics.
+
+=== Hands-on Exercise: Inspecting and Correcting metrics.yaml
+
+.Prerequisites
+*   Access to the OpenShift cluster via `oc` CLI
+*   Permissions to edit the OpenStackControlPlane CR
+
+.Steps
+. Retrieve the current `metrics.yaml`:
++
+[source,bash]
+----
+oc rsh cloudkitty-proc-0 cat /etc/cloudkitty/metrics.yaml > metrics.yaml
+----
+
+. Review the file and identify any metrics that are missing or incorrectly configured.
+
+. Make the necessary edits to the local `metrics.yaml` file.
+
+. Create a Secret from the modified file:
++
+[source,bash]
+----
+oc create secret generic cloudkitty-proc-config-files-modified --from-file metrics.yaml
+----
+
+. Update the controlplane CR to reference the new Secret by setting `.spec.telemetry.template.cloudkitty.cloudKittyProc.customConfigsSecretName` to `cloudkitty-proc-config-files-modified`.
+
+. Wait for the CloudKitty proc pod to restart and verify the changes:
++
+[source,bash]
+----
+oc rsh openstackclient openstack rating --rating-api-version 2 summary get -g type
+----
+
+.Expected Outcome
+
+The previously missing metrics now appear in the rating summary, confirming that the updated `metrics.yaml` is being used by CloudKitty.
+
+== Rating Configuration Is Missing
+
+=== Description
+
+No hashmap services, fields, or mappings have been created for a metric, so it appears in the rating summary with a rate of zero. The metric is being collected and processed, but no pricing rules are defined for it.
+
+=== Diagnosis
+
+Check which metrics have rating rules configured:
+
+[source,bash]
+----
+oc rsh openstackclient openstack rating hashmap service list
+----
+
+If a metric that should be rated is missing from this list, rating rules need to be created for it.
+
+=== Resolution
+
+Create hashmap rating rules for the missing metric. The following example creates a flat-rate rule for an instance metric based on flavor:
+
+. Create a hashmap group:
++
+[source,bash]
+----
+oc rsh openstackclient openstack rating hashmap group create instance_uptime_flavor_id
+----
+
+. Add a service to be rated (replace `instance` with the metric name):
++
+[source,bash]
+----
+oc rsh openstackclient openstack rating hashmap service create instance
+----
+
+. Optionally, create a field matching rule to distinguish between resource variants (e.g., different flavors):
++
+[source,bash]
+----
+oc rsh openstackclient openstack rating hashmap field create <service_id> flavor_id
+----
+
+. Retrieve a value to match (e.g., a flavor ID):
++
+[source,bash]
+----
+oc rsh openstackclient openstack flavor show m1.tiny | grep id
+----
+
+. Create a cost mapping:
++
+[source,bash]
+----
+oc rsh openstackclient openstack rating hashmap mapping create 0.01 \
+  --field-id <field_id> \
+  --value <flavor_id> \
+  -g <group_id> \
+  -t flat
+----
+
+=== Hands-on Exercise: Creating a Basic Rating Configuration
+
+.Prerequisites
+*   Access to the `openstackclient` pod via `oc rsh`
+*   CloudKitty deployed and operational
+
+.Steps
+. List the currently rated services:
++
+[source,bash]
+----
+oc rsh openstackclient openstack rating hashmap service list
+----
+
+. Create a hashmap group for the new rating rule:
++
+[source,bash]
+----
+oc rsh openstackclient openstack rating hashmap group create instance_uptime_flavor_id
+----
++
+Note the `Group ID` from the output.
+
+. Create a service for the metric to be rated:
++
+[source,bash]
+----
+oc rsh openstackclient openstack rating hashmap service create instance
+----
++
+Note the `Service ID` from the output.
+
+. Create a field to match on (e.g., `flavor_id`):
++
+[source,bash]
+----
+oc rsh openstackclient openstack rating hashmap field create <service_id> flavor_id
+----
++
+Note the `Field ID` from the output.
+
+. Retrieve the flavor ID to use in the mapping:
++
+[source,bash]
+----
+oc rsh openstackclient openstack flavor show m1.tiny | grep id
+----
+
+. Create a mapping with a cost of 0.01 per rating period:
++
+[source,bash]
+----
+oc rsh openstackclient openstack rating hashmap mapping create 0.01 \
+  --field-id <field_id> \
+  --value <flavor_id> \
+  -g <group_id> \
+  -t flat
+----
+
+. Verify the new service appears in the list:
++
+[source,bash]
+----
+oc rsh openstackclient openstack rating hashmap service list
+----
+
+.Expected Outcome
+
+The new service and mapping are created. After the next rating period, the metric will appear in the rating summary with a non-zero rate.
+
+== Rating Configuration Is Incorrect
+
+=== Description
+
+Rating mappings exist but contain wrong values (incorrect cost, wrong field, or wrong type). This results in rates that do not match the expected pricing.
+
+=== Diagnosis
+
+List the currently rated services:
+
+[source,bash]
+----
+oc rsh openstackclient openstack rating hashmap service list
+----
+
+For the service in question, list its mappings:
+
+[source,bash]
+----
+oc rsh openstackclient openstack rating hashmap mapping list -s <service_id>
+----
+
+Review the `Cost`, `Value`, `Type`, and `Field ID` columns to determine if any values are incorrect.
+
+=== Resolution
+
+Changing a rating rule that is already in effect is not supported. Delete the incorrect mapping and create a new one with the correct values:
+
+[source,bash]
+----
+oc rsh openstackclient openstack rating hashmap mapping delete <mapping_id>
+----
+
+Then create a new mapping with the correct values following the procedure in the "Rating Configuration Is Missing" section above.
+
+=== Hands-on Exercise: Correcting Rating Mappings
+
+.Prerequisites
+*   Access to the `openstackclient` pod via `oc rsh`
+*   At least one hashmap service and mapping already configured
+
+.Steps
+. List the rated services:
++
+[source,bash]
+----
+oc rsh openstackclient openstack rating hashmap service list
+----
+
+. List the mappings for a specific service:
++
+[source,bash]
+----
+oc rsh openstackclient openstack rating hashmap mapping list -s <service_id>
+----
+
+. Identify the incorrect mapping and note its `Mapping ID`.
+
+. Delete the incorrect mapping:
++
+[source,bash]
+----
+oc rsh openstackclient openstack rating hashmap mapping delete <mapping_id>
+----
+
+. Recreate the mapping with the correct values:
++
+[source,bash]
+----
+oc rsh openstackclient openstack rating hashmap mapping create <correct_cost> \
+  --field-id <field_id> \
+  --value <value> \
+  -g <group_id> \
+  -t flat
+----
+
+. Verify the corrected mapping:
++
+[source,bash]
+----
+oc rsh openstackclient openstack rating hashmap mapping list -s <service_id>
+----
+
+. After the next rating period, verify the rate is correct:
++
+[source,bash]
+----
+oc rsh openstackclient openstack rating --rating-api-version 2 summary get -g type
+----
+
+.Expected Outcome
+
+The incorrect mapping is replaced with the correct one, and subsequent rating periods produce the expected rates.
