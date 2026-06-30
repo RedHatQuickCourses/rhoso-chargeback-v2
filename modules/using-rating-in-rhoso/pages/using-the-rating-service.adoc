@@ -1,0 +1,11 @@
+#  Using the Rating Service
+
+The rating service (CloudKitty) enables users to apply rating rules to cloud resources consumption to determine associated costs.
+
+Key points:
+
+*   **Understand rating concepts**: Familiarize yourself with the fundamental concepts of rating, rating rules and rating modules.
+*   **Configure the Hashmap module**: how to configure the Rating service to use the Hashmap module.
+*   **Define collected metrics**: How to specify which metrics should be collected for rating purposes.
+*   **Rating Rules**: How to create and manage rating rules.
+*   **Retrieve resources consumption data**: How to access to the rated data.

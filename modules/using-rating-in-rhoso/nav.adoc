@@ -1,0 +1,6 @@
+* xref:using-the-rating-service.adoc[]
+** xref:understanding-rating-concepts.adoc[]
+** xref:how-to-configure-rating-module.adoc[]
+** xref:how-to-define-collected-metrics.adoc[]
+** xref:how-to-create-and-manage-rating-rules.adoc[]
+** xref:how-to-retrieve-resources-consumption.adoc[]
