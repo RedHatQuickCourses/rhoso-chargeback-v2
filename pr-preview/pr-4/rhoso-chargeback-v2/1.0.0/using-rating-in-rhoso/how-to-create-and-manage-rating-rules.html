@@ -300,7 +300,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec openstackclient -- openstack rating hashmap group create &lt;group_name&gt;</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec openstackclient -n openstack -- openstack rating hashmap group create &lt;group_name&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -308,7 +308,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec openstackclient -- openstack rating hashmap service create instance_uptime_flavor_id</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec openstackclient  -n openstack -- openstack rating hashmap service create instance_uptime_flavor_id</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -333,7 +333,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec openstackclient -- openstack rating info config get -f yaml</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec openstackclient -n openstack -- openstack rating info config get -f yaml</code></pre>
 </div>
 </div>
 </div>
@@ -344,7 +344,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec openstackclient -- openstack rating hashmap service create &lt;metric_name&gt;</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec openstackclient -n openstack -- openstack rating hashmap service create &lt;metric_name&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -352,7 +352,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec openstackclient -- openstack rating hashmap service create instance</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec openstackclient -n openstack -- openstack rating hashmap service create instance</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -386,7 +386,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec openstackclient -- openstack rating hashmap field create &lt;service_id&gt; &lt;field_name&gt;</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec openstackclient -n openstack -- openstack rating hashmap field create &lt;service_id&gt; &lt;field_name&gt;</code></pre>
 </div>
 </div>
 <div class="olist arabic">
@@ -421,7 +421,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec openstackclient -- openstack rating hashmap mapping create &lt;cost&gt; \
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec openstackclient -n openstack -- openstack rating hashmap mapping create &lt;cost&gt; \
  [--field-id &lt;field_id&gt; --value &lt;service_type_id&gt; \ ]
  -s &lt;service_id&gt; \
  -g &lt;group_id&gt;\
@@ -442,7 +442,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc exec openstackclient -- openstack rating hashmap field list &lt;service_id&gt;</code></pre>
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc exec openstackclient -n openstack -- openstack rating hashmap field list &lt;service_id&gt;</code></pre>
 </div>
 </div>
 </dd>
@@ -493,7 +493,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec openstackclient -- openstack rating hashmap threshold create &lt;threshold_level&gt; &lt;rate&gt; \
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec openstackclient -n openstack -- openstack rating hashmap threshold create &lt;threshold_level&gt; &lt;rate&gt; \
  -s &lt;service_id&gt; \
  -t rate -g &lt;group_id&gt; \
  -p &lt;project_id&gt;</code></pre>

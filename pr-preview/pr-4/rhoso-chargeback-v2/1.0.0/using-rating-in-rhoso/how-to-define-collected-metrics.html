@@ -269,7 +269,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh cloudkitty-proc-0 cat /etc/cloudkitty/metrics.yaml &gt; metrics.yaml</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh -n openstack cloudkitty-proc-0 cat /etc/cloudkitty/metrics.yaml &gt; metrics.yaml</code></pre>
 </div>
 </div>
 </div>
@@ -280,7 +280,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack metric list</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh -n openstack openstackclient  list</code></pre>
 </div>
 </div>
 </div>
@@ -426,23 +426,23 @@
 </div>
 </div>
 <div class="paragraph">
-<p>And the next example defines how the <code>openstack_nova_server_status</code> metric is collected, with a mutation to map the different status values to a binary value indicating whether the instance is active or not:</p>
+<p>And the next example defines how the <code>ceilometer_power_status</code> metric is collected, with a mutation to map the different status values to a binary value indicating whether the instance is on or not:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">metrics:
-  openstack_nova_server_status:
+  ceilometer_power_status:
     unit: instance
     mutate: MAP
     mutate_map:
-      0.0: 1.0  # ACTIVE
-      11.0: 1.0 # SHUTOFF
-      12.0: 1.0 # SUSPENDED
-      16.0: 1.0 # PAUSED
+      1: 1.0 # RUNNING
+      2: 0.0 # BLOCKED
+      3: 0.0 # PAUSED
+      4: 0.0 # SHUTDOWN
+      5: 0.0 # SHUTOFF
+      6: 0.0 # CRASHED
     groupby:
-      - id
-    metadata:
-      - flavor_id</code></pre>
+      - id</code></pre>
 </div>
 </div>
 </div>
@@ -515,7 +515,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc describe secret cloudkitty_secret</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc describe secret cloudkitty_secret -n openstack</code></pre>
 </div>
 </div>
 </div>
@@ -568,7 +568,7 @@ Always back up your CR definition before making any modifications. Incorrect cha
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh cloudkitty-proc-0 cat /etc/cloudkitty/metrics.yaml</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh -n openstack cloudkitty-proc-0 cat /etc/cloudkitty/metrics.yaml</code></pre>
 </div>
 </div>
 </div>
