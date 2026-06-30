@@ -1,0 +1,48 @@
+#  How to Retrieve Resources Consumption
+
+Once you have defined the metrics to be collected and created rating rules, you can retrieve the consumption data for your resources.
+
+This is easily done by executing the following command
+
+[source,bash]
+----
+oc exec -n openstack openstackclient -- openstack rating summary get -g <group_id> --filter <filter> \
+  -b <begin> -e <end>
+----
+
+For this command, we observe the following parameters:
+
+`<group_id>`::
+Specifies the ID of the attribute or time period to use to group the summary results. To specify a grouping by time, use one of the following options:
++
+--
+* `"time-d"`: Group data by day of the year.
+* `"time-w"`: Group data by week of the year.
+* `"time-m"`: Group data by month.
+* `"time-y"`: Group data by year.
+--
+
+`<filter>`::
+Specifies a filter in `"key:value"` format.
+
+`<begin>`::
+Specifies the start of the period to query in iso8601 format, for example, `2019-05-01T00:00:00Z`. If not set, the period begins on the 1st day of the month.
+
+`<end>`::
+Specifies the end of the period to query in iso8601 format, for example, `2019-06-01T00:00:00Z`. If not set, the period ends on the 1st day of the next month.
+
+## Generating Monthly Summaries
+
+The most common use case for extracting rated data is to generate a summary of consumption and associated costs for a specific period, typically a month.
+
+To generate a monthly summary, you can use the `openstack rating summary get` command with the appropriate date range. For example, to retrieve a summary for February 2026, you would run:
+
+[source,bash]
+----
+oc exec -n openstack openstackclient -- openstack rating summary get --begin 2026-02-01 --end 2026-03-01
+----
++
+This command queries CloudKitty for all rated data within the specified date range for the project associated with your current OpenStack authentication context.
+
+[TIP]
+For another example of how to retrieve CloudKitty rating data, you can refer to the uncut Asciinema recording: link:https://asciinema.org/a/P11NR7CEqfiewF4R[Chargeback Usage].

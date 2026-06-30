@@ -11,7 +11,7 @@ nav:
 
 - modules/enable-rating-in-rhoso/nav.adoc
 
-- modules/using-the-chargeback-feature/nav.adoc
+- modules/using-rating-in-rhoso/nav.adoc
 
 - modules/hands-on-lab-implementing-your-first-chargeback-rating/nav.adoc
 

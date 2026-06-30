@@ -1,0 +1,18 @@
+#  Understanding rating concepts
+
+== What is a Rating Rule
+
+A *rating rule* dictates how a specific resource or service consumption within an environment should be valued. 
+
+For example, if your organization aims to charge for the usage of virtual machines, a rating definition would specify that for every hour a VM is actively running, a certain value should be applied to the consuming project.
+
+The primary goal of a well-defined rating rule is to ensure that the incurred charges are fair, predictable and transparent.
+
+== What is a Rating Module
+
+A *rating module* defines how CloudKitty processes and applies rating rules to data. Several rating modules can be enabled at the same time. Data will be passed to the enabled modules consecutively. The module priority can be set through the API, and it determines the order in which they will process the data.
+
+. The `hashmap` allows to create rating rules based on metric metadatas.
+. The `pyscripts` rating module allows to rate data with custom Python scripts.
+
+WARNING: The `pyscripts` rating module is not advised and not supported. The `hashmap` rating module should be used instead, as it provides a more structured and maintainable way to create rating rules.

@@ -1,0 +1,180 @@
+#  How to Create and Manage Rating Rules
+
+== How Rating Rules Work
+
+Ratings Rules are automatically applied to your resources by creating mappings. A mapping tells the rating system exactly when and where a specific cost rule should be applied.
+
+There are two ways to set this up depending on how granular you need to be:
+
+=== 1. Field Mapping (Based on Specific Attributes)
+
+Use this when you want to change the rating based on a specific characteristic or configuration value of a resource.
+
+**How it works:** You target a specific field within a resource and apply different rates depending on what that field says.
+
+**Example 1:** If you want to charge different rates for virtual machine storage, you create a mapping for the `volume_type` field. You can then set one rate if the value is `High-Speed SSD` and a lower rate if the value is `Standard HDD`.
+
+**Example 2:** Mapping the `flavor` or `instance_type` field to charge $0.05/hr for a `t3.micro` vs. $0.20/hr for a `t3.large`.
+
+=== 2. Service Mapping (Based on the Total Metric)
+
+Use this when you want to link a rate directly to an entire service or usage metric, regardless of its specific configurations.
+
+**How it works:** You map the rating rule straight to the name of the service or the core metric being tracked.
+
+**Example 1:** Assigning a flat rate directly to a metric like `ceilometer_ip_floating`. You are charging for allocated public-facing addresses.
+
+**Example 2:** Associating a rate directly to a metric name like `ceilometer_storage_objects` to charge a flat fee per 1,000 operations.
+
+== Step-by-Step to Create a Rating Rule
+
+Creating a rating rule involves executing the following steps:
+
+1. Create the hashmap group
+2. Get the metrics collected by the rating service
+3. Create a hashmap service to map the matching rule to a specific metric
+4. (Optional) Create a field matching rule
+5. Create a hashmap mapping to that maps the service (created in 3.) to a cost
+6. (Optional) Create thresholds for mapping different costs based on usage or project
+
+Let's take a more detailed look into what this entails.
+
+=== 1. Create the hashmap group
+
+A group allows you to separate different sets of mapping calculations.
+
+For example, you might want one set of rules to rate virtual machine uptime and a completely different set to rate block storage volumes. To keep these calculations independent and unlinked, you would create a separate group for each one.
+
+[source,bash]
+----
+oc exec openstackclient -n openstack -- openstack rating hashmap group create <group_name>
+----
+
+e.g.
+
+[source,bash]
+----
+oc exec openstackclient  -n openstack -- openstack rating hashmap service create instance_uptime_flavor_id
+----
+
+[NOTE]
+====
+For the hashmap group creation, the `group_name` doesn't need to match the metric name being collected in Prometheus
+====
+
+=== 2. Get the metrics collected by the rating service
+
+Check out the metrics that are collected for your cloud by running the following command
+
+[source,bash]
+----
+oc exec openstackclient -n openstack -- openstack rating info config get -f yaml
+----
+
+=== 3. Create a hashmap service to map the matching rule to a specific metric
+
+A service connects specific rating rules to the type of data being collected. You must create one hashmap service for each metric type you want to rate.
+
+[source,bash]
+----
+oc exec openstackclient -n openstack -- openstack rating hashmap service create <metric_name>
+----
+
+e.g.
+
+[source,bash]
+----
+oc exec openstackclient -n openstack -- openstack rating hashmap service create instance
+----
+
+In the example given, `instance` is the default alt_name for `ceilometer_cpu` when mesuring how many instances of a specific flavor are in use.
+
+[WARNING]
+====
+For the hashmap service creation, the `metric_name` **must** match the `alt_name` associated with the metric. If no `alt_name` is defined, the `metric_name` **must** match the metric name. This is because it is possible to rate different aspects of the same resource type that is collected through the same metric (e.g. `ceilometer_cpu` instance flavor and `ceilometer_cpu` cpu time). Verify the name of the desired resource to measure by running the command in step 2.
+====
+
+=== 4. (Optional) Create a field matching rule
+
+A field refers to a specific piece of metadata belonging to a resource.
+
+For example, if you are working with a virtual machine (in the instance service), you can use its flavor (its size or configuration) to define specific rules.
+
+You can use any `metadata` attribute or `group by` property defined in your metric configuration as a field. For example, following with the virtual machine resource, the `flavor_id` could be used as a field.
+
+[source,bash]
+----
+oc exec openstackclient -n openstack -- openstack rating hashmap field create <service_id> <field_name>
+----
+
+. **`service_id`** specifies the ID of the service you created to map the matching rule to the metric type.
+
+. **`field_name`** specifies the name of the resource field on which to apply the rating. 
+
+[NOTE]
+====
+Check available fields to use as `field_name` by listing the metrics collected for your cloud (step 2) and looking at the `metadata` attributes or `group by` properties defined in your metric configuration.
+====
+
+=== 5. Create a hashmap mapping to that maps the service (created in 3.) to a cost
+
+A mapping is the final object, it's what triggers calculation, for example a specific value of flavor on an instance.
+
+[source,bash]
+----
+oc exec openstackclient -n openstack -- openstack rating hashmap mapping create <cost> \
+ [--field-id <field_id> --value <service_type_id> \ ]
+ -s <service_id> \
+ -g <group_id>\
+ -t <map_type>
+----
+
+`<cost>`::
+Specifies the actual cost for the rating period. The cost field has a precision of 12 digits for the integer and 28 digits for the decimal.
+
+`--field-id` and `--value`::
+Specify optional options to define the field value for the cost mapping. Replace `<field_id>` with the ID of the field and replace `<service_type_id>` with the ID of the resource of the field.
++
+Use the following command to retrieve the field ID:
++
+[source,shell]
+----
+oc exec openstackclient -n openstack -- openstack rating hashmap field list <service_id>
+----
+
+`<service_id>`::
+Specifies the ID of the service.
+
+`<group_id>`::
+Specifies the ID of the group.
+
+`<map_type>`::
+Specifies one of the following valid values:
++
+--
+* `flat`: Add the cost to the total for a given item. If several flat mappings of the same group match, only the most expensive one is applied.
+* `rate`: Multiplies the total cost by the rate.
+--
+
+`<start_date>`::
+Specifies the date from which the rating applies.
+
+`<end_date>`::
+Specifies the date the rating no longer applies.
+
+=== 6. (Optional) Create thresholds for mapping different costs based on usage or project
+
+A threshold entry is used to apply rating rules only after a specific level. Apart from that, it works the same way as a mapping.
+
+As for mappings, a threshold can be tied to a specific scope/project.
+
+[source,bash]
+----
+oc exec openstackclient -n openstack -- openstack rating hashmap threshold create <threshold_level> <rate> \
+ -s <service_id> \
+ -t rate -g <group_id> \
+ -p <project_id>
+----
+
+`<threshold_level>`::
+Specifies the level at which the threshold is applied. For example, if you want to apply a specific rate after 1000 compute hours, you would set the threshold level to 1000
