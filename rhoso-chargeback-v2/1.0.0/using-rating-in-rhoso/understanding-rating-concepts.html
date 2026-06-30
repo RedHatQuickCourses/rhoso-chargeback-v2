@@ -3,7 +3,9 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Lab Environment :: RHOSO Chargeback and Observability Fundamentals</title>
+    <title>Understanding rating concepts :: RHOSO Chargeback and Observability Fundamentals</title>
+    <link rel="prev" href="using-the-rating-service.html">
+    <link rel="next" href="how-to-configure-rating-module.html">
     <meta name="generator" content="Antora 3.1.3">
     <link rel="stylesheet" href="../../../_/css/site.css">
     <script>var uiRootPath = '../../../_'</script>
@@ -45,7 +47,7 @@
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="index.html">Lab Environment</a>
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
   </li>
 </ul>
   </li>
@@ -104,22 +106,22 @@
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="../using-rating-in-rhoso/using-the-rating-service.html">Using the Rating Service</a>
+    <a class="nav-link" href="using-the-rating-service.html">Using the Rating Service</a>
 <ul class="nav-list">
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="../using-rating-in-rhoso/understanding-rating-concepts.html">Understanding rating concepts</a>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="understanding-rating-concepts.html">Understanding rating concepts</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="../using-rating-in-rhoso/how-to-configure-rating-module.html">Step-by-Step to Configure CloudKitty with the Hashmap module</a>
+    <a class="nav-link" href="how-to-configure-rating-module.html">Step-by-Step to Configure CloudKitty with the Hashmap module</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="../using-rating-in-rhoso/how-to-define-collected-metrics.html">How to Define Collected Metrics</a>
+    <a class="nav-link" href="how-to-define-collected-metrics.html">How to Define Collected Metrics</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="../using-rating-in-rhoso/how-to-create-and-manage-rating-rules.html">How to Create and Manage Rating Rules</a>
+    <a class="nav-link" href="how-to-create-and-manage-rating-rules.html">How to Create and Manage Rating Rules</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="../using-rating-in-rhoso/how-to-retrieve-resources-consumption.html">How to Retrieve Resources Consumption</a>
+    <a class="nav-link" href="how-to-retrieve-resources-consumption.html">How to Retrieve Resources Consumption</a>
   </li>
 </ul>
   </li>
@@ -205,7 +207,8 @@
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></li>
-    <li><a href="index-lab-role.html">Lab Environment</a></li>
+    <li><a href="using-the-rating-service.html">Using the Rating Service</a></li>
+    <li><a href="understanding-rating-concepts.html">Understanding rating concepts</a></li>
   </ul>
 </nav>
 </div>
@@ -214,50 +217,55 @@
   <div class="toc-menu"></div>
 </aside>
 <article class="doc">
-<h1 class="page">Lab Environment</h1>
+<h1 class="page">Understanding rating concepts</h1>
 <div class="sect1">
-<h2 id="_instructions_to_launch_your_lab_on_the_red_hat_online_learning_role_platform"><a class="anchor" href="#_instructions_to_launch_your_lab_on_the_red_hat_online_learning_role_platform"></a>Instructions to Launch Your Lab on the Red Hat Online Learning (ROLE) Platform</h2>
+<h2 id="_what_is_a_rating_rule"><a class="anchor" href="#_what_is_a_rating_rule"></a>What is a Rating Rule</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>A <strong>rating rule</strong> dictates how a specific resource or service consumption within an environment should be valued.</p>
+</div>
+<div class="paragraph">
+<p>For example, if your organization aims to charge for the usage of virtual machines, a rating definition would specify that for every hour a VM is actively running, a certain value should be applied to the consuming project.</p>
+</div>
+<div class="paragraph">
+<p>The primary goal of a well-defined rating rule is to ensure that the incurred charges are fair, predictable and transparent.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_what_is_a_rating_module"><a class="anchor" href="#_what_is_a_rating_module"></a>What is a Rating Module</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A <strong>rating module</strong> defines how CloudKitty processes and applies rating rules to data. Several rating modules can be enabled at the same time. Data will be passed to the enabled modules consecutively. The module priority can be set through the API, and it determines the order in which they will process the data.</p>
+</div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Log in</strong> to the <a href="#ROLE-Portal-Links">ROLE platform</a></p>
+<p>The <code>hashmap</code> allows to create rating rules based on metric metadatas.</p>
 </li>
 <li>
-<p><strong>Search</strong> for the catalog entry: <strong>FIXME Lab Catalog Name</strong>.</p>
-</li>
-<li>
-<p><strong>Click</strong> on the <strong>Launch</strong> button for the catalog entry in the search results.</p>
-</li>
-<li>
-<p>On the Course page, <strong>click</strong> the <strong>Lab Environment</strong> tab.</p>
-</li>
-<li>
-<p>Click on the <strong>Create</strong> button on the Lab Environment page to launch the lab.</p>
-</li>
-<li>
-<p>Wait for the lab creation process to complete.</p>
-</li>
-<li>
-<p>When the lab is created, refer to the <strong>SSH Private Key &amp; Instructions</strong> on the page to access your lab.</p>
+<p>The <code>pyscripts</code> rating module allows to rate data with custom Python scripts.</p>
 </li>
 </ol>
 </div>
-<div class="sect2">
-<h3 id="ROLE-Portal-Links"><a class="anchor" href="#ROLE-Portal-Links"></a>ROLE Portal Links</h3>
-<div class="ulist">
-<ul>
-<li>
-<p>RedHat associates: <a href="https://role.rhu.redhat.com/rol-rhu/app/" target="_blank" rel="noopener">https://role.rhu.redhat.com/rol-rhu/app/</a></p>
-</li>
-<li>
-<p>RedHat partners: <a href="https://rol.redhat.com/rol/app" target="_blank" rel="noopener">https://rol.redhat.com/rol/app</a></p>
-</li>
-</ul>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+The <code>pyscripts</code> rating module is not advised and not supported. The <code>hashmap</code> rating module should be used instead, as it provides a more structured and maintainable way to create rating rules.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
-</div>
+<nav class="pagination">
+  <span class="prev"><a href="using-the-rating-service.html">Using the Rating Service</a></span>
+  <span class="next"><a href="how-to-configure-rating-module.html">Step-by-Step to Configure CloudKitty with the Hashmap module</a></span>
+</nav>
 </article>
   </div>
 </main>

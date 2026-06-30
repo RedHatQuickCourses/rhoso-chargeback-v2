@@ -3,7 +3,9 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Lab Environment :: RHOSO Chargeback and Observability Fundamentals</title>
+    <title>How to Retrieve Resources Consumption :: RHOSO Chargeback and Observability Fundamentals</title>
+    <link rel="prev" href="how-to-create-and-manage-rating-rules.html">
+    <link rel="next" href="../hands-on-lab-implementing-your-first-chargeback-rating/hands-on-lab-implementing-your-first-chargeback-rating.html">
     <meta name="generator" content="Antora 3.1.3">
     <link rel="stylesheet" href="../../../_/css/site.css">
     <script>var uiRootPath = '../../../_'</script>
@@ -45,7 +47,7 @@
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="index.html">Lab Environment</a>
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
   </li>
 </ul>
   </li>
@@ -104,22 +106,22 @@
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="../using-rating-in-rhoso/using-the-rating-service.html">Using the Rating Service</a>
+    <a class="nav-link" href="using-the-rating-service.html">Using the Rating Service</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="../using-rating-in-rhoso/understanding-rating-concepts.html">Understanding rating concepts</a>
+    <a class="nav-link" href="understanding-rating-concepts.html">Understanding rating concepts</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="../using-rating-in-rhoso/how-to-configure-rating-module.html">Step-by-Step to Configure CloudKitty with the Hashmap module</a>
+    <a class="nav-link" href="how-to-configure-rating-module.html">Step-by-Step to Configure CloudKitty with the Hashmap module</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="../using-rating-in-rhoso/how-to-define-collected-metrics.html">How to Define Collected Metrics</a>
+    <a class="nav-link" href="how-to-define-collected-metrics.html">How to Define Collected Metrics</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="../using-rating-in-rhoso/how-to-create-and-manage-rating-rules.html">How to Create and Manage Rating Rules</a>
+    <a class="nav-link" href="how-to-create-and-manage-rating-rules.html">How to Create and Manage Rating Rules</a>
   </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="../using-rating-in-rhoso/how-to-retrieve-resources-consumption.html">How to Retrieve Resources Consumption</a>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="how-to-retrieve-resources-consumption.html">How to Retrieve Resources Consumption</a>
   </li>
 </ul>
   </li>
@@ -205,7 +207,8 @@
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></li>
-    <li><a href="index-lab-role.html">Lab Environment</a></li>
+    <li><a href="using-the-rating-service.html">Using the Rating Service</a></li>
+    <li><a href="how-to-retrieve-resources-consumption.html">How to Retrieve Resources Consumption</a></li>
   </ul>
 </nav>
 </div>
@@ -214,50 +217,102 @@
   <div class="toc-menu"></div>
 </aside>
 <article class="doc">
-<h1 class="page">Lab Environment</h1>
-<div class="sect1">
-<h2 id="_instructions_to_launch_your_lab_on_the_red_hat_online_learning_role_platform"><a class="anchor" href="#_instructions_to_launch_your_lab_on_the_red_hat_online_learning_role_platform"></a>Instructions to Launch Your Lab on the Red Hat Online Learning (ROLE) Platform</h2>
+<h1 class="page">How to Retrieve Resources Consumption</h1>
+<div id="preamble">
 <div class="sectionbody">
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p><strong>Log in</strong> to the <a href="#ROLE-Portal-Links">ROLE platform</a></p>
-</li>
-<li>
-<p><strong>Search</strong> for the catalog entry: <strong>FIXME Lab Catalog Name</strong>.</p>
-</li>
-<li>
-<p><strong>Click</strong> on the <strong>Launch</strong> button for the catalog entry in the search results.</p>
-</li>
-<li>
-<p>On the Course page, <strong>click</strong> the <strong>Lab Environment</strong> tab.</p>
-</li>
-<li>
-<p>Click on the <strong>Create</strong> button on the Lab Environment page to launch the lab.</p>
-</li>
-<li>
-<p>Wait for the lab creation process to complete.</p>
-</li>
-<li>
-<p>When the lab is created, refer to the <strong>SSH Private Key &amp; Instructions</strong> on the page to access your lab.</p>
-</li>
-</ol>
+<div class="paragraph">
+<p>Once you have defined the metrics to be collected and created rating rules, you can retrieve the consumption data for your resources.</p>
 </div>
-<div class="sect2">
-<h3 id="ROLE-Portal-Links"><a class="anchor" href="#ROLE-Portal-Links"></a>ROLE Portal Links</h3>
+<div class="paragraph">
+<p>This is easily done by executing the following command</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating summary get -g &lt;group_id&gt; --filter &lt;filter&gt; \
+  -b &lt;begin&gt; -e &lt;end&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For this command, we observe the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>&lt;group_id&gt;</code></dt>
+<dd>
+<p>Specifies the ID of the attribute or time period to use to group the summary results. To specify a grouping by time, use one of the following options:</p>
+<div class="openblock">
+<div class="content">
 <div class="ulist">
 <ul>
 <li>
-<p>RedHat associates: <a href="https://role.rhu.redhat.com/rol-rhu/app/" target="_blank" rel="noopener">https://role.rhu.redhat.com/rol-rhu/app/</a></p>
+<p><code>"time-d"</code>: Group data by day of the year.</p>
 </li>
 <li>
-<p>RedHat partners: <a href="https://rol.redhat.com/rol/app" target="_blank" rel="noopener">https://rol.redhat.com/rol/app</a></p>
+<p><code>"time-w"</code>: Group data by week of the year.</p>
+</li>
+<li>
+<p><code>"time-m"</code>: Group data by month.</p>
+</li>
+<li>
+<p><code>"time-y"</code>: Group data by year.</p>
 </li>
 </ul>
 </div>
 </div>
 </div>
+</dd>
+<dt class="hdlist1"><code>&lt;filter&gt;</code></dt>
+<dd>
+<p>Specifies a filter in <code>"key:value"</code> format.</p>
+</dd>
+<dt class="hdlist1"><code>&lt;begin&gt;</code></dt>
+<dd>
+<p>Specifies the start of the period to query in iso8601 format, for example, <code>2019-05-01T00:00:00Z</code>. If not set, the period begins on the 1st day of the month.</p>
+</dd>
+<dt class="hdlist1"><code>&lt;end&gt;</code></dt>
+<dd>
+<p>Specifies the end of the period to query in iso8601 format, for example, <code>2019-06-01T00:00:00Z</code>. If not set, the period ends on the 1st day of the next month.</p>
+</dd>
+</dl>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_generating_monthly_summaries"><a class="anchor" href="#_generating_monthly_summaries"></a>Generating Monthly Summaries</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The most common use case for extracting rated data is to generate a summary of consumption and associated costs for a specific period, typically a month.</p>
+</div>
+<div class="paragraph">
+<p>To generate a monthly summary, you can use the <code>openstack rating summary get</code> command with the appropriate date range. For example, to retrieve a summary for February 2026, you would run:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating summary get --begin 2026-02-01 --end 2026-03-01</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>+
+This command queries CloudKitty for all rated data within the specified date range for the project associated with your current OpenStack authentication context.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+For another example of how to retrieve CloudKitty rating data, you can refer to the uncut Asciinema recording: <a href="https://asciinema.org/a/P11NR7CEqfiewF4R">Chargeback Usage</a>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="how-to-create-and-manage-rating-rules.html">How to Create and Manage Rating Rules</a></span>
+  <span class="next"><a href="../hands-on-lab-implementing-your-first-chargeback-rating/hands-on-lab-implementing-your-first-chargeback-rating.html">Hands-on Lab: Implementing Your First Chargeback Rating</a></span>
+</nav>
 </article>
   </div>
 </main>
