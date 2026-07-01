@@ -229,13 +229,19 @@
 <p><strong>RHOSO Observability components are up and running</strong>: Ensure RHOSO Observability is correctly enabled and operational</p>
 </li>
 <li>
-<p><strong>Inspect CloudKitty status and configuration</strong>: Examine logs and status messages of Rating components for errors. Pay attention to clear messages that indicate specific problems, such as uninstalled dependencies or configuration issues.</p>
-</li>
-<li>
 <p><strong>Ceilometer is operational</strong>: Verify that all required metric sources are being scraped successfully via <code>ScrapeConfig</code> resources. Missing or incorrect metric data will lead to inaccurate charge calculations.</p>
 </li>
 <li>
-<p><strong>Loki is operational</strong>: Ensure that Loki is running and able to receive logs from the RHOSO Observability components.</p>
+<p><strong>Prometheus is operational</strong>: Confirm that Prometheus is running and able to scrape metrics from the RHOSO Observability components.</p>
+</li>
+<li>
+<p><strong>Inspect CloudKitty status and configuration</strong>: Examine logs and status messages of Rating components for errors. Pay attention to clear messages that indicate specific problems, such as uninstalled dependencies or configuration issues.</p>
+</li>
+<li>
+<p><strong>Loki is operational</strong>: Ensure that Loki is running and able to receive data from the RHOSO Observability components.</p>
+</li>
+<li>
+<p><strong>Training exercises</strong>: Extra hands-on exercises are provided to help you verify the status of the components and troubleshoot any issues.</p>
 </li>
 </ul>
 </div>
