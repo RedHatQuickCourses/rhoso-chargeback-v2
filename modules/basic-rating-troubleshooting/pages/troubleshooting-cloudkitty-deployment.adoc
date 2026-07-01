@@ -1,0 +1,363 @@
+#  Troubleshooting CloudKitty Deployment
+
+CloudKitty is the Rating service. If it fails to deploy, no rating or charge calculations can take place. CloudKitty depends on several prerequisites including MetricStorage, Loki, and their underlying operators. This section covers CloudKitty deployment-related issues.
+
+== CloudKitty Is Not Getting Deployed
+
+=== Description
+
+The CloudKitty CR exists but its status conditions show errors, preventing the Rating service from starting. Common causes include missing prerequisites such as the Prometheus endpoint secret (created by MetricStorage) or Loki not being ready.
+
+=== Diagnosis
+
+Check whether the CloudKitty CR exists:
+
+[source,bash]
+----
+oc get cloudkitty
+----
+
+Inspect the status conditions for errors:
+
+[source,bash]
+----
+oc get cloudkitty cloudkitty -ojsonpath --template "{.status.conditions}" | jq
+----
+
+Look for conditions with `status: "False"`. Common error patterns include:
+
+*   `PrometheusEndpoint secret metric-storage-prometheus-endpoint not found` — MetricStorage has not been created or is not ready. See xref:troubleshooting-metricstorage.adoc[].
+*   `CloudKittyLokiStackReady` showing `status: "False"` — Loki is not running correctly. See the "Loki Is Not Running Correctly" issue below.
+
+=== Resolution
+
+*   Address the specific prerequisite issue indicated in the condition message.
+*   If the MetricStorage secret is missing, ensure MetricStorage is deployed and ready first.
+*   If the LokiStack is not ready, troubleshoot Loki (see below).
+*   Once prerequisites are resolved, CloudKitty should automatically reconcile.
+
+=== Hands-on Exercise: Diagnosing CloudKitty Deployment Failures
+
+.Prerequisites
+*   Access to the OpenShift cluster via `oc` CLI
+
+.Steps
+. Check whether the CloudKitty CR exists:
++
+[source,bash]
+----
+oc get cloudkitty
+----
+
+. Inspect the detailed status conditions:
++
+[source,bash]
+----
+oc get cloudkitty cloudkitty -ojsonpath --template "{.status.conditions}" | jq
+----
+
+. Identify conditions with `status: "False"` and read the `message` and `reason` fields.
+
+. Determine which prerequisite is failing (MetricStorage, Loki, database, etc.) and follow the corresponding troubleshooting section.
+
+.Result
+*   You can identify the specific prerequisite blocking CloudKitty deployment and determine the next troubleshooting step.
+
+== CloudKitty Is Not Enabled
+
+=== Description
+
+CloudKitty is not deployed because it is not enabled in the controlplane CR. Without enabling CloudKitty, the Rating service will not be created.
+
+=== Diagnosis
+
+Check that telemetry and CloudKitty are enabled:
+
+[source,bash]
+----
+oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.enabled}" | jq
+oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.cloudkitty.enabled}" | jq
+----
+
+Both should return `true`.
+
+=== Resolution
+
+If either value is `false`, edit the controlplane CR and set them to `true`:
+
+*   `.spec.telemetry.enabled: true`
+*   `.spec.telemetry.template.cloudkitty.enabled: true`
+
+=== Hands-on Exercise: Enabling CloudKitty
+
+.Prerequisites
+*   Access to the OpenShift cluster via `oc` CLI
+*   Permissions to edit the OpenStackControlPlane CR
+
+.Steps
+. Check the current state of the telemetry and CloudKitty flags:
++
+[source,bash]
+----
+oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.enabled}" | jq
+oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.cloudkitty.enabled}" | jq
+----
+
+. If either returns `false`, edit the controlplane CR to enable them.
+
+. Verify that the CloudKitty CR is created:
++
+[source,bash]
+----
+oc get cloudkitty
+----
+
+.Result
+*   CloudKitty is enabled and the CR is created. If other prerequisites are met, CloudKitty should reach a ready state.
+
+== Loki Is Not Running Correctly
+
+=== Description
+
+CloudKitty uses Loki for log storage. If LokiStack is not healthy, the `CloudKittyLokiStackReady` condition will show `status: "False"`, blocking CloudKitty deployment.
+
+=== Diagnosis
+
+Check that the loki-operator is installed:
+
+[source,bash]
+----
+oc get csv | grep loki
+----
+
+Check that the LokiStack CR exists:
+
+[source,bash]
+----
+oc get lokistack
+----
+
+If it exists, inspect its status conditions:
+
+[source,bash]
+----
+oc get lokistack cloudkitty-lokistack -ojsonpath --template "{.status.conditions}" | jq
+----
+
+[NOTE]
+====
+The usage of conditions in LokiStack differs from OpenStack CRs. Look at the `lastTransitionTime` to determine the most recent state. Common issues include `MissingObjectStorageSecret` (S3 storage not configured) and `PendingComponents` (components still starting up).
+====
+
+=== Resolution
+
+*   If the loki-operator is not installed, see the "Loki Operator Is Not Installed" issue below.
+*   If the LokiStack shows `MissingObjectStorageSecret`, see the "S3 Storage Secret Is Misconfigured" issue below.
+*   If the LokiStack shows `PendingComponents`, wait for components to start. If the condition persists, check resource constraints on the cluster.
+
+=== Hands-on Exercise: Checking LokiStack Health
+
+.Prerequisites
+*   Access to the OpenShift cluster via `oc` CLI
+
+.Steps
+. Verify that the loki-operator is installed:
++
+[source,bash]
+----
+oc get csv | grep loki
+----
+
+. Check whether the LokiStack CR exists:
++
+[source,bash]
+----
+oc get lokistack
+----
+
+. Inspect the LokiStack status conditions:
++
+[source,bash]
+----
+oc get lokistack cloudkitty-lokistack -ojsonpath --template "{.status.conditions}" | jq
+----
+
+. Identify any conditions with `status: "True"` for `Degraded` or `status: "False"` for `Ready`, and read the `message` field for the root cause.
+
+.Result
+*   You can determine whether Loki is healthy or identify the specific issue (missing operator, missing S3 secret, pending components) that needs to be resolved.
+
+== Loki Operator Is Not Installed
+
+=== Description
+
+The loki-operator is a prerequisite for CloudKitty. Without it, the LokiStack CR cannot be created and the `CloudKittyLokiStackReady` condition will show an error about the missing `lokistacks.loki.grafana.com` CRD.
+
+=== Diagnosis
+
+Check the CloudKitty status conditions for the Loki-related error:
+
+[source,bash]
+----
+oc get cloudkitty cloudkitty -ojsonpath --template "{.status.conditions}" | jq | grep LokiStackReady -B 5
+----
+
+If the `reason` says "Can't own LokiStack resource. The loki-operator probably isn't installed", the operator needs to be installed.
+
+=== Resolution
+
+Install the loki-operator:
+
+[source,bash]
+----
+oc create -f - <<EOF
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: openshift-operators-redhat
+  labels:
+    name: openshift-operators-redhat
+---
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: loki-operator
+  namespace: openshift-operators-redhat
+spec:
+  upgradeStrategy: Default
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: loki-operator
+  namespace: openshift-operators-redhat
+spec:
+  channel: stable-6.4
+  installPlanApproval: Automatic
+  name: loki-operator
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+EOF
+----
+
+[IMPORTANT]
+====
+You will also need to configure S3 storage for Loki. See the "S3 Storage Secret Is Misconfigured" issue below.
+====
+
+=== Hands-on Exercise: Installing the Loki Operator
+
+.Prerequisites
+*   Access to the OpenShift cluster via `oc` CLI
+*   Cluster admin permissions to install operators
+
+.Steps
+. Confirm that the loki-operator is not installed:
++
+[source,bash]
+----
+oc get csv | grep loki
+----
+
+. Install the loki-operator using the manifests above.
+
+. Wait for the operator to install and verify:
++
+[source,bash]
+----
+oc get csv -n openshift-operators-redhat | grep loki
+----
+
+. Verify that CloudKitty starts reconciling:
++
+[source,bash]
+----
+oc get cloudkitty cloudkitty -ojsonpath --template "{.status.conditions}" | jq
+----
+
+.Result
+*   The loki-operator is installed and CloudKitty begins reconciling the LokiStack. If S3 storage is also configured, the LokiStack should reach a ready state.
+
+== S3 Storage Secret Is Misconfigured
+
+=== Description
+
+Loki requires an S3-compatible storage backend. The credentials for this storage must be provided in a Kubernetes Secret. If the secret is missing or contains incorrect values, LokiStack will show a `MissingObjectStorageSecret` condition and CloudKitty cannot deploy.
+
+=== Diagnosis
+
+Check the LokiStack status conditions for the S3-related error:
+
+[source,bash]
+----
+oc get lokistack cloudkitty-lokistack -ojsonpath --template "{.status.conditions}" | jq
+----
+
+Look for a condition with `reason: "MissingObjectStorageSecret"`.
+
+=== Resolution
+
+Create the S3 credentials secret:
+
+[source,yaml]
+----
+apiVersion: v1
+kind: Secret
+metadata:
+  name: logging-loki-s3
+stringData:
+  access_key_id: <your-access-key>
+  access_key_secret: <your-secret-key>
+  bucketnames: loki
+  endpoint: http://<your-s3-endpoint>
+----
+
+Then configure the secret name in the controlplane CR under `.spec.telemetry.template.cloudkitty.s3StorageConfig.secret.name`.
+
+[TIP]
+====
+For more information about configuring Loki storage, see the link:https://docs.redhat.com/en/documentation/red_hat_openshift_logging/6.4/html/configuring_logging/configuring-lokistack-storage#loki-sizing_configuring-the-log-store[OpenShift Logging documentation on LokiStack storage].
+====
+
+=== Hands-on Exercise: Configuring S3 Storage for Loki
+
+.Prerequisites
+*   Access to the OpenShift cluster via `oc` CLI
+*   An S3-compatible storage endpoint with valid credentials
+
+.Steps
+. Verify that the LokiStack is reporting a missing storage secret:
++
+[source,bash]
+----
+oc get lokistack cloudkitty-lokistack -ojsonpath --template "{.status.conditions}" | jq
+----
+
+. Create the S3 credentials secret (replace placeholder values with your actual credentials):
++
+[source,bash]
+----
+oc create -f - <<EOF
+apiVersion: v1
+kind: Secret
+metadata:
+  name: logging-loki-s3
+stringData:
+  access_key_id: minio
+  access_key_secret: minio123
+  bucketnames: loki
+  endpoint: http://minio.minio-dev.svc.cluster.local:9000
+EOF
+----
+
+. Configure the secret name in the controlplane CR by setting `.spec.telemetry.template.cloudkitty.s3StorageConfig.secret.name` to `logging-loki-s3`.
+
+. Verify that the LokiStack recovers:
++
+[source,bash]
+----
+oc get lokistack cloudkitty-lokistack -ojsonpath --template "{.status.conditions}" | jq
+----
+
+.Result
+*   The LokiStack no longer reports `MissingObjectStorageSecret` and moves toward the `Ready` state. CloudKitty should subsequently be able to deploy.

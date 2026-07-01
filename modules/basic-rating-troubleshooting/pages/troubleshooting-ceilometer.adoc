@@ -1,0 +1,250 @@
+#  Troubleshooting Ceilometer
+
+Ceilometer is one of the collectors for the Rating service. It collects usage data from OpenStack resources and exposes them as Prometheus metrics. If Ceilometer is not deployed, not exposing metrics, or Prometheus cannot scrape them, the Rating service will have no data to process.
+
+== Ceilometer Is Not Deployed Correctly
+
+=== Description
+
+Ceilometer may not be enabled or ready on the controlplane and/or the dataplane. This prevents metric collection from starting.
+
+=== Diagnosis
+
+Check that telemetry and Ceilometer are enabled and ready on the controlplane:
+
+[source,bash]
+----
+oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.enabled}" | jq
+oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.ceilometer.enabled}" | jq
+----
+
+Both should return `true`.
+
+Verify that the Telemetry and Ceilometer CRs are deployed and ready:
+
+[source,bash]
+----
+oc get telemetry
+oc get ceilometer
+----
+
+The `STATUS` column should show `True` and the `MESSAGE` column should state `Setup complete`. If the message does not state "Setup complete", it should point towards what is wrong and possibly suggest a solution.
+
+Check that Ceilometer was deployed on the dataplane. Ceilometer is deployed by the "telemetry" dataplane service:
+
+[source,bash]
+----
+oc get osdpns openstack-edpm-ipam -oyaml | grep ServiceTelemetryDeploymentReady -B 4
+----
+
+The output should show `status: "True"` and `message: Deployment ready for telemetry service`.
+
+=== Resolution
+
+*   If telemetry or Ceilometer is not enabled, edit the controlplane CR and set these fields to `true`.
+*   If the CR exists but is not ready, read the condition `message` and `reason` fields for guidance on what to fix.
+*   If Ceilometer is not deployed on the dataplane, verify that the "telemetry" service is included in the list of services for the nodeset.
+
+=== Hands-on Exercise: Verifying Ceilometer Deployment
+
+.Prerequisites
+*   Access to the OpenShift cluster via `oc` CLI
+
+.Steps
+. Verify that telemetry is enabled in the controlplane:
++
+[source,bash]
+----
+oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.enabled}" | jq
+----
+
+. Verify that Ceilometer is enabled:
++
+[source,bash]
+----
+oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.ceilometer.enabled}" | jq
+----
+
+. Check the Telemetry CR status:
++
+[source,bash]
+----
+oc get telemetry
+----
+
+. Check the Ceilometer CR status:
++
+[source,bash]
+----
+oc get ceilometer
+----
+
+. Verify Ceilometer deployment on the dataplane:
++
+[source,bash]
+----
+oc get osdpns openstack-edpm-ipam -oyaml | grep ServiceTelemetryDeploymentReady -B 4
+----
+
+.Result
+*   All commands confirm that telemetry and Ceilometer are enabled, deployed, and ready on both the controlplane and the dataplane.
+
+== Ceilometer Is Not Exposing Metrics
+
+=== Description
+
+Ceilometer is deployed and ready, but its agents are not serving metrics at their endpoints. This means Prometheus has nothing to scrape, even if the scrape configuration is correct.
+
+=== Diagnosis
+
+Check what the Ceilometer central agent is exposing:
+
+[source,bash]
+----
+oc rsh openstackclient curl https://ceilometer-internal.openstack.svc:3000/metrics
+----
+
+You should see `ceilometer_*` metric lines in the output. For example:
+
+----
+# HELP ceilometer_image_size
+# TYPE ceilometer_image_size gauge
+ceilometer_image_size{counter="image.size",image="98f26736-...",project="32268e96...",resource_name="cirros",unit="B"} 1.6300544e+07
+----
+
+Check what a Ceilometer compute agent is exposing (replace the IP address with the address of a compute node that has workloads running):
+
+[source,bash]
+----
+oc rsh openstackclient curl https://192.168.122.100:9101/metrics
+----
+
+You should see compute-related `ceilometer_*` metrics such as `ceilometer_disk_device_read_bytes` or `ceilometer_cpu`.
+
+=== Resolution
+
+*   If the central agent endpoint returns no `ceilometer_*` metrics even though controlplane resources (Glance images, Cinder volumes) exist, this likely indicates a bug that should be reported.
+*   If a compute agent endpoint returns no `ceilometer_*` metrics even though Nova servers are running on that node, this also likely indicates a bug.
+*   Verify that the correct ports are being used (3000 for central, 9101 for compute).
+
+=== Hands-on Exercise: Querying Ceilometer Endpoints
+
+.Prerequisites
+*   Access to the `openstackclient` pod via `oc rsh`
+*   At least one OpenStack resource exists (image, server, or volume)
+
+.Steps
+. Query the Ceilometer central agent endpoint:
++
+[source,bash]
+----
+oc rsh openstackclient curl https://ceilometer-internal.openstack.svc:3000/metrics
+----
+
+. Look for `ceilometer_*` metric lines in the output. If present, the central agent is exposing metrics correctly.
+
+. Identify a compute node IP that has workloads running and query its Ceilometer compute agent:
++
+[source,bash]
+----
+oc rsh openstackclient curl https://<compute-node-IP>:9101/metrics
+----
+
+. Look for compute-related `ceilometer_*` metrics in the output.
+
+.Result
+*   Both endpoints return `ceilometer_*` metrics. If metrics are missing from one or both endpoints despite resources existing, the issue may require a bug report.
+
+== Issues Scraping Ceilometer
+
+=== Description
+
+Ceilometer is running and exposing metrics at its endpoints, but the metrics are not available inside Prometheus. This indicates a problem with the scrape configuration or network connectivity between Prometheus and the Ceilometer endpoints.
+
+=== Diagnosis
+
+Verify that the scrape configurations exist and are correct:
+
+[source,bash]
+----
+oc get scrapeconfig telemetry-ceilometer -ojsonpath --template "{.spec.scheme}"
+oc get scrapeconfig telemetry-ceilometer -ojsonpath --template "{.spec.staticConfigs..targets}" | jq
+----
+
+The scheme should match your TLS configuration (e.g., `HTTPS`), and the target should point to the Ceilometer central agent endpoint.
+
+Check the dataplane scrape configuration:
+
+[source,bash]
+----
+oc get scrapeconfig telemetry-ceilometer-compute-prom-exporter-tls -ojsonpath --template "{.spec.scheme}"
+oc get scrapeconfig telemetry-ceilometer-compute-prom-exporter-tls -ojsonpath --template "{.spec.staticConfigs..targets}" | jq
+----
+
+Verify that all compute nodes are listed as targets.
+
+Check if the targets in Prometheus are up:
+
+[source,bash]
+----
+oc rsh openstackclient openstack metric show up --disable-rbac -c value -c job | grep ceilometer
+----
+
+The `telemetry-ceilometer` and `telemetry-ceilometer-compute-prom-exporter-tls` targets should have a value of `1`. If a target shows `0`, query the Prometheus targets API to see the error:
+
+[source,bash]
+----
+oc rsh openstackclient curl https://metric-storage-prometheus.openstack.svc:9090/api/v1/targets?scrapePool=scrapeConfig/openstack/telemetry-ceilometer | jq ".data.activeTargets"
+----
+
+Pay attention to the `lastError` field in the output.
+
+=== Resolution
+
+*   If the scheme is incorrect (e.g., `HTTP` when TLS is enabled), update the scrape configuration.
+*   If compute nodes are missing from the targets list, verify that the dataplane deployment includes the telemetry service.
+*   If the `lastError` indicates a connection timeout, check network connectivity and firewall rules between the Prometheus pod and the Ceilometer endpoints.
+*   If the `lastError` indicates a TLS error, verify that the certificates used by the scrape configuration are valid and match the ones used by the Ceilometer agents.
+*   If all configurations appear correct but scraping still fails, this likely indicates a bug that should be reported.
+
+=== Hands-on Exercise: Diagnosing Scrape Failures
+
+.Prerequisites
+*   Access to the OpenShift cluster via `oc` CLI
+*   Access to the `openstackclient` pod via `oc rsh`
+
+.Steps
+. Check the controlplane scrape configuration:
++
+[source,bash]
+----
+oc get scrapeconfig telemetry-ceilometer -ojsonpath --template "{.spec.scheme}"
+oc get scrapeconfig telemetry-ceilometer -ojsonpath --template "{.spec.staticConfigs..targets}" | jq
+----
+
+. Check the dataplane scrape configuration:
++
+[source,bash]
+----
+oc get scrapeconfig telemetry-ceilometer-compute-prom-exporter-tls -ojsonpath --template "{.spec.scheme}"
+oc get scrapeconfig telemetry-ceilometer-compute-prom-exporter-tls -ojsonpath --template "{.spec.staticConfigs..targets}" | jq
+----
+
+. Check whether the targets are up in Prometheus:
++
+[source,bash]
+----
+oc rsh openstackclient openstack metric show up --disable-rbac -c value -c job | grep ceilometer
+----
+
+. For any target with a value of `0`, query the Prometheus targets API to see the error details:
++
+[source,bash]
+----
+oc rsh openstackclient curl https://metric-storage-prometheus.openstack.svc:9090/api/v1/targets?scrapePool=scrapeConfig/openstack/telemetry-ceilometer | jq ".data.activeTargets"
+----
+
+. Examine the `lastError` and `health` fields to determine the root cause.
+
+.Result
+*   All Ceilometer scrape targets show a value of `1` (up). If any target is down, the `lastError` field provides the specific reason for the failure, guiding the next resolution step.

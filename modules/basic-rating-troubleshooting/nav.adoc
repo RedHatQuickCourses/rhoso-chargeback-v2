@@ -1,0 +1,6 @@
+* xref:basic-rating-troubleshooting.adoc[]
+** xref:troubleshooting-metric-collection-and-availability.adoc[]
+** xref:troubleshooting-ceilometer.adoc[]
+** xref:troubleshooting-metricstorage.adoc[]
+** xref:troubleshooting-cloudkitty-deployment.adoc[]
+** xref:troubleshooting-rating-and-cloudkitty-configuration.adoc[]

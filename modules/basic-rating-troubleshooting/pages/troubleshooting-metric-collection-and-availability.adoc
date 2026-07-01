@@ -1,0 +1,183 @@
+#  Troubleshooting Metric Collection and Availability
+
+Accurate rating depends on metrics being available in the metric store. If expected metrics are missing, the Rating service cannot generate correct charge data. This section covers common issues related to metric availability and collection.
+
+== Missing Metrics
+
+=== Description
+
+Metrics expected by the Rating service are not present in the metric store. This can manifest as missing entries in the rating summary or empty chargeback reports for certain resource types.
+
+=== Diagnosis
+
+List all available metrics and check whether the expected ones are present:
+
+[source,bash]
+----
+oc rsh openstackclient openstack metric list
+----
+
+You should see a list of metric names. Look for `ceilometer_*` metrics such as `ceilometer_cpu`, `ceilometer_image_size`, or `ceilometer_volume_size`.
+
+To inspect the details of an individual metric:
+
+[source,bash]
+----
+oc rsh openstackclient openstack metric show ceilometer_cpu
+----
+
+This shows all label values associated with the metric, including `project`, `resource`, `resource_name`, and `value`. Compare the output against what is configured in the `metrics.yaml` file to ensure the metric names match.
+
+=== Resolution
+
+*   If a metric is completely absent, verify that the related OpenStack resources exist (see the next issue).
+*   If the metric name does not match what is in `metrics.yaml`, update the configuration accordingly. See xref:troubleshooting-rating-and-cloudkitty-configuration.adoc[] for guidance on correcting `metrics.yaml`.
+*   If OpenStack resources exist but their metrics are still missing, there may be a problem with metric collection. See the "Metrics Are Not Being Collected" issue below.
+
+=== Hands-on Exercise: Diagnosing Missing Metrics
+
+.Prerequisites
+*   Access to the `openstackclient` pod via `oc rsh`
+
+.Steps
+. List all available metrics:
++
+[source,bash]
+----
+oc rsh openstackclient openstack metric list
+----
+
+. Filter the output for ceilometer metrics:
++
+[source,bash]
+----
+oc rsh openstackclient openstack metric list | grep ceilometer
+----
+
+. Pick a specific ceilometer metric and inspect its details:
++
+[source,bash]
+----
+oc rsh openstackclient openstack metric show ceilometer_image_size
+----
+
+. Compare the metric name and labels against the entries in the `metrics.yaml` configuration used by CloudKitty.
+
+.Result
+*   You can confirm whether the expected metrics are present in the metric store and whether their names match the CloudKitty configuration.
+
+== Related OpenStack Resources Are Missing
+
+=== Description
+
+Ceilometer generates metrics based on existing OpenStack resources. For example, `ceilometer_cpu` and `ceilometer_memory` metrics require a running server, `ceilometer_image_size` requires a Glance image, and `ceilometer_volume_size` requires a Cinder volume. If the related resources do not exist, no metrics will be produced.
+
+=== Diagnosis
+
+Check whether the related OpenStack resources exist:
+
+[source,bash]
+----
+oc rsh openstackclient openstack server list
+oc rsh openstackclient openstack image list
+oc rsh openstackclient openstack volume list
+----
+
+If any expected resource type returns an empty list, that explains why the corresponding ceilometer metrics are missing.
+
+=== Resolution
+
+*   Create the missing OpenStack resources (servers, images, volumes) as needed for the deployment.
+*   Once the resources exist, wait for the next ceilometer polling interval for the metrics to appear.
+
+=== Hands-on Exercise: Verifying OpenStack Resources
+
+.Prerequisites
+*   Access to the `openstackclient` pod via `oc rsh`
+
+.Steps
+. List all running servers:
++
+[source,bash]
+----
+oc rsh openstackclient openstack server list
+----
+
+. List all available images:
++
+[source,bash]
+----
+oc rsh openstackclient openstack image list
+----
+
+. List all volumes:
++
+[source,bash]
+----
+oc rsh openstackclient openstack volume list
+----
+
+. Cross-reference the results with the metrics you expect to see. For example, if you expect `ceilometer_cpu` metrics, verify that at least one server is running.
+
+.Result
+*   You can confirm that the OpenStack resources required for the expected metrics exist. If resources are missing, creating them should cause the corresponding metrics to appear after the next polling interval.
+
+== Metrics Are Not Being Collected
+
+=== Description
+
+The metric store returns metrics from Prometheus (e.g., `alertmanager_*`), but ceilometer metrics are absent even though the related OpenStack resources exist. This can affect all ceilometer metrics or only a subset (compute metrics or controlplane metrics).
+
+=== Diagnosis
+
+. Verify that the metric store is operational:
++
+[source,bash]
+----
+oc rsh openstackclient openstack metric list
+----
++
+If this returns metrics (even non-ceilometer ones), Prometheus is running.
+
+. Filter for ceilometer metrics specifically:
++
+[source,bash]
+----
+oc rsh openstackclient openstack metric list | grep ceilometer
+----
+
+. Analyze the output:
+*   *No ceilometer metrics at all*: There may be a problem with both the central and compute Ceilometer agents.
+*   *Only compute metrics missing*: The Ceilometer compute agent on the dataplane may not be deployed or functioning.
+*   *Only controlplane metrics missing*: The Ceilometer central agent may not be deployed or functioning.
+
+=== Resolution
+
+*   If no ceilometer metrics are present, check whether Ceilometer is deployed correctly. See xref:troubleshooting-ceilometer.adoc[].
+*   If Ceilometer is deployed, check whether it is exposing metrics and whether Prometheus is scraping them. See the "Ceilometer Is Not Exposing Metrics" and "Issues Scraping Ceilometer" sections in xref:troubleshooting-ceilometer.adoc[].
+
+=== Hands-on Exercise: Checking Ceilometer Metric Presence
+
+.Prerequisites
+*   Access to the `openstackclient` pod via `oc rsh`
+*   At least one OpenStack resource (server, image, or volume) exists
+
+.Steps
+. Verify that Prometheus metrics are available:
++
+[source,bash]
+----
+oc rsh openstackclient openstack metric list | head -20
+----
+
+. Check specifically for ceilometer metrics:
++
+[source,bash]
+----
+oc rsh openstackclient openstack metric list | grep ceilometer
+----
+
+. If no ceilometer metrics appear, determine whether compute-specific metrics (e.g., `ceilometer_cpu`, `ceilometer_memory`) or controlplane-specific metrics (e.g., `ceilometer_image_size`) are affected. This helps narrow down whether the issue is with the central agent, compute agents, or both.
+
+.Result
+*   You can determine whether ceilometer metrics are missing entirely or only partially, which points to the next troubleshooting step in the xref:troubleshooting-ceilometer.adoc[] section.
