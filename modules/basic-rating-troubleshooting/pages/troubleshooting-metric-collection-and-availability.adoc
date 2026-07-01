@@ -63,8 +63,7 @@ oc rsh openstackclient openstack metric show ceilometer_image_size
 
 . Compare the metric name and labels against the entries in the `metrics.yaml` configuration used by CloudKitty.
 
-_Expected Outcome_
-
+.Result
 You can confirm whether the expected metrics are present in the metric store and whether their names match the CloudKitty configuration.
 
 == Related OpenStack Resources Are Missing
@@ -120,8 +119,7 @@ oc rsh openstackclient openstack volume list
 
 . Cross-reference the results with the metrics you expect to see. For example, if you expect `ceilometer_cpu` metrics, verify that at least one server is running.
 
-_Expected Outcome_
-
+.Result
 You can confirm that the OpenStack resources required for the expected metrics exist. If resources are missing, creating them should cause the corresponding metrics to appear after the next polling interval.
 
 == Metrics Are Not Being Collected
@@ -181,6 +179,5 @@ oc rsh openstackclient openstack metric list | grep ceilometer
 
 . If no ceilometer metrics appear, determine whether compute-specific metrics (e.g., `ceilometer_cpu`, `ceilometer_memory`) or controlplane-specific metrics (e.g., `ceilometer_image_size`) are affected. This helps narrow down whether the issue is with the central agent, compute agents, or both.
 
-_Expected Outcome_
-
+.Result
 You can determine whether ceilometer metrics are missing entirely or only partially, which points to the next troubleshooting step in the xref:troubleshooting-ceilometer.adoc[] section.
