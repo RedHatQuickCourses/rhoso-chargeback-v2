@@ -1,6 +1,6 @@
 #  Troubleshooting CloudKitty Deployment
 
-CloudKitty is the Rating service. If it fails to deploy, no rating or charge calculations can take place. CloudKitty depends on several prerequisites including MetricStorage, Loki, and their underlying operators. This section covers deployment-related issues.
+CloudKitty is the Rating service. If it fails to deploy, no rating or charge calculations can take place. CloudKitty depends on several prerequisites including MetricStorage, Loki, and their underlying operators. This section covers CloudKitty deployment-related issues.
 
 == CloudKitty Is Not Getting Deployed
 
@@ -61,7 +61,6 @@ oc get cloudkitty cloudkitty -ojsonpath --template "{.status.conditions}" | jq
 . Determine which prerequisite is failing (MetricStorage, Loki, database, etc.) and follow the corresponding troubleshooting section.
 
 .Expected Outcome
-
 You can identify the specific prerequisite blocking CloudKitty deployment and determine the next troubleshooting step.
 
 == CloudKitty Is Not Enabled
@@ -114,7 +113,6 @@ oc get cloudkitty
 ----
 
 .Expected Outcome
-
 CloudKitty is enabled and the CR is created. If other prerequisites are met, CloudKitty should reach a ready state.
 
 == Loki Is Not Running Correctly
@@ -187,7 +185,6 @@ oc get lokistack cloudkitty-lokistack -ojsonpath --template "{.status.conditions
 . Identify any conditions with `status: "True"` for `Degraded` or `status: "False"` for `Ready`, and read the `message` field for the root cause.
 
 .Expected Outcome
-
 You can determine whether Loki is healthy or identify the specific issue (missing operator, missing S3 secret, pending components) that needs to be resolved.
 
 == Loki Operator Is Not Installed
@@ -279,7 +276,6 @@ oc get cloudkitty cloudkitty -ojsonpath --template "{.status.conditions}" | jq
 ----
 
 .Expected Outcome
-
 The loki-operator is installed and CloudKitty begins reconciling the LokiStack. If S3 storage is also configured, the LokiStack should reach a ready state.
 
 == S3 Storage Secret Is Misconfigured
@@ -364,5 +360,4 @@ oc get lokistack cloudkitty-lokistack -ojsonpath --template "{.status.conditions
 ----
 
 .Expected Outcome
-
 The LokiStack no longer reports `MissingObjectStorageSecret` and moves toward the `Ready` state. CloudKitty should subsequently be able to deploy.

@@ -59,7 +59,6 @@ oc get metricstorage metric-storage -ojsonpath --template "{.status.conditions}"
 . Based on the message, determine the root cause (e.g., missing operator, configuration error, network issue).
 
 .Expected Outcome
-
 You can identify the specific condition preventing MetricStorage from reaching "Setup complete" and determine the appropriate resolution step.
 
 == MetricStorage Is Not Enabled
@@ -112,7 +111,6 @@ oc get metricstorage
 ----
 
 .Expected Outcome
-
 MetricStorage is enabled and deployed, with the `MESSAGE` showing "Setup complete".
 
 == Cluster Observability Operator (COO) Is Not Installed
@@ -203,5 +201,4 @@ oc get metricstorage
 ----
 
 .Expected Outcome
-
 COO is installed, and MetricStorage reaches the "Setup complete" state.

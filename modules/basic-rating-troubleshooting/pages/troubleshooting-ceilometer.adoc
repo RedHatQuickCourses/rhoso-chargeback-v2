@@ -1,6 +1,6 @@
 #  Troubleshooting Ceilometer
 
-Ceilometer is the metric source for the Rating service. It collects usage data from OpenStack resources and exposes them as Prometheus metrics. If Ceilometer is not deployed, not exposing metrics, or Prometheus cannot scrape them, the Rating service will have no data to process.
+Ceilometer is one of the collectors for the Rating service. It collects usage data from OpenStack resources and exposes them as Prometheus metrics. If Ceilometer is not deployed, not exposing metrics, or Prometheus cannot scrape them, the Rating service will have no data to process.
 
 == Ceilometer Is Not Deployed Correctly
 
@@ -87,7 +87,6 @@ oc get osdpns openstack-edpm-ipam -oyaml | grep ServiceTelemetryDeploymentReady 
 ----
 
 .Expected Outcome
-
 All commands confirm that telemetry and Ceilometer are enabled, deployed, and ready on both the controlplane and the dataplane.
 
 == Ceilometer Is Not Exposing Metrics
@@ -154,7 +153,6 @@ oc rsh openstackclient curl https://<compute-node-IP>:9101/metrics
 . Look for compute-related `ceilometer_*` metrics in the output.
 
 .Expected Outcome
-
 Both endpoints return `ceilometer_*` metrics. If metrics are missing from one or both endpoints despite resources existing, the issue may require a bug report.
 
 == Issues Scraping Ceilometer
@@ -249,5 +247,4 @@ oc rsh openstackclient curl https://metric-storage-prometheus.openstack.svc:9090
 . Examine the `lastError` and `health` fields to determine the root cause.
 
 .Expected Outcome
-
 All Ceilometer scrape targets show a value of `1` (up). If any target is down, the `lastError` field provides the specific reason for the failure, guiding the next resolution step.
