@@ -347,7 +347,9 @@ oc get ceilometer</code></pre>
 </ol>
 </div>
 <div class="paragraph">
-<div class="title">Expected Outcome</div>
+<p><em>Expected Outcome</em></p>
+</div>
+<div class="paragraph">
 <p>All commands confirm that telemetry and Ceilometer are enabled, deployed, and ready on both the controlplane and the dataplane.</p>
 </div>
 </div>
@@ -451,7 +453,9 @@ ceilometer_image_size{counter="image.size",image="98f26736-...",project="32268e9
 </ol>
 </div>
 <div class="paragraph">
-<div class="title">Expected Outcome</div>
+<p><em>Expected Outcome</em></p>
+</div>
+<div class="paragraph">
 <p>Both endpoints return <code>ceilometer_*</code> metrics. If metrics are missing from one or both endpoints despite resources existing, the issue may require a bug report.</p>
 </div>
 </div>
@@ -590,7 +594,9 @@ oc get scrapeconfig telemetry-ceilometer-compute-prom-exporter-tls -ojsonpath --
 </ol>
 </div>
 <div class="paragraph">
-<div class="title">Expected Outcome</div>
+<p><em>Expected Outcome</em></p>
+</div>
+<div class="paragraph">
 <p>All Ceilometer scrape targets show a value of <code>1</code> (up). If any target is down, the <code>lastError</code> field provides the specific reason for the failure, guiding the next resolution step.</p>
 </div>
 </div>

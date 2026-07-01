@@ -326,7 +326,9 @@
 </ol>
 </div>
 <div class="paragraph">
-<div class="title">Expected Outcome</div>
+<p><em>Expected Outcome</em></p>
+</div>
+<div class="paragraph">
 <p>You can identify the specific prerequisite blocking CloudKitty deployment and determine the next troubleshooting step.</p>
 </div>
 </div>
@@ -411,7 +413,9 @@ oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.cloudkitty
 </ol>
 </div>
 <div class="paragraph">
-<div class="title">Expected Outcome</div>
+<p><em>Expected Outcome</em></p>
+</div>
+<div class="paragraph">
 <p>CloudKitty is enabled and the CR is created. If other prerequisites are met, CloudKitty should reach a ready state.</p>
 </div>
 </div>
@@ -526,7 +530,9 @@ oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.cloudkitty
 </ol>
 </div>
 <div class="paragraph">
-<div class="title">Expected Outcome</div>
+<p><em>Expected Outcome</em></p>
+</div>
+<div class="paragraph">
 <p>You can determine whether Loki is healthy or identify the specific issue (missing operator, missing S3 secret, pending components) that needs to be resolved.</p>
 </div>
 </div>
@@ -653,7 +659,9 @@ EOF</code></pre>
 </ol>
 </div>
 <div class="paragraph">
-<div class="title">Expected Outcome</div>
+<p><em>Expected Outcome</em></p>
+</div>
+<div class="paragraph">
 <p>The loki-operator is installed and CloudKitty begins reconciling the LokiStack. If S3 storage is also configured, the LokiStack should reach a ready state.</p>
 </div>
 </div>
@@ -774,7 +782,9 @@ EOF</code></pre>
 </ol>
 </div>
 <div class="paragraph">
-<div class="title">Expected Outcome</div>
+<p><em>Expected Outcome</em></p>
+</div>
+<div class="paragraph">
 <p>The LokiStack no longer reports <code>MissingObjectStorageSecret</code> and moves toward the <code>Ready</code> state. CloudKitty should subsequently be able to deploy.</p>
 </div>
 </div>
