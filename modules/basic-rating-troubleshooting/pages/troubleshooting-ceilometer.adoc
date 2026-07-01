@@ -86,7 +86,8 @@ oc get ceilometer
 oc get osdpns openstack-edpm-ipam -oyaml | grep ServiceTelemetryDeploymentReady -B 4
 ----
 
-.Expected Outcome
+_Expected Outcome_
+
 All commands confirm that telemetry and Ceilometer are enabled, deployed, and ready on both the controlplane and the dataplane.
 
 == Ceilometer Is Not Exposing Metrics
@@ -152,7 +153,8 @@ oc rsh openstackclient curl https://<compute-node-IP>:9101/metrics
 
 . Look for compute-related `ceilometer_*` metrics in the output.
 
-.Expected Outcome
+_Expected Outcome_
+
 Both endpoints return `ceilometer_*` metrics. If metrics are missing from one or both endpoints despite resources existing, the issue may require a bug report.
 
 == Issues Scraping Ceilometer
@@ -246,5 +248,6 @@ oc rsh openstackclient curl https://metric-storage-prometheus.openstack.svc:9090
 
 . Examine the `lastError` and `health` fields to determine the root cause.
 
-.Expected Outcome
+_Expected Outcome_
+
 All Ceilometer scrape targets show a value of `1` (up). If any target is down, the `lastError` field provides the specific reason for the failure, guiding the next resolution step.
