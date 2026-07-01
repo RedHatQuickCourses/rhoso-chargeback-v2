@@ -62,7 +62,9 @@ oc rsh openstackclient openstack rating --rating-api-version 2 summary get -g ty
 . Based on your findings, proceed to the relevant issue section below.
 
 .Result
+--
 You can identify whether the rating data is correct, and if not, determine the specific symptom to guide further troubleshooting.
+--
 
 == Hashmap Module Is Disabled
 
@@ -138,7 +140,9 @@ oc rsh openstackclient openstack rating module list
 ----
 
 .Result
+--
 The hashmap module shows `Enabled: True` with `Priority: 100`. After the next rating period, rates should be calculated based on the configured hashmap mappings.
+--
 
 == Incorrect metrics.yaml Contents
 
@@ -214,7 +218,9 @@ oc rsh openstackclient openstack rating --rating-api-version 2 summary get -g ty
 ----
 
 .Result
+--
 The previously missing metrics now appear in the rating summary, confirming that the updated `metrics.yaml` is being used by CloudKitty.
+--
 
 == Rating Configuration Is Missing
 
@@ -343,7 +349,9 @@ oc rsh openstackclient openstack rating hashmap service list
 ----
 
 .Result
+--
 The new service and mapping are created. After the next rating period, the metric will appear in the rating summary with a non-zero rate.
+--
 
 == Rating Configuration Is Incorrect
 
@@ -436,4 +444,6 @@ oc rsh openstackclient openstack rating --rating-api-version 2 summary get -g ty
 ----
 
 .Result
+--
 The incorrect mapping is replaced with the correct one, and subsequent rating periods produce the expected rates.
+--
