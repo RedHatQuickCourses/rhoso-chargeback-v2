@@ -315,6 +315,100 @@
 </div>
 </div>
 <div class="sect1">
+<h2 id="_generate_rating_reports"><a class="anchor" href="#_generate_rating_reports"></a>Generate Rating Reports</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>After validating your configuration, you can query CloudKitty for the rated data it has produced. CloudKitty provides two levels of detail: <strong>summaries</strong> for aggregated totals and <strong>dataframes</strong> for individual rated data points. Think of summaries as the monthly statement and dataframes as the individual line items on the receipt.</p>
+</div>
+<div class="sect2">
+<h3 id="_summaries"><a class="anchor" href="#_summaries"></a>Summaries</h3>
+<div class="paragraph">
+<p>The <code>openstack rating summary get</code> command returns aggregated charges for a given time period. As a tenant, you can only see your own project&#8217;s data&#8201;&#8212;&#8201;CloudKitty enforces tenant-aware access control automatically.</p>
+</div>
+<div class="paragraph">
+<p>Retrieve a summary for a specific time range:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- \
+  openstack rating summary get --begin 2026-02-01 --end 2026-03-01</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The output shows the total rated cost for each resource type within the specified period. Key fields to look for:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Tenant ID</code>&#8201;&#8212;&#8201;The project responsible for the consumption.</p>
+</li>
+<li>
+<p><code>Resource Type</code>&#8201;&#8212;&#8201;The type of resource being rated (e.g., <code>instance</code>).</p>
+</li>
+<li>
+<p><code>Rate</code>&#8201;&#8212;&#8201;The total calculated cost for that resource type within the time window.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If the output is empty, CloudKitty may not have completed a processing cycle yet. The processor collects and rates metrics every hour by default, so wait at least one hour after creating your rating rule and try again.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_dataframes"><a class="anchor" href="#_dataframes"></a>Dataframes</h3>
+<div class="paragraph">
+<p>While summaries give you the big picture, dataframes show the individual rated data points stored in Loki. Use them to verify that the correct mapping was applied to each resource, or to debug a missing metric.</p>
+</div>
+<div class="paragraph">
+<p>Retrieve dataframes for a narrow time window (e.g., one hour):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- \
+  openstack rating dataframes get \
+  --begin 2026-03-01T00:00:00Z --end 2026-03-01T01:00:00Z</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Each row in the output represents a single rated data point. The key columns are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Begin</code> / <code>End</code>&#8201;&#8212;&#8201;The collection window. CloudKitty produces one-hour windows by default.</p>
+</li>
+<li>
+<p><code>Metric Type</code>&#8201;&#8212;&#8201;The metric name as configured in <code>metrics.yaml</code> (e.g., <code>ceilometer_cpu</code>).</p>
+</li>
+<li>
+<p><code>Qty</code>&#8201;&#8212;&#8201;The raw quantity after any transformations have been applied. For instance metrics using <code>NUMBOOL</code>, this equals <code>1</code> when the instance was running during the window.</p>
+</li>
+<li>
+<p><code>Price</code>&#8201;&#8212;&#8201;The rated value after hashmap rules are applied. This is where you verify that your mapping cost (e.g., <code>0.3</code> for the <code>tiny</code> flavor) was correctly applied.</p>
+</li>
+<li>
+<p><code>Group By</code>&#8201;&#8212;&#8201;Label values that enable drill-down, such as <code>flavor_id</code>, <code>flavor_name</code>, <code>project</code>, and <code>resource</code> (the VM UUID).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>By comparing the <code>Price</code> column against the cost you defined in your mapping, you can trace the full path from raw metric to final price and confirm that your rating rule is working as expected.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_troubleshooting"><a class="anchor" href="#_troubleshooting"></a>Troubleshooting</h2>
 <div class="sectionbody">
 <div class="paragraph">
