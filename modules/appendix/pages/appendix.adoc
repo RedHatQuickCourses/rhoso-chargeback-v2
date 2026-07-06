@@ -1,3 +1,12 @@
 = Appendix
 
-FIXME: Content for Appendix...
+== References
+
+=== Red Hat Documentation
+
+* https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/18.0/html/configuring_observability/assembly_configuring-observability[Configuring Observability -- Red Hat OpenStack Services on OpenShift 18.0]
+* https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/18.0/html/using_the_rating_service/assembly_using-the-rating-service[Using the Rating Service -- Red Hat OpenStack Services on OpenShift 18.0]
+
+=== Blog Posts
+
+* https://www.redhat.com/en/blog/taming-costs-cloud-environments-rating-openstack-cloudkitty[Taming Costs in Cloud Environments: Rating in OpenStack with CloudKitty -- Red Hat Blog]
