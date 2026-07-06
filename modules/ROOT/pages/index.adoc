@@ -3,34 +3,33 @@
 
 == Introduction
 
-Course Title:  RHOSO Chargeback and Observability Fundamentals
+This training covers how to monitor and rate resource consumption in Red Hat OpenStack Services on OpenShift (RHOSO). You will learn how RHOSO Observability collects metrics and logs from your cloud infrastructure, and how the Rating service (CloudKitty) transforms those raw metrics into meaningful cost data for chargeback and showback scenarios.
 
-Description:
-Course description FIXME
+By the end of this training, you will be able to enable the Rating service in a RHOSO environment, create rating rules to assign costs to cloud resources, and retrieve consumption data for financial reporting.
 
-Duration: FIXME hours
+== Topics Covered
 
-== Topics covered in this course
+* **Basics of RHOSO Observability** -- An overview of the RHOSO monitoring solution, its architecture, and core functionalities for collecting and storing metrics and logs.
+* **Introduction to the Rating Service** -- The chargeback use case, how CloudKitty bridges the gap between technical metrics and financial operations, and an overview of the rating process flow.
+* **Enable Rating in RHOSO** -- Prerequisites for enabling the Rating service and step-by-step instructions to activate CloudKitty through the Telemetry Operator.
+* **Using the Rating Service** -- Rating concepts, how to configure the rating module, define collected metrics, create and manage rating rules, and retrieve resource consumption data.
+* **Hands-on Lab: Implementing Your First Chargeback Rating** -- A guided lab where you set up the rating environment, create a hashmap rating rule, and validate your configuration using Ansible playbooks.
+* **Basic Rating Troubleshooting** -- Common issues and diagnostic techniques for Ceilometer, MetricStorage, CloudKitty deployment, and rating configuration.
 
+== How to Use This Training
 
-*  Basics of RHOSO Observability
+This training supports two approaches depending on your learning style:
 
-*  Introduction to RHOSO Chargeback
+* **Guided path**: Follow the modules in order, starting with the observability fundamentals and progressing through the rating concepts before reaching the hands-on lab. This approach gives you the theoretical foundation first, so each hands-on step has clear context.
+* **Hands-on first**: Go directly to the xref:../hands-on-lab-implementing-your-first-chargeback-rating/hands-on-lab-implementing-your-first-chargeback-rating.adoc[Hands-on Lab] and learn by doing. Each lab unit links back to the relevant theory modules, so you can refer to them as needed while working through the tasks.
 
-*  Enabling Chargeback in RHOSP
-
-*  Using the Chargeback Feature
-
-*  Hands-on Lab: Implementing Your First Chargeback Rating
-
-*  Basic Chargeback Troubleshooting
-
-
+The xref:../basic-rating-troubleshooting/basic-rating-troubleshooting.adoc[Basic Rating Troubleshooting] section is not required to complete the training, but it is a useful reference for diagnosing issues you may encounter in the lab or in production environments.
 
 == Prerequisites
 
-This course assumes that you have the following prior experience:
+This training assumes that you have the following prior experience:
 
-* Course or experience...
-* Course or experience...
-* Course or experience...
+* Basic familiarity with Red Hat OpenStack Services on OpenShift (RHOSO) and its architecture.
+* Working knowledge of OpenShift and the `oc` CLI.
+* Experience with OpenStack concepts such as projects, flavors, and instances.
+* Basic understanding of Ansible playbooks.
