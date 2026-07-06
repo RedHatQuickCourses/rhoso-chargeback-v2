@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Verifying and analyzing consumption data :: RHOSO Chargeback and Observability Fundamentals</title>
+    <link rel="prev" href="creating-and-applying-a-rating-rule.html">
+    <link rel="next" href="../basic-rating-troubleshooting/basic-rating-troubleshooting.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">RHOSO Chargeback and Observability Fundamentals</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/rhoso-chargeback-v2/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="rhoso-chargeback-v2" data-version="1.0.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../basics-of-rhoso-observability/basics-of-rhoso-observability.html">Basics of RHOSO Observability</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/introduction-to-rhoso-and-its-purpose.html">Introduction to RHOSO and its purpose</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/core-functionalities-and-use-cases-of-rhoso.html">RHOSO Observability Core Functionalities and Use Cases</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/rhoso-architectural-overview.html">RHOSO architectural overview</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-rating/introduction-to-rating.html">Introduction to the Rating Service</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rating/understanding-chargeback-usecase.html">Understanding the chargeback usecase</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rating/overview-of-the-chargeback-process-flow.html">Overview of the chargeback process flow</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../enable-rating-in-rhoso/enable-rating-in-rhoso.html">Enable Rating in RHOSO</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enable-rating-in-rhoso/prerequisites-for-rating-enablement-in-rhoso.html">Prerequisites for Rating enablement in RHOSO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enable-rating-in-rhoso/how-to-enable-rating.html">How To Enable Rating</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../using-rating-in-rhoso/using-the-rating-service.html">Using the Rating Service</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-rating-in-rhoso/understanding-rating-concepts.html">Understanding rating concepts</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-rating-in-rhoso/how-to-configure-rating-module.html">Step-by-Step to Configure CloudKitty with the Hashmap module</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-rating-in-rhoso/how-to-define-collected-metrics.html">How to Define Collected Metrics</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-rating-in-rhoso/how-to-create-and-manage-rating-rules.html">How to Create and Manage Rating Rules</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-rating-in-rhoso/how-to-retrieve-resources-consumption.html">How to Retrieve Resources Consumption</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="hands-on-lab-implementing-your-first-chargeback-rating.html">Hands-on Lab: Implementing Your First Chargeback Rating</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="setting-up-the-lab-environment-for-chargeback.html">Setting up the lab environment for Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="creating-and-applying-a-rating-rule.html">Creating and applying a rating rule</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="verifying-and-analyzing-consumption-data.html">Verifying and analyzing consumption data</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../basic-rating-troubleshooting/basic-rating-troubleshooting.html">Basic Rating Troubleshooting</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-rating-troubleshooting/troubleshooting-metric-collection-and-availability.html">Troubleshooting Metric Collection and Availability</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-rating-troubleshooting/troubleshooting-ceilometer.html">Troubleshooting Ceilometer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-rating-troubleshooting/troubleshooting-metricstorage.html">Troubleshooting MetricStorage</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-rating-troubleshooting/troubleshooting-cloudkitty-deployment.html">Troubleshooting CloudKitty Deployment</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-rating-troubleshooting/troubleshooting-rating-and-cloudkitty-configuration.html">Troubleshooting Rating and CloudKitty Configuration</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">RHOSO Chargeback and Observability Fundamentals</span>
+    <span class="version">1.0.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">RHOSO Chargeback and Observability Fundamentals</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.0.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></li>
+    <li><a href="hands-on-lab-implementing-your-first-chargeback-rating.html">Hands-on Lab: Implementing Your First Chargeback Rating</a></li>
+    <li><a href="verifying-and-analyzing-consumption-data.html">Verifying and analyzing consumption data</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Verifying and analyzing consumption data</h1>
+<h1 id="_verifying_and_analyzing_consumption_data" class="sect0"><a class="anchor" href="#_verifying_and_analyzing_consumption_data"></a>Verifying and Analyzing Consumption Data</h1>
+<div class="paragraph">
+<p>In this final unit, you will validate that your rating configuration from the previous unit was applied correctly. You will use the validation playbook from the lab repository to run a series of automated checks against your RHOSO environment.</p>
+</div>
+<div class="sect1">
+<h2 id="_run_the_validation_playbook"><a class="anchor" href="#_run_the_validation_playbook"></a>Run the Validation Playbook</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The validation playbook checks each component of the hashmap rating configuration you created and reports pass or fail for each one.</p>
+</div>
+<div class="paragraph">
+<p>Run the playbook:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ansible-playbook validation/validate-ck-rating.yml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you used non-default values when creating your rating rule (for example, a different flavor or cost), pass them as variables so the validation checks against the correct values:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ansible-playbook validation/validate-ck-rating.yml \
+  -e flavor_name=m1.small \
+  -e rating_cost=0.5</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_interpreting_the_results"><a class="anchor" href="#_interpreting_the_results"></a>Interpreting the Results</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The playbook performs the following checks in order:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 66.6667%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Check</th>
+<th class="tableblock halign-left valign-top">What It Validates</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Hashmap module enabled</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The <code>hashmap</code> rating module is active. Fails if the module is missing or disabled.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Group exists</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The group <code>instance_uptime_flavor_id</code> exists in the hashmap configuration.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Service exists</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The service <code>instance</code> is registered under the hashmap module.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Field exists</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The field <code>flavor_id</code> is defined under the <code>instance</code> service.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mapping exists</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A mapping with the expected type and group association is present.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Rating data flowing</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Rated data is being generated by CloudKitty. This is a soft check&#8201;&#8212;&#8201;it warns but does not fail if no data is available yet.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>If all checks pass, your rating configuration is correctly set up and CloudKitty is processing your rules.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The "rating data flowing" check may show a warning if you run the validation shortly after creating the rating rule. CloudKitty processes metrics on a periodic cycle, so it may take a few minutes before rated data appears. This warning does not indicate a configuration problem.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_troubleshooting"><a class="anchor" href="#_troubleshooting"></a>Troubleshooting</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If any of the validation checks fail, follow these steps to diagnose and fix the issue:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Review the failed check</strong>: The playbook output identifies which specific component is missing or misconfigured.</p>
+</li>
+<li>
+<p><strong>Re-check Unit 2 steps</strong>: Go back to the previous unit and verify that each command completed successfully. Common issues include:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Forgetting to replace placeholder IDs (<code>&lt;service_id&gt;</code>, <code>&lt;field_id&gt;</code>, <code>&lt;group_id&gt;</code>) with actual values.</p>
+</li>
+<li>
+<p>Typos in the flavor name or field name.</p>
+</li>
+<li>
+<p>Skipping the hashmap module enablement step.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Use the cleanup and recreate playbooks</strong>: If you want to start fresh, clean up the existing configuration and recreate it automatically:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ansible-playbook create-ck-rating/cleanup-ck-rating.yml
+ansible-playbook create-ck-rating/create-ck-rating.yml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then re-run the validation playbook.</p>
+</div>
+</li>
+<li>
+<p><strong>Check CloudKitty pod logs</strong>: If the configuration looks correct but data is not flowing, inspect the CloudKitty processor logs for errors:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc logs -n openstack $(oc get pods -n openstack -l app=cloudkitty -o name | head -1)</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>For additional guidance on diagnosing issues with metric collection, Ceilometer, MetricStorage, or CloudKitty, refer to the <a href="#../basic-rating-troubleshooting/troubleshooting-cloudkitty-deployment.adoc" class="xref unresolved">CloudKitty troubleshooting</a> and <a href="#../basic-rating-troubleshooting/troubleshooting-rating-and-cloudkitty-configuration.adoc" class="xref unresolved">rating configuration troubleshooting</a> modules.</p>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="creating-and-applying-a-rating-rule.html">Creating and applying a rating rule</a></span>
+  <span class="next"><a href="../basic-rating-troubleshooting/basic-rating-troubleshooting.html">Basic Rating Troubleshooting</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
