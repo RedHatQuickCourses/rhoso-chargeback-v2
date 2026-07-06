@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Troubleshooting Metric Collection and Availability :: RHOSO Chargeback and Observability Fundamentals</title>
+    <link rel="prev" href="basic-rating-troubleshooting.html">
+    <link rel="next" href="troubleshooting-ceilometer.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">RHOSO Chargeback and Observability Fundamentals</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/rhoso-chargeback-v2/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="rhoso-chargeback-v2" data-version="1.0.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../basics-of-rhoso-observability/basics-of-rhoso-observability.html">Basics of RHOSO Observability</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/introduction-to-rhoso-and-its-purpose.html">Introduction to RHOSO and its purpose</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/core-functionalities-and-use-cases-of-rhoso.html">RHOSO Observability Core Functionalities and Use Cases</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/rhoso-architectural-overview.html">RHOSO architectural overview</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-rating/introduction-to-rating.html">Introduction to the Rating Service</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rating/understanding-chargeback-usecase.html">Understanding the chargeback usecase</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rating/overview-of-the-chargeback-process-flow.html">Overview of the chargeback process flow</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../enable-rating-in-rhoso/enable-rating-in-rhoso.html">Enable Rating in RHOSO</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enable-rating-in-rhoso/prerequisites-for-rating-enablement-in-rhoso.html">Prerequisites for Rating enablement in RHOSO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enable-rating-in-rhoso/how-to-enable-rating.html">How To Enable Rating</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../using-rating-in-rhoso/using-the-rating-service.html">Using the Rating Service</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-rating-in-rhoso/understanding-rating-concepts.html">Understanding rating concepts</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-rating-in-rhoso/how-to-configure-rating-module.html">Step-by-Step to Configure CloudKitty with the Hashmap module</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-rating-in-rhoso/how-to-define-collected-metrics.html">How to Define Collected Metrics</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-rating-in-rhoso/how-to-create-and-manage-rating-rules.html">How to Create and Manage Rating Rules</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-rating-in-rhoso/how-to-retrieve-resources-consumption.html">How to Retrieve Resources Consumption</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/hands-on-lab-implementing-your-first-chargeback-rating.html">Hands-on Lab: Implementing Your First Chargeback Rating</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/setting-up-the-lab-environment-for-chargeback.html">Setting up the lab environment for Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/defining-a-basic-rating-rule-for-a-service.html">Defining a basic rating rule for a service</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/applying-the-defined-rating-rule-to-resources.html">Applying the defined rating rule to resources</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/reviewing-the-generated-charges-and-reports.html">Reviewing the generated charges and reports</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="basic-rating-troubleshooting.html">Basic Rating Troubleshooting</a>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="troubleshooting-metric-collection-and-availability.html">Troubleshooting Metric Collection and Availability</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="troubleshooting-ceilometer.html">Troubleshooting Ceilometer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="troubleshooting-metricstorage.html">Troubleshooting MetricStorage</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="troubleshooting-cloudkitty-deployment.html">Troubleshooting CloudKitty Deployment</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="troubleshooting-rating-and-cloudkitty-configuration.html">Troubleshooting Rating and CloudKitty Configuration</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">RHOSO Chargeback and Observability Fundamentals</span>
+    <span class="version">1.0.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">RHOSO Chargeback and Observability Fundamentals</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.0.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></li>
+    <li><a href="basic-rating-troubleshooting.html">Basic Rating Troubleshooting</a></li>
+    <li><a href="troubleshooting-metric-collection-and-availability.html">Troubleshooting Metric Collection and Availability</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Troubleshooting Metric Collection and Availability</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Accurate rating depends on metrics being available in the metric store. If expected metrics are missing, the Rating service cannot generate correct charge data. This section covers common issues related to metric availability and collection.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_missing_metrics"><a class="anchor" href="#_missing_metrics"></a>Missing Metrics</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_description"><a class="anchor" href="#_description"></a>Description</h3>
+<div class="paragraph">
+<p>Metrics expected by the Rating service are not present in the metric store. This can manifest as missing entries in the rating summary or empty chargeback reports for certain resource types.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_diagnosis"><a class="anchor" href="#_diagnosis"></a>Diagnosis</h3>
+<div class="paragraph">
+<p>List all available metrics and check whether the expected ones are present:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack metric list</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You should see a list of metric names. Look for <code>ceilometer_*</code> metrics such as <code>ceilometer_cpu</code>, <code>ceilometer_image_size</code>, or <code>ceilometer_volume_size</code>.</p>
+</div>
+<div class="paragraph">
+<p>To inspect the details of an individual metric:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack metric show ceilometer_cpu</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This shows all label values associated with the metric, including <code>project</code>, <code>resource</code>, <code>resource_name</code>, and <code>value</code>. Compare the output against what is configured in the <code>metrics.yaml</code> file to ensure the metric names match.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_resolution"><a class="anchor" href="#_resolution"></a>Resolution</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>If a metric is completely absent, verify that the related OpenStack resources exist (see the next issue).</p>
+</li>
+<li>
+<p>If the metric name does not match what is in <code>metrics.yaml</code>, update the configuration accordingly. See <a href="troubleshooting-rating-and-cloudkitty-configuration.html" class="xref page">Troubleshooting Rating and CloudKitty Configuration</a> for guidance on correcting <code>metrics.yaml</code>.</p>
+</li>
+<li>
+<p>If OpenStack resources exist but their metrics are still missing, there may be a problem with metric collection. See the "Metrics Are Not Being Collected" issue below.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_hands_on_exercise_diagnosing_missing_metrics"><a class="anchor" href="#_hands_on_exercise_diagnosing_missing_metrics"></a>Hands-on Exercise: Diagnosing Missing Metrics</h3>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>Access to the <code>openstackclient</code> pod via <code>oc rsh</code></p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Steps</div>
+<ol class="arabic">
+<li>
+<p>List all available metrics:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack metric list</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Filter the output for ceilometer metrics:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack metric list | grep ceilometer</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Pick a specific ceilometer metric and inspect its details:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack metric show ceilometer_image_size</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Compare the metric name and labels against the entries in the <code>metrics.yaml</code> configuration used by CloudKitty.</p>
+</li>
+</ol>
+</div>
+<div class="ulist">
+<div class="title">Result</div>
+<ul>
+<li>
+<p>You can confirm whether the expected metrics are present in the metric store and whether their names match the CloudKitty configuration.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_related_openstack_resources_are_missing"><a class="anchor" href="#_related_openstack_resources_are_missing"></a>Related OpenStack Resources Are Missing</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_description_2"><a class="anchor" href="#_description_2"></a>Description</h3>
+<div class="paragraph">
+<p>Ceilometer generates metrics based on existing OpenStack resources. For example, <code>ceilometer_cpu</code> and <code>ceilometer_memory</code> metrics require a running server, <code>ceilometer_image_size</code> requires a Glance image, and <code>ceilometer_volume_size</code> requires a Cinder volume. If the related resources do not exist, no metrics will be produced.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_diagnosis_2"><a class="anchor" href="#_diagnosis_2"></a>Diagnosis</h3>
+<div class="paragraph">
+<p>Check whether the related OpenStack resources exist:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack server list
+oc rsh openstackclient openstack image list
+oc rsh openstackclient openstack volume list</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If any expected resource type returns an empty list, that explains why the corresponding ceilometer metrics are missing.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_resolution_2"><a class="anchor" href="#_resolution_2"></a>Resolution</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Create the missing OpenStack resources (servers, images, volumes) as needed for the deployment.</p>
+</li>
+<li>
+<p>Once the resources exist, wait for the next ceilometer polling interval for the metrics to appear.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_hands_on_exercise_verifying_openstack_resources"><a class="anchor" href="#_hands_on_exercise_verifying_openstack_resources"></a>Hands-on Exercise: Verifying OpenStack Resources</h3>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>Access to the <code>openstackclient</code> pod via <code>oc rsh</code></p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Steps</div>
+<ol class="arabic">
+<li>
+<p>List all running servers:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack server list</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>List all available images:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack image list</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>List all volumes:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack volume list</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Cross-reference the results with the metrics you expect to see. For example, if you expect <code>ceilometer_cpu</code> metrics, verify that at least one server is running.</p>
+</li>
+</ol>
+</div>
+<div class="ulist">
+<div class="title">Result</div>
+<ul>
+<li>
+<p>You can confirm that the OpenStack resources required for the expected metrics exist. If resources are missing, creating them should cause the corresponding metrics to appear after the next polling interval.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_metrics_are_not_being_collected"><a class="anchor" href="#_metrics_are_not_being_collected"></a>Metrics Are Not Being Collected</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_description_3"><a class="anchor" href="#_description_3"></a>Description</h3>
+<div class="paragraph">
+<p>The metric store returns metrics from Prometheus (e.g., <code>alertmanager_*</code>), but ceilometer metrics are absent even though the related OpenStack resources exist. This can affect all ceilometer metrics or only a subset (compute metrics or controlplane metrics).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_diagnosis_3"><a class="anchor" href="#_diagnosis_3"></a>Diagnosis</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Verify that the metric store is operational:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack metric list</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If this returns metrics (even non-ceilometer ones), Prometheus is running.</p>
+</div>
+</li>
+<li>
+<p>Filter for ceilometer metrics specifically:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack metric list | grep ceilometer</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Analyze the output:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>No ceilometer metrics at all</strong>: There may be a problem with both the central and compute Ceilometer agents.</p>
+</li>
+<li>
+<p><strong>Only compute metrics missing</strong>: The Ceilometer compute agent on the dataplane may not be deployed or functioning.</p>
+</li>
+<li>
+<p><strong>Only controlplane metrics missing</strong>: The Ceilometer central agent may not be deployed or functioning.</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_resolution_3"><a class="anchor" href="#_resolution_3"></a>Resolution</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>If no ceilometer metrics are present, check whether Ceilometer is deployed correctly. See <a href="troubleshooting-ceilometer.html" class="xref page">Troubleshooting Ceilometer</a>.</p>
+</li>
+<li>
+<p>If Ceilometer is deployed, check whether it is exposing metrics and whether Prometheus is scraping them. See the "Ceilometer Is Not Exposing Metrics" and "Issues Scraping Ceilometer" sections in <a href="troubleshooting-ceilometer.html" class="xref page">Troubleshooting Ceilometer</a>.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_hands_on_exercise_checking_ceilometer_metric_presence"><a class="anchor" href="#_hands_on_exercise_checking_ceilometer_metric_presence"></a>Hands-on Exercise: Checking Ceilometer Metric Presence</h3>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>Access to the <code>openstackclient</code> pod via <code>oc rsh</code></p>
+</li>
+<li>
+<p>At least one OpenStack resource (server, image, or volume) exists</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Steps</div>
+<ol class="arabic">
+<li>
+<p>Verify that Prometheus metrics are available:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack metric list | head -20</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Check specifically for ceilometer metrics:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack metric list | grep ceilometer</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>If no ceilometer metrics appear, determine whether compute-specific metrics (e.g., <code>ceilometer_cpu</code>, <code>ceilometer_memory</code>) or controlplane-specific metrics (e.g., <code>ceilometer_image_size</code>) are affected. This helps narrow down whether the issue is with the central agent, compute agents, or both.</p>
+</li>
+</ol>
+</div>
+<div class="ulist">
+<div class="title">Result</div>
+<ul>
+<li>
+<p>You can determine whether ceilometer metrics are missing entirely or only partially, which points to the next troubleshooting step in the <a href="troubleshooting-ceilometer.html" class="xref page">Troubleshooting Ceilometer</a> section.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="basic-rating-troubleshooting.html">Basic Rating Troubleshooting</a></span>
+  <span class="next"><a href="troubleshooting-ceilometer.html">Troubleshooting Ceilometer</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
