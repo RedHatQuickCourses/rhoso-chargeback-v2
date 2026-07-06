@@ -223,41 +223,58 @@
 <h2 id="_introduction"><a class="anchor" href="#_introduction"></a>Introduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Course Title:  RHOSO Chargeback and Observability Fundamentals</p>
+<p>This training covers how to monitor and rate resource consumption in Red Hat OpenStack Services on OpenShift (RHOSO). You will learn how RHOSO Observability collects metrics and logs from your cloud infrastructure, and how the Rating service (CloudKitty) transforms those raw metrics into meaningful cost data for chargeback and showback scenarios.</p>
 </div>
 <div class="paragraph">
-<p>Description:
-Course description FIXME</p>
-</div>
-<div class="paragraph">
-<p>Duration: FIXME hours</p>
+<p>By the end of this training, you will be able to enable the Rating service in a RHOSO environment, create rating rules to assign costs to cloud resources, and retrieve consumption data for financial reporting.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_topics_covered_in_this_course"><a class="anchor" href="#_topics_covered_in_this_course"></a>Topics covered in this course</h2>
+<h2 id="_topics_covered"><a class="anchor" href="#_topics_covered"></a>Topics Covered</h2>
 <div class="sectionbody">
 <div class="ulist">
 <ul>
 <li>
-<p>Basics of RHOSO Observability</p>
+<p><strong>Basics of RHOSO Observability</strong>&#8201;&#8212;&#8201;An overview of the RHOSO monitoring solution, its architecture, and core functionalities for collecting and storing metrics and logs.</p>
 </li>
 <li>
-<p>Introduction to RHOSO Chargeback</p>
+<p><strong>Introduction to the Rating Service</strong>&#8201;&#8212;&#8201;The chargeback use case, how CloudKitty bridges the gap between technical metrics and financial operations, and an overview of the rating process flow.</p>
 </li>
 <li>
-<p>Enabling Chargeback in RHOSP</p>
+<p><strong>Enable Rating in RHOSO</strong>&#8201;&#8212;&#8201;Prerequisites for enabling the Rating service and step-by-step instructions to activate CloudKitty through the Telemetry Operator.</p>
 </li>
 <li>
-<p>Using the Chargeback Feature</p>
+<p><strong>Using the Rating Service</strong>&#8201;&#8212;&#8201;Rating concepts, how to configure the rating module, define collected metrics, create and manage rating rules, and retrieve resource consumption data.</p>
 </li>
 <li>
-<p>Hands-on Lab: Implementing Your First Chargeback Rating</p>
+<p><strong>Hands-on Lab: Implementing Your First Chargeback Rating</strong>&#8201;&#8212;&#8201;A guided lab where you set up the rating environment, create a hashmap rating rule, and validate your configuration using Ansible playbooks.</p>
 </li>
 <li>
-<p>Basic Chargeback Troubleshooting</p>
+<p><strong>Basic Rating Troubleshooting</strong>&#8201;&#8212;&#8201;Common issues and diagnostic techniques for Ceilometer, MetricStorage, CloudKitty deployment, and rating configuration.</p>
 </li>
 </ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_how_to_use_this_training"><a class="anchor" href="#_how_to_use_this_training"></a>How to Use This Training</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This training supports two approaches depending on your learning style:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Guided path</strong>: Follow the modules in order, starting with the observability fundamentals and progressing through the rating concepts before reaching the hands-on lab. This approach gives you the theoretical foundation first, so each hands-on step has clear context.</p>
+</li>
+<li>
+<p><strong>Hands-on first</strong>: Go directly to the <a href="#../hands-on-lab-implementing-your-first-chargeback-rating/hands-on-lab-implementing-your-first-chargeback-rating.adoc" class="xref unresolved">Hands-on Lab</a> and learn by doing. Each lab unit links back to the relevant theory modules, so you can refer to them as needed while working through the tasks.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The <a href="#../basic-rating-troubleshooting/basic-rating-troubleshooting.adoc" class="xref unresolved">Basic Rating Troubleshooting</a> section is not required to complete the training, but it is a useful reference for diagnosing issues you may encounter in the lab or in production environments.</p>
 </div>
 </div>
 </div>
@@ -265,18 +282,21 @@ Course description FIXME</p>
 <h2 id="_prerequisites"><a class="anchor" href="#_prerequisites"></a>Prerequisites</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This course assumes that you have the following prior experience:</p>
+<p>This training assumes that you have the following prior experience:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Course or experience&#8230;&#8203;</p>
+<p>Basic familiarity with Red Hat OpenStack Services on OpenShift (RHOSO) and its architecture.</p>
 </li>
 <li>
-<p>Course or experience&#8230;&#8203;</p>
+<p>Working knowledge of OpenShift and the <code>oc</code> CLI.</p>
 </li>
 <li>
-<p>Course or experience&#8230;&#8203;</p>
+<p>Experience with OpenStack concepts such as projects, flavors, and instances.</p>
+</li>
+<li>
+<p>Basic understanding of Ansible playbooks.</p>
 </li>
 </ul>
 </div>
