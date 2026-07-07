@@ -1,5 +1,4 @@
 * xref:hands-on-lab-implementing-your-first-chargeback-rating.adoc[]
 ** xref:setting-up-the-lab-environment-for-chargeback.adoc[]
-** xref:defining-a-basic-rating-rule-for-a-service.adoc[]
-** xref:applying-the-defined-rating-rule-to-resources.adoc[]
-** xref:reviewing-the-generated-charges-and-reports.adoc[]
+** xref:creating-and-applying-a-rating-rule.adoc[]
+** xref:verifying-and-analyzing-consumption-data.adoc[]

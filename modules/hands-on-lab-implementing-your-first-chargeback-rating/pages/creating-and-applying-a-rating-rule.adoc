@@ -1,0 +1,163 @@
+# Creating and applying a rating rule
+
+In this unit, you will create a hashmap rating rule that assigns a cost to compute instances based on their flavor. You will follow the step-by-step process using the `openstack rating` CLI commands, applying the concepts covered in the xref:../using-rating-in-rhoso/understanding-rating-concepts.adoc[rating concepts] and xref:../using-rating-in-rhoso/how-to-create-and-manage-rating-rules.adoc[rating rules] theory modules.
+
+== Key Concepts Recap
+
+Before you start, recall these core concepts:
+
+* **Rating Module**: Defines how CloudKitty processes and applies rating rules. The `hashmap` module is the recommended approach, which creates rules based on metric metadata.
+* **Group**: A logical container that organizes related rating rules (e.g., one group for VM uptime calculations, another for storage).
+* **Service**: Connects a rating rule to a specific collected metric. The service name must match the metric's `alt_name` (or metric name if no `alt_name` is defined).
+* **Field**: An optional attribute within a service that allows targeting a specific metadata value (e.g., `flavor_id` for instances).
+* **Mapping**: The final object that associates a cost with a service or field value. Mapping types include `flat` (fixed charge per unit) and `rate` (percentage-based).
+
+For a detailed explanation of these concepts, refer to the xref:../using-rating-in-rhoso/how-to-create-and-manage-rating-rules.adoc[How to Create and Manage Rating Rules] module.
+
+== Hands-on Activity: Creating a Rating Rule for a Compute Flavor
+
+In this activity, you will create a hashmap rating rule that charges a flat cost of `0.3` for instances using the `tiny` flavor. You will execute each command manually through the `openstackclient` pod in your RHOSO environment.
+
+[NOTE]
+====
+All `openstack rating` commands are executed through the `openstackclient` pod running in the `openstack` namespace.
+====
+
+Follow these steps:
+
+. **Enable the hashmap module**
++
+The hashmap module must be enabled before you can create any rating rules.
++
+[source,bash]
+----
+oc exec -n openstack openstackclient -- openstack rating module enable hashmap
+----
+
+. **Create a rating group**
++
+Create a group named `instance_uptime_flavor_id` to organize the rating rules for instance uptime based on flavor.
++
+[source,bash]
+----
+oc exec -n openstack openstackclient -- \
+  openstack rating hashmap group create instance_uptime_flavor_id
+----
++
+Note the group ID from the output. You will need it in a later step.
+
+. **Create a service matching rule**
++
+Create a service named `instance` that connects the rating rule to the instance metric collected by CloudKitty.
++
+[source,bash]
+----
+oc exec -n openstack openstackclient -- \
+  openstack rating hashmap service create instance
+----
++
+Note the service ID from the output.
+
+. **Create a field matching rule**
++
+Create a field named `flavor_id` under the service you just created. This allows you to target instances based on their specific flavor.
++
+[source,bash]
+----
+oc exec -n openstack openstackclient -- \
+  openstack rating hashmap field create flavor_id -s <service_id>
+----
++
+Replace `<service_id>` with the service ID from the previous step. Note the field ID from the output.
+
+. **Look up the flavor ID**
++
+Find the UUID of the `tiny` flavor so you can associate it with a cost.
++
+[source,bash]
+----
+oc exec -n openstack openstackclient -- \
+  openstack flavor show tiny -f value -c id
+----
++
+Note the flavor UUID from the output.
+
+. **Create a mapping**
++
+Create a flat mapping that assigns a cost of `0.3` to instances running the `tiny` flavor.
++
+[source,bash]
+----
+oc exec -n openstack openstackclient -- \
+  openstack rating hashmap mapping create 0.3 \
+  --field-id <field_id> \
+  --value <flavor_uuid> \
+  -g <group_id> \
+  -t flat
+----
++
+Replace `<field_id>`, `<flavor_uuid>`, and `<group_id>` with the values you noted in the previous steps.
+
+Once the mapping is created, the rating rule is active. CloudKitty automatically applies all active rating rules to incoming consumption data as it processes metrics -- there is no separate "apply" step required.
+
+== Verifying the Rule
+
+You can verify that your rating configuration is in place by listing the active modules and checking that data is being processed:
+
+[source,bash]
+----
+oc exec -n openstack openstackclient -- openstack rating module list
+----
+
+[source,bash]
+----
+oc exec -n openstack openstackclient -- openstack rating summary get
+----
+
+[TIP]
+====
+If no rated data appears yet, wait a few minutes. CloudKitty processes metrics on a periodic cycle, so there may be a short delay before consumption data is rated.
+====
+
+== Automation Alternative
+
+The repository you cloned in the previous unit includes a playbook that automates all the manual steps above. If you made a mistake and need to start over, or if you want to compare your manual work with the automated approach, you can use these playbooks:
+
+To clean up your existing rating configuration:
+
+[source,bash]
+----
+ansible-playbook create-ck-rating/cleanup-ck-rating.yml
+----
+
+To recreate the rating rule automatically:
+
+[source,bash]
+----
+ansible-playbook create-ck-rating/create-ck-rating.yml
+----
+
+You can customize the playbook variables to rate a different flavor or use a different cost:
+
+[source,bash]
+----
+ansible-playbook create-ck-rating/create-ck-rating.yml \
+  -e flavor_name=m1.small \
+  -e rating_cost=0.5
+----
+
+The playbook supports the following variables:
+
+[cols="1,1,2"]
+|===
+| Variable | Default | Description
+
+| `flavor_name` | `tiny` | Flavor to rate
+| `rating_cost` | `0.3` | Cost assigned to the flavor
+| `group_name` | `instance_uptime_flavor_id` | Rating group name
+| `service_name` | `instance` | Service matching rule name
+| `field_name` | `flavor_id` | Field matching rule name
+| `mapping_type` | `flat` | Mapping type (`flat` or `rate`)
+|===
+
+In the next unit, you will validate your configuration and verify that charges are being generated correctly.

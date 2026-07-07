@@ -1,10 +1,7 @@
 #  Hands-on Lab: Implementing Your First Chargeback Rating
 
-=== Hands-on Lab: Implementing Your First Chargeback Rating
+This hands-on lab provides practical experience in configuring and using the Rating service. You will use Ansible playbooks from the https://github.com/opentraining-labs-customizations/rhoso-chargeback[lab repository] along with the concepts from the training to complete the following activities:
 
-This lab provides practical experience in configuring and using RHOSO Chargeback. You will:
-
-* Set up the required lab environment for Chargeback.
-* xref:../using_the_rating_service_cloudkitty/creating_a_rating_rule.adoc[Define a basic rating rule] for a service using CloudKitty.
-* Apply the created rating rule to resources.
-* Review generated charge reports and analyze consumption data.
+* xref:setting-up-the-lab-environment-for-chargeback.adoc[Set up the lab environment for chargeback] by installing the required dependencies and enabling the Rating service in RHOSO.
+* xref:creating-and-applying-a-rating-rule.adoc[Create and apply a rating rule] for a compute flavor using the hashmap module.
+* xref:verifying-and-analyzing-consumption-data.adoc[Verify and analyze consumption data] by validating your rating configuration.

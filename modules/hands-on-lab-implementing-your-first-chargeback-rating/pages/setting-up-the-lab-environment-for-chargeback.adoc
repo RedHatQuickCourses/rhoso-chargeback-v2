@@ -1,104 +1,135 @@
-#  Setting up the lab environment for Chargeback
+# Setting up the lab environment for Chargeback
 
-= Setting up the Lab Environment for RHOSO Chargeback
-
-In this lab, you will prepare your Red Hat OpenShift Service on OpenStack (RHOSO) environment to leverage the powerful Chargeback capabilities provided by CloudKitty, the Rating service integrated with the Telemetry Operator. By the end of this lab, you will have CloudKitty actively monitoring and collecting resource usage data, laying the groundwork for transparent cost recovery and optimization.
+In this unit, you will prepare your Red Hat OpenStack Services on OpenShift (RHOSO) environment for chargeback by installing the required dependencies and enabling the Rating service (CloudKitty). You will use Ansible playbooks to automate the setup, while understanding what each step accomplishes based on the concepts covered in the xref:../enable-rating-in-rhoso/prerequisites-for-rating-enablement-in-rhoso.adoc[prerequisites] and xref:../enable-rating-in-rhoso/how-to-enable-rating.adoc[enablement] theory modules.
 
 == Prerequisites
 
-Before you begin, ensure you have met the following prerequisites:
+Before you begin, ensure you have the following:
 
-*   **Access to an RHOSO Cluster**: You need `kubeconfig` access to a running Red Hat OpenShift Service on OpenStack environment with administrator privileges.
-*   **OpenShift CLI (`oc`)**: The `oc` command-line tool configured to interact with your RHOSO cluster.
-*   **Telemetry Operator**: The Telemetry Operator must be installed and running within your RHOSO environment. Chargeback functionality (CloudKitty) is enabled and managed through this operator.
-*   **Sufficient Permissions**: You need appropriate permissions to modify Custom Resources (CRs) managed by the Telemetry Operator.
+* Access to an RHOSO cluster with administrator privileges.
+* The OpenShift CLI (`oc`) installed and authenticated against the target cluster.
+* A valid `KUBECONFIG` pointing to the target cluster.
+* Ansible installed on your workstation.
 
-== Understanding CloudKitty: The RHOSO Chargeback Engine
+== Connect to the Utility Machine
 
-At the heart of RHOSO's chargeback functionality lies *CloudKitty*, which the context describes as the "meter reader" for your cloud resources. CloudKitty acts as a critical translation layer, transforming raw technical metrics (such as VM uptime, storage consumption, or network traffic) into meaningful, quantifiable charges based on your predefined rating rules.
+All lab tasks are performed from the utility machine. From your workstation, connect to it via SSH:
 
-As highlighted in our introduction to Chargeback, CloudKitty empowers organizations to achieve two major goals:
+[source,bash]
+----
+[student@workstation ~]$ ssh utility
+----
 
-*   **Transparent Cost Recovery**: It provides clear, itemized breakdowns of resource usage per tenant, enabling accurate recoupment of operational expenses without surprising internal customers with opaque charges.
-*   **Trust and Optimization**: When tenants see how their consumption (broken down by project, flavor, and metric) affects their cost, they can make informed decisions, fostering efficiency and promoting better resource utilization.
+Once connected, install Ansible Core:
 
-It's crucial to understand that CloudKitty functions purely as a visibility and rating engine. It does *not* actively enforce budgets or block resource creation (like Nova instances) if a tenant exceeds a certain cost threshold. Its role is to provide the data necessary for informed financial management.
+[source,bash]
+----
+[student@utility ~]$ sudo dnf install ansible-core
+----
 
-== Enabling the Chargeback (CloudKitty) Service
+You will run all subsequent commands from this machine.
 
-The Chargeback feature in RHOSO is provided by the Rating service (CloudKitty), which you enable and manage through the Telemetry Operator. To activate CloudKitty in your lab environment, you will modify the `Telemetry` custom resource (CR) to include the `cloudkitty` component. This modification instructs the Telemetry Operator to deploy and configure all necessary CloudKitty components.
+== Clone the Playbooks Repository
 
-=== Hands-on Activity: Deploying CloudKitty via Telemetry Operator
+All the automation scripts for this lab are available in a dedicated Git repository. Clone it to your workstation:
 
-In this activity, you will enable the CloudKitty service by patching the `telemetry-operator`'s `Telemetry` custom resource. This action will trigger the operator to deploy the required CloudKitty infrastructure in your RHOSO environment.
+[source,bash]
+----
+git clone https://github.com/opentraining-labs-customizations/rhoso-chargeback.git
+cd rhoso-chargeback
+----
 
-.  **Identify the Telemetry CR**
-    First, you need to identify the exact name of your `Telemetry` Custom Resource. It is typically named `telemetry-sample` or a similar identifier within the `openshift-telemetry-operator` namespace.
+The repository contains four directories, each with an Ansible playbook for a specific stage of the lab:
 
-    ```bash
-    oc get telemetry -n openshift-telemetry-operator
-    ```
-    .Expected Output
-    ```
-    NAME                 NAMESPACE                   PHASE      AGE
-    telemetry-sample     openshift-telemetry-operator Running    2h
-    ```
-    Note down the `NAME` of your `Telemetry` resource (e.g., `telemetry-sample`).
+* `pre-deploy/` -- Installs Loki and MinIO, required by CloudKitty for rated data storage.
+* `deploy/` -- Updates the OpenStack Control Plane to enable Telemetry, Ceilometer, MetricStorage, and CloudKitty.
+* `create-ck-rating/` -- Automates the creation of a hashmap rating rule (used in the next unit).
+* `validation/` -- Validates that the rating configuration was applied correctly (used in the final unit).
 
-.  **Patch the Telemetry CR to Enable CloudKitty**
-    Execute the following `oc patch` command. Remember to replace `<TELEMETRY_CR_NAME>` with the actual name you identified in the previous step. This command specifically adds `cloudkitty` to the `spec.components` list within the `Telemetry` CR, instructing the operator to deploy it.
+== Install Loki and MinIO
 
-    ```bash
-    oc patch telemetry <TELEMETRY_CR_NAME> -n openshift-telemetry-operator --type='json' -p='[{"op": "add", "path": "/spec/components/-", "value": "cloudkitty"}]'
-    ```
-    .Example Output
-    ```
-    telemetry.telemetry.openstack.org/telemetry-sample patched
-    ```
-    This command uses a JSON patch to append `cloudkitty` to the `components` array in the `Telemetry` resource's specification.
+As covered in the xref:../enable-rating-in-rhoso/prerequisites-for-rating-enablement-in-rhoso.adoc[prerequisites module], CloudKitty requires a Loki instance for storing rated data, backed by S3-compatible storage. The `pre-deploy` playbook sets this up for you.
 
-.  **Verify CloudKitty Deployment**
-    After patching the `Telemetry` CR, the Telemetry Operator will start deploying the CloudKitty pods. It may take a few minutes for all components to become fully operational. Monitor the `openshift-telemetry-operator` namespace to ensure the new CloudKitty components transition to a `Running` state.
+Run the playbook:
 
-    ```bash
-    oc get pods -n openshift-telemetry-operator -w | grep cloudkitty
-    ```
-    .Expected Output (once pods are running)
-    ```
-    cloudkitty-api-xxxxxxxxx-xxxxx   1/1     Running   0          5m
-    cloudkitty-processor-xxxxxxxxx-xxxxx 1/1     Running   0          5m
-    cloudkitty-worker-xxxxxxxxx-xxxxx 1/1     Running   0          5m
-    ```
-    You should see pods for `cloudkitty-api`, `cloudkitty-processor`, and `cloudkitty-worker` eventually reaching a `Running` status.
+[source,bash]
+----
+ansible-playbook pre-deploy/cloudkitty-pre_deploy-install_loki.yml
+----
+
+This playbook performs the following actions:
+
+. Waits for the OpenShift Route API to become available.
+. Applies Kubernetes manifests that create:
+* The `openshift-operators-redhat` and `minio-dev` namespaces.
+* A Loki Operator subscription (from the `stable-6.4` channel).
+* A MinIO pod with persistent storage (10Gi) for S3-compatible object storage.
+* A Secret named `cloudkitty-loki-s3` in the `openstack` namespace containing MinIO credentials.
+. Waits for the Loki Operator to reach `Succeeded` status (up to 5 minutes).
 
 [NOTE]
-The deployment process involves creating several CloudKitty components, including API services for external interaction, a processor to apply rating rules, and worker pods to handle metric collection and processing, along with associated services and routes.
+====
+The playbook references files relative to the repository root. If you are running it from a different directory, override the path with:
 
-.  **Confirm CloudKitty Service Availability**
-    Finally, confirm that the CloudKitty API service, which allows interaction with CloudKitty, is available within the cluster.
+[source,bash]
+----
+ansible-playbook \
+  -e "ansible_user_dir=/path/to/rhoso-chargeback" \
+  pre-deploy/cloudkitty-pre_deploy-install_loki.yml
+----
+====
 
-    ```bash
-    oc get svc -n openshift-telemetry-operator | grep cloudkitty-api
-    ```
-    .Expected Output
-    ```
-    cloudkitty-api          ClusterIP   172.30.XXX.YYY   <none>        8889/TCP      5m
-    ```
-    You should see an entry for `cloudkitty-api` with a `ClusterIP`, indicating the service is ready.
+== Enable Telemetry, Ceilometer, MetricStorage, and CloudKitty
 
-== Initial Data Collection and Scrape Configs
+With the storage dependencies in place, you can now enable the Rating service itself. As described in the xref:../enable-rating-in-rhoso/how-to-enable-rating.adoc[enablement module], this involves modifying the `OpenStackControlPlane` Custom Resource to activate several components.
 
-Once CloudKitty is successfully deployed and running, it immediately begins collecting metrics from your RHOSO environment. The Telemetry Operator intelligently configures the scraping of all metric sources through `ScrapeConfig` Custom Resources (CRs).
+Run the deploy playbook:
 
-While you won't modify these in this lab, understanding `ScrapeConfig` CRs is crucial for troubleshooting potential issues, particularly if you suspect missing metrics or incorrect data collection later on. If you ever need to diagnose why CloudKitty isn't receiving certain data, inspecting these CRs can provide valuable diagnostic information regarding the configured metric endpoints and collection intervals.
+[source,bash]
+----
+ansible-playbook deploy/update-deployment-for-ck.yml
+----
 
-You can list these `ScrapeConfig` resources with the following command:
+This playbook performs the following actions:
 
-```bash
-oc get scrapeconfig -n openshift-telemetry-operator
-```
-This command will show you the various configurations the Telemetry Operator uses to gather data for CloudKitty.
+. Adds a `CloudKittyPassword` entry to the `osp-secret` Secret.
+. Activates the Telemetry service in the `OpenStackControlPlane` CR.
+. Activates Ceilometer in the `OpenStackControlPlane` CR.
+. Activates MetricStorage with `pvcStorageClass: nfs-storage`.
+. Activates CloudKitty in the `OpenStackControlPlane` CR.
+. Waits for the `OpenStackControlPlane` to become ready (up to 30 minutes).
 
-== What's Next?
+[IMPORTANT]
+====
+This step may take up to 30 minutes to complete while the operator reconciles all changes and deploys the new components. Do not interrupt the playbook while it is waiting.
+====
 
-With CloudKitty successfully enabled and confirmed to be running, your lab environment is now fully prepared for the next crucial steps. The system will begin accumulating usage data, which will be processed according to the rating rules you will define in subsequent labs. You are now ready to delve into creating and managing your first chargeback rating definitions.
+== Verify the Deployment
+
+After the playbook completes successfully, verify that CloudKitty is running.
+
+. Check that the CloudKitty pods are in `Running` state:
++
+[source,bash]
+----
+oc get pods -n openstack | grep cloudkitty
+----
++
+You should see `cloudkitty-api` and `cloudkitty-processor` pods running.
+
+. Confirm the CloudKitty CR reports a `Ready` condition:
++
+[source,bash]
+----
+oc get -n openstack CloudKitty
+----
+
+. Verify that Ceilometer and MetricStorage are also ready:
++
+[source,bash]
+----
+oc get ceilometer -n openstack
+oc get metricstorage -n openstack
+----
+
+Once all components report a ready state, your environment is fully prepared for rating. In the next unit, you will create your first rating rule.
