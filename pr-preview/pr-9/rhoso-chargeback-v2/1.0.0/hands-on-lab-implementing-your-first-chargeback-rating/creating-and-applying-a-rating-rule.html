@@ -285,7 +285,7 @@
 <div class="paragraph">
 <p>The hashmap module must be enabled before you can create any rating rules.</p>
 </div>
-<div class="listingblock">
+<div class="listingblock wrap">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating module enable hashmap</code></pre>
 </div>
@@ -308,10 +308,9 @@
 <div class="paragraph">
 <p>Create a group named <code>instance_uptime_flavor_id</code> to organize the rating rules for instance uptime based on flavor.</p>
 </div>
-<div class="listingblock">
+<div class="listingblock wrap">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- \
-  openstack rating hashmap group create instance_uptime_flavor_id</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating hashmap group create instance_uptime_flavor_id</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -335,10 +334,9 @@
 <div class="paragraph">
 <p>Create a service named <code>instance</code> that connects the rating rule to the instance metric collected by CloudKitty.</p>
 </div>
-<div class="listingblock">
+<div class="listingblock wrap">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- \
-  openstack rating hashmap service create instance</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating hashmap service create instance</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -362,19 +360,17 @@
 <div class="paragraph">
 <p>Create a field named <code>flavor_id</code> under the service you just created. This allows you to target instances based on their specific flavor.</p>
 </div>
-<div class="listingblock">
+<div class="listingblock wrap">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- \
-  openstack rating hashmap field create &lt;service_id&gt; flavor_id</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating hashmap field create &lt;service_id&gt; flavor_id</code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p>Replace <code>&lt;service_id&gt;</code> with the service ID from the previous step. For example, using the service ID from the previous step&#8217;s output:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock wrap">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- \
-  openstack rating hashmap field create 697dd654-f917-40d0-953b-46e6ecee0286 flavor_id</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating hashmap field create 697dd654-f917-40d0-953b-46e6ecee0286 flavor_id</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -398,10 +394,9 @@
 <div class="paragraph">
 <p>Find the UUID of the <code>m1.tiny</code> flavor so you can associate it with a cost.</p>
 </div>
-<div class="listingblock">
+<div class="listingblock wrap">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- \
-  openstack flavor show m1.tiny</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack flavor show m1.tiny</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -437,27 +432,17 @@
 <div class="paragraph">
 <p>Create a flat mapping that assigns a cost of <code>0.3</code> to instances running the <code>m1.tiny</code> flavor.</p>
 </div>
-<div class="listingblock">
+<div class="listingblock wrap">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- \
-  openstack rating hashmap mapping create 0.3 \
-  --field-id &lt;field_id&gt; \
-  --value &lt;flavor_uuid&gt; \
-  -g &lt;group_id&gt; \
-  -t flat</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating hashmap mapping create 0.3 --field-id &lt;field_id&gt; --value &lt;flavor_uuid&gt; -g &lt;group_id&gt; -t flat</code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p>Replace <code>&lt;field_id&gt;</code>, <code>&lt;flavor_uuid&gt;</code>, and <code>&lt;group_id&gt;</code> with the values you noted in the previous steps. For example, using the values from the previous steps' output:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock wrap">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- \
-  openstack rating hashmap mapping create 0.3 \
-  --field-id 6936544f-f745-4a98-9a8a-ac89925894b9 \
-  --value f2dae2ae-d5cf-4e19-9af7-fff1cd533664 \
-  -g ddb39143-170c-4512-a3b0-44f32ab7b83a \
-  -t flat</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating hashmap mapping create 0.3 --field-id 6936544f-f745-4a98-9a8a-ac89925894b9 --value f2dae2ae-d5cf-4e19-9af7-fff1cd533664 -g ddb39143-170c-4512-a3b0-44f32ab7b83a -t flat</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -486,12 +471,12 @@
 <div class="paragraph">
 <p>You can verify that your rating configuration is in place by listing the active modules and checking that data is being processed:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock wrap">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating module list</code></pre>
 </div>
 </div>
-<div class="listingblock">
+<div class="listingblock wrap">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating summary get</code></pre>
 </div>
@@ -521,7 +506,7 @@
 <div class="paragraph">
 <p>To clean up your existing rating configuration:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock wrap">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ansible-playbook create-ck-rating/cleanup-ck-rating.yml</code></pre>
 </div>
@@ -529,7 +514,7 @@
 <div class="paragraph">
 <p>To recreate the rating rule automatically:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock wrap">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ansible-playbook create-ck-rating/create-ck-rating.yml</code></pre>
 </div>
@@ -537,11 +522,9 @@
 <div class="paragraph">
 <p>You can customize the playbook variables to rate a different flavor or use a different cost:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock wrap">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ansible-playbook create-ck-rating/create-ck-rating.yml \
-  -e flavor_name=m1.small \
-  -e rating_cost=0.5</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ansible-playbook create-ck-rating/create-ck-rating.yml -e flavor_name=m1.small -e rating_cost=0.5</code></pre>
 </div>
 </div>
 <div class="paragraph">
