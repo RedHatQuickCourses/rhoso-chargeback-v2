@@ -1,6 +1,6 @@
 # Creating and applying a rating rule
 
-In this unit, you will create a hashmap rating rule that assigns a cost to compute instances based on their flavor. You will follow the step-by-step process using the `openstack rating` CLI commands, applying the concepts covered in the xref:../using-rating-in-rhoso/understanding-rating-concepts.adoc[rating concepts] and xref:../using-rating-in-rhoso/how-to-create-and-manage-rating-rules.adoc[rating rules] theory modules.
+In this unit, you will create a hashmap rating rule that assigns a cost to compute instances based on their flavor. You will follow the step-by-step process using the `openstack rating` CLI commands, applying the concepts covered in the xref:using-rating-in-rhoso:understanding-rating-concepts.adoc[Understanding rating concepts] and xref:using-rating-in-rhoso:how-to-create-and-manage-rating-rules.adoc[How to Create and Manage Rating Rules] theory modules.
 
 == Key Concepts Recap
 
@@ -12,7 +12,7 @@ Before you start, recall these core concepts:
 * **Field**: An optional attribute within a service that allows targeting a specific metadata value (e.g., `flavor_id` for instances).
 * **Mapping**: The final object that associates a cost with a service or field value. Mapping types include `flat` (fixed charge per unit) and `rate` (percentage-based).
 
-For a detailed explanation of these concepts, refer to the xref:../using-rating-in-rhoso/how-to-create-and-manage-rating-rules.adoc[How to Create and Manage Rating Rules] module.
+For a detailed explanation of these concepts, refer to the xref:using-rating-in-rhoso:how-to-create-and-manage-rating-rules.adoc[How to Create and Manage Rating Rules] module.
 
 == Hands-on Activity: Creating a Rating Rule for a Compute Flavor
 
