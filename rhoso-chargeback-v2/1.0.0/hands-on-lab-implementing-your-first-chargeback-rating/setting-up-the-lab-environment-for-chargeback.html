@@ -221,51 +221,22 @@
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>In this unit, you will prepare your Red Hat OpenStack Services on OpenShift (RHOSO) environment for chargeback by installing the required dependencies and enabling the Rating service (CloudKitty). You will use Ansible playbooks to automate the setup, while understanding what each step accomplishes based on the concepts covered in the <a href="#../enable-rating-in-rhoso/prerequisites-for-rating-enablement-in-rhoso.adoc" class="xref unresolved">prerequisites</a> and <a href="#../enable-rating-in-rhoso/how-to-enable-rating.adoc" class="xref unresolved">enablement</a> theory modules.</p>
+<p>In this unit, you will prepare your Red Hat OpenStack Services on OpenShift (RHOSO) environment for chargeback by installing the required dependencies and enabling the Rating service (CloudKitty). You will use Ansible playbooks to automate the setup, while understanding what each step accomplishes based on the concepts covered in the <a href="../enable-rating-in-rhoso/prerequisites-for-rating-enablement-in-rhoso.html" class="xref page">Prerequisites for Rating enablement in RHOSO</a> and <a href="../enable-rating-in-rhoso/how-to-enable-rating.html" class="xref page">How To Enable Rating</a> theory modules.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_prerequisites"><a class="anchor" href="#_prerequisites"></a>Prerequisites</h2>
+<h2 id="_connect_to_the_workstation_machine"><a class="anchor" href="#_connect_to_the_workstation_machine"></a>Connect to the Workstation Machine</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Before you begin, ensure you have the following:</p>
+<p>All lab tasks are performed from the workstation machine.</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>Access to an RHOSO cluster with administrator privileges.</p>
-</li>
-<li>
-<p>The OpenShift CLI (<code>oc</code>) installed and authenticated against the target cluster.</p>
-</li>
-<li>
-<p>A valid <code>KUBECONFIG</code> pointing to the target cluster.</p>
-</li>
-<li>
-<p>Ansible installed on your workstation.</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_connect_to_the_utility_machine"><a class="anchor" href="#_connect_to_the_utility_machine"></a>Connect to the Utility Machine</h2>
-<div class="sectionbody">
 <div class="paragraph">
-<p>All lab tasks are performed from the utility machine. From your workstation, connect to it via SSH:</p>
+<p>Install ansible-core (it might be available already):</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[student@workstation ~]$ ssh utility</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Once connected, install Ansible Core:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[student@utility ~]$ sudo dnf install ansible-core</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[student@workstation ~]$ sudo dnf install ansible-core</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -274,7 +245,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_clone_the_playbooks_repository"><a class="anchor" href="#_clone_the_playbooks_repository"></a>Clone the Playbooks Repository</h2>
+<h2 id="_clone_the_rhoso_chargeback_and_observability_fundamentals_training_repository"><a class="anchor" href="#_clone_the_rhoso_chargeback_and_observability_fundamentals_training_repository"></a>Clone the RHOSO Chargeback and Observability Fundamentals Training Repository</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>All the automation scripts for this lab are available in a dedicated Git repository. Clone it to your workstation:</p>
@@ -291,7 +262,7 @@ cd rhoso-chargeback</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p><code>pre-deploy/</code>&#8201;&#8212;&#8201;Installs Loki and MinIO, required by CloudKitty for rated data storage.</p>
+<p><code>pre-deploy/</code>&#8201;&#8212;&#8201;Installs Loki, MinIO and COO, required by CloudKitty to access metrics and store the rated data.</p>
 </li>
 <li>
 <p><code>deploy/</code>&#8201;&#8212;&#8201;Updates the OpenStack Control Plane to enable Telemetry, Ceilometer, MetricStorage, and CloudKitty.</p>
@@ -307,17 +278,17 @@ cd rhoso-chargeback</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_install_loki_and_minio"><a class="anchor" href="#_install_loki_and_minio"></a>Install Loki and MinIO</h2>
+<h2 id="_install_cloudkitty_dependencies"><a class="anchor" href="#_install_cloudkitty_dependencies"></a>Install CloudKitty Dependencies</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>As covered in the <a href="#../enable-rating-in-rhoso/prerequisites-for-rating-enablement-in-rhoso.adoc" class="xref unresolved">prerequisites module</a>, CloudKitty requires a Loki instance for storing rated data, backed by S3-compatible storage. The <code>pre-deploy</code> playbook sets this up for you.</p>
+<p>As covered in the <a href="../enable-rating-in-rhoso/prerequisites-for-rating-enablement-in-rhoso.html" class="xref page">Prerequisites for Rating enablement in RHOSO</a> module, CloudKitty requires a Loki instance for storing rated data, backed by S3-compatible storage. The <code>pre-deploy</code> playbook sets this up for you. It also requires COO, to deploy the MetricStorage instance managed by COO.</p>
 </div>
 <div class="paragraph">
 <p>Run the playbook:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ansible-playbook pre-deploy/cloudkitty-pre_deploy-install_loki.yml</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ansible-playbook pre-deploy/deploy-ck-dependencies.yml</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -339,6 +310,9 @@ cd rhoso-chargeback</code></pre>
 <p>A Loki Operator subscription (from the <code>stable-6.4</code> channel).</p>
 </li>
 <li>
+<p>A Cluster Observability Operator subscription (from the <code>stable</code> channel).</p>
+</li>
+<li>
 <p>A MinIO pod with persistent storage (10Gi) for S3-compatible object storage.</p>
 </li>
 <li>
@@ -348,7 +322,7 @@ cd rhoso-chargeback</code></pre>
 </div>
 </li>
 <li>
-<p>Waits for the Loki Operator to reach <code>Succeeded</code> status (up to 5 minutes).</p>
+<p>Waits for Loki and Cluster Observability Operators to reach <code>Succeeded</code> status (up to 5 minutes).</p>
 </li>
 </ol>
 </div>
@@ -366,7 +340,7 @@ cd rhoso-chargeback</code></pre>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ansible-playbook \
   -e "ansible_user_dir=/path/to/rhoso-chargeback" \
-  pre-deploy/cloudkitty-pre_deploy-install_loki.yml</code></pre>
+  pre-deploy/deploy-ck-dependencies.yml</code></pre>
 </div>
 </div>
 </td>
@@ -379,7 +353,7 @@ cd rhoso-chargeback</code></pre>
 <h2 id="_enable_telemetry_ceilometer_metricstorage_and_cloudkitty"><a class="anchor" href="#_enable_telemetry_ceilometer_metricstorage_and_cloudkitty"></a>Enable Telemetry, Ceilometer, MetricStorage, and CloudKitty</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>With the storage dependencies in place, you can now enable the Rating service itself. As described in the <a href="#../enable-rating-in-rhoso/how-to-enable-rating.adoc" class="xref unresolved">enablement module</a>, this involves modifying the <code>OpenStackControlPlane</code> Custom Resource to activate several components.</p>
+<p>With the storage dependencies in place, you can now enable the Rating service itself. As described in the <a href="../enable-rating-in-rhoso/how-to-enable-rating.html" class="xref page">How To Enable Rating</a> module, this involves modifying the <code>OpenStackControlPlane</code> Custom Resource to activate several components.</p>
 </div>
 <div class="paragraph">
 <p>Run the deploy playbook:</p>
