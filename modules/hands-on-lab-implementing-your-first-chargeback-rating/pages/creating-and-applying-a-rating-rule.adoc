@@ -29,7 +29,7 @@ Follow these steps:
 +
 The hashmap module must be enabled before you can create any rating rules.
 +
-[source,bash]
+[source,bash,role=wrap]
 ----
 oc exec -n openstack openstackclient -- openstack rating module enable hashmap
 ----
@@ -49,10 +49,9 @@ Example output:
 +
 Create a group named `instance_uptime_flavor_id` to organize the rating rules for instance uptime based on flavor.
 +
-[source,bash]
+[source,bash,role=wrap]
 ----
-oc exec -n openstack openstackclient -- \
-  openstack rating hashmap group create instance_uptime_flavor_id
+oc exec -n openstack openstackclient -- openstack rating hashmap group create instance_uptime_flavor_id
 ----
 +
 Example output:
@@ -72,10 +71,9 @@ Note the group ID from the output. You will need it in a later step.
 +
 Create a service named `instance` that connects the rating rule to the instance metric collected by CloudKitty.
 +
-[source,bash]
+[source,bash,role=wrap]
 ----
-oc exec -n openstack openstackclient -- \
-  openstack rating hashmap service create instance
+oc exec -n openstack openstackclient -- openstack rating hashmap service create instance
 ----
 +
 Example output:
@@ -95,18 +93,16 @@ Note the service ID from the output.
 +
 Create a field named `flavor_id` under the service you just created. This allows you to target instances based on their specific flavor.
 +
-[source,bash]
+[source,bash,role=wrap]
 ----
-oc exec -n openstack openstackclient -- \
-  openstack rating hashmap field create <service_id> flavor_id
+oc exec -n openstack openstackclient -- openstack rating hashmap field create <service_id> flavor_id
 ----
 +
 Replace `<service_id>` with the service ID from the previous step. For example, using the service ID from the previous step's output:
 +
-[source,bash]
+[source,bash,role=wrap]
 ----
-oc exec -n openstack openstackclient -- \
-  openstack rating hashmap field create 697dd654-f917-40d0-953b-46e6ecee0286 flavor_id
+oc exec -n openstack openstackclient -- openstack rating hashmap field create 697dd654-f917-40d0-953b-46e6ecee0286 flavor_id
 ----
 +
 Example output:
@@ -126,10 +122,9 @@ Note the field ID from the output.
 +
 Find the UUID of the `m1.tiny` flavor so you can associate it with a cost.
 +
-[source,bash]
+[source,bash,role=wrap]
 ----
-oc exec -n openstack openstackclient -- \
-  openstack flavor show m1.tiny
+oc exec -n openstack openstackclient -- openstack flavor show m1.tiny
 ----
 +
 Example output:
@@ -161,26 +156,16 @@ Note the flavor UUID (the `id` field) from the output.
 +
 Create a flat mapping that assigns a cost of `0.3` to instances running the `m1.tiny` flavor.
 +
-[source,bash]
+[source,bash,role=wrap]
 ----
-oc exec -n openstack openstackclient -- \
-  openstack rating hashmap mapping create 0.3 \
-  --field-id <field_id> \
-  --value <flavor_uuid> \
-  -g <group_id> \
-  -t flat
+oc exec -n openstack openstackclient -- openstack rating hashmap mapping create 0.3 --field-id <field_id> --value <flavor_uuid> -g <group_id> -t flat
 ----
 +
 Replace `<field_id>`, `<flavor_uuid>`, and `<group_id>` with the values you noted in the previous steps. For example, using the values from the previous steps' output:
 +
-[source,bash]
+[source,bash,role=wrap]
 ----
-oc exec -n openstack openstackclient -- \
-  openstack rating hashmap mapping create 0.3 \
-  --field-id 6936544f-f745-4a98-9a8a-ac89925894b9 \
-  --value f2dae2ae-d5cf-4e19-9af7-fff1cd533664 \
-  -g ddb39143-170c-4512-a3b0-44f32ab7b83a \
-  -t flat
+oc exec -n openstack openstackclient -- openstack rating hashmap mapping create 0.3 --field-id 6936544f-f745-4a98-9a8a-ac89925894b9 --value f2dae2ae-d5cf-4e19-9af7-fff1cd533664 -g ddb39143-170c-4512-a3b0-44f32ab7b83a -t flat
 ----
 +
 Example output:
@@ -200,12 +185,12 @@ Once the mapping is created, the rating rule is active. CloudKitty automatically
 
 You can verify that your rating configuration is in place by listing the active modules and checking that data is being processed:
 
-[source,bash]
+[source,bash,role=wrap]
 ----
 oc exec -n openstack openstackclient -- openstack rating module list
 ----
 
-[source,bash]
+[source,bash,role=wrap]
 ----
 oc exec -n openstack openstackclient -- openstack rating summary get
 ----
@@ -221,25 +206,23 @@ The repository you cloned in the previous unit includes a playbook that automate
 
 To clean up your existing rating configuration:
 
-[source,bash]
+[source,bash,role=wrap]
 ----
 ansible-playbook create-ck-rating/cleanup-ck-rating.yml
 ----
 
 To recreate the rating rule automatically:
 
-[source,bash]
+[source,bash,role=wrap]
 ----
 ansible-playbook create-ck-rating/create-ck-rating.yml
 ----
 
 You can customize the playbook variables to rate a different flavor or use a different cost:
 
-[source,bash]
+[source,bash,role=wrap]
 ----
-ansible-playbook create-ck-rating/create-ck-rating.yml \
-  -e flavor_name=m1.small \
-  -e rating_cost=0.5
+ansible-playbook create-ck-rating/create-ck-rating.yml -e flavor_name=m1.small -e rating_cost=0.5
 ----
 
 The playbook supports the following variables:
