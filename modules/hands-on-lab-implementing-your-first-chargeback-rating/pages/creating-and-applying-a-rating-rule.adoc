@@ -16,7 +16,7 @@ For a detailed explanation of these concepts, refer to the xref:using-rating-in-
 
 == Hands-on Activity: Creating a Rating Rule for a Compute Flavor
 
-In this activity, you will create a hashmap rating rule that charges a flat cost of `0.3` for instances using the `tiny` flavor. You will execute each command manually through the `openstackclient` pod in your RHOSO environment.
+In this activity, you will create a hashmap rating rule that charges a flat cost of `0.3` for instances using the `m1.tiny` flavor. You will execute each command manually through the `openstackclient` pod in your RHOSO environment.
 
 [NOTE]
 ====
@@ -33,6 +33,17 @@ The hashmap module must be enabled before you can create any rating rules.
 ----
 oc exec -n openstack openstackclient -- openstack rating module enable hashmap
 ----
++
+Example output:
++
+[source,bash]
+----
++---------+---------+----------+
+| Module  | Enabled | Priority |
++---------+---------+----------+
+| hashmap | True    | 1        |
++---------+---------+----------+
+----
 
 . **Create a rating group**
 +
@@ -42,6 +53,17 @@ Create a group named `instance_uptime_flavor_id` to organize the rating rules fo
 ----
 oc exec -n openstack openstackclient -- \
   openstack rating hashmap group create instance_uptime_flavor_id
+----
++
+Example output:
++
+[source,bash]
+----
++----------------------------+---------------------------------------+
+| Name                       | Group ID                               |
++----------------------------+---------------------------------------+
+| instance_uptime_flavor_id  | ddb39143-170c-4512-a3b0-44f32ab7b83a   |
++----------------------------+---------------------------------------+
 ----
 +
 Note the group ID from the output. You will need it in a later step.
@@ -56,6 +78,17 @@ oc exec -n openstack openstackclient -- \
   openstack rating hashmap service create instance
 ----
 +
+Example output:
++
+[source,bash]
+----
++----------+---------------------------------------+
+| Name     | Service ID                             |
++----------+---------------------------------------+
+| instance | 697dd654-f917-40d0-953b-46e6ecee0286    |
++----------+---------------------------------------+
+----
++
 Note the service ID from the output.
 
 . **Create a field matching rule**
@@ -65,26 +98,68 @@ Create a field named `flavor_id` under the service you just created. This allows
 [source,bash]
 ----
 oc exec -n openstack openstackclient -- \
-  openstack rating hashmap field create flavor_id -s <service_id>
+  openstack rating hashmap field create <service_id> flavor_id
 ----
 +
-Replace `<service_id>` with the service ID from the previous step. Note the field ID from the output.
-
-. **Look up the flavor ID**
-+
-Find the UUID of the `tiny` flavor so you can associate it with a cost.
+Replace `<service_id>` with the service ID from the previous step. For example, using the service ID from the previous step's output:
 +
 [source,bash]
 ----
 oc exec -n openstack openstackclient -- \
-  openstack flavor show tiny -f value -c id
+  openstack rating hashmap field create 697dd654-f917-40d0-953b-46e6ecee0286 flavor_id
 ----
 +
-Note the flavor UUID from the output.
+Example output:
++
+[source,bash]
+----
++-----------+--------------------------------------+--------------------------------------+
+| Name      | Field ID                              | Service ID                            |
++-----------+--------------------------------------+--------------------------------------+
+| flavor_id | 6936544f-f745-4a98-9a8a-ac89925894b9  | 697dd654-f917-40d0-953b-46e6ecee0286  |
++-----------+--------------------------------------+--------------------------------------+
+----
++
+Note the field ID from the output.
+
+. **Look up the flavor ID**
++
+Find the UUID of the `m1.tiny` flavor so you can associate it with a cost.
++
+[source,bash]
+----
+oc exec -n openstack openstackclient -- \
+  openstack flavor show m1.tiny
+----
++
+Example output:
++
+[source,bash]
+----
++----------------------------+--------------------------------------+
+| Field                      | Value                                 |
++----------------------------+--------------------------------------+
+| OS-FLV-DISABLED:disabled   | False                                  |
+| OS-FLV-EXT-DATA:ephemeral  | 0                                       |
+| access_project_ids         | None                                    |
+| description                | None                                    |
+| disk                       | 1                                       |
+| id                         | f2dae2ae-d5cf-4e19-9af7-fff1cd533664    |
+| name                       | m1.tiny                                 |
+| os-flavor-access:is_public | True                                    |
+| properties                 |                                         |
+| ram                        | 512                                     |
+| rxtx_factor                | 1.0                                     |
+| swap                       |                                         |
+| vcpus                      | 1                                       |
++----------------------------+--------------------------------------+
+----
++
+Note the flavor UUID (the `id` field) from the output.
 
 . **Create a mapping**
 +
-Create a flat mapping that assigns a cost of `0.3` to instances running the `tiny` flavor.
+Create a flat mapping that assigns a cost of `0.3` to instances running the `m1.tiny` flavor.
 +
 [source,bash]
 ----
@@ -96,7 +171,28 @@ oc exec -n openstack openstackclient -- \
   -t flat
 ----
 +
-Replace `<field_id>`, `<flavor_uuid>`, and `<group_id>` with the values you noted in the previous steps.
+Replace `<field_id>`, `<flavor_uuid>`, and `<group_id>` with the values you noted in the previous steps. For example, using the values from the previous steps' output:
++
+[source,bash]
+----
+oc exec -n openstack openstackclient -- \
+  openstack rating hashmap mapping create 0.3 \
+  --field-id 6936544f-f745-4a98-9a8a-ac89925894b9 \
+  --value f2dae2ae-d5cf-4e19-9af7-fff1cd533664 \
+  -g ddb39143-170c-4512-a3b0-44f32ab7b83a \
+  -t flat
+----
++
+Example output:
++
+[source,bash]
+----
++---------------------------------------+---------------------------------------+-------------------------------------+------+---------------------------------------+-------------+---------------------------------------+------------+
+| Mapping ID                             | Value                                  | Cost                                 | Type | Field ID                               | Service ID  | Group ID                               | Project ID |
++---------------------------------------+---------------------------------------+-------------------------------------+------+---------------------------------------+-------------+---------------------------------------+------------+
+| 3a13fe1f-9078-41a2-8a33-4883adf249bf   | f2dae2ae-d5cf-4e19-9af7-fff1cd533664    | 0.29999999999999998889776975373      | flat | 6936544f-f745-4a98-9a8a-ac89925894b9   | None        | ddb39143-170c-4512-a3b0-44f32ab7b83a   | None       |
++---------------------------------------+---------------------------------------+-------------------------------------+------+---------------------------------------+-------------+---------------------------------------+------------+
+----
 
 Once the mapping is created, the rating rule is active. CloudKitty automatically applies all active rating rules to incoming consumption data as it processes metrics -- there is no separate "apply" step required.
 
@@ -152,7 +248,7 @@ The playbook supports the following variables:
 |===
 | Variable | Default | Description
 
-| `flavor_name` | `tiny` | Flavor to rate
+| `flavor_name` | `m1.tiny` | Flavor to rate
 | `rating_cost` | `0.3` | Cost assigned to the flavor
 | `group_name` | `instance_uptime_flavor_id` | Rating group name
 | `service_name` | `instance` | Service matching rule name
