@@ -1,35 +1,21 @@
 # Setting up the lab environment for Chargeback
 
-In this unit, you will prepare your Red Hat OpenStack Services on OpenShift (RHOSO) environment for chargeback by installing the required dependencies and enabling the Rating service (CloudKitty). You will use Ansible playbooks to automate the setup, while understanding what each step accomplishes based on the concepts covered in the xref:../enable-rating-in-rhoso/prerequisites-for-rating-enablement-in-rhoso.adoc[prerequisites] and xref:../enable-rating-in-rhoso/how-to-enable-rating.adoc[enablement] theory modules.
+In this unit, you will prepare your Red Hat OpenStack Services on OpenShift (RHOSO) environment for chargeback by installing the required dependencies and enabling the Rating service (CloudKitty). You will use Ansible playbooks to automate the setup, while understanding what each step accomplishes based on the concepts covered in the xref:enable-rating-in-rhoso:prerequisites-for-rating-enablement-in-rhoso.adoc[Prerequisites for Rating enablement in RHOSO] and xref:enable-rating-in-rhoso:how-to-enable-rating.adoc[How To Enable Rating] theory modules.
 
-== Prerequisites
+== Connect to the Workstation Machine
 
-Before you begin, ensure you have the following:
+All lab tasks are performed from the workstation machine.
 
-* Access to an RHOSO cluster with administrator privileges.
-* The OpenShift CLI (`oc`) installed and authenticated against the target cluster.
-* A valid `KUBECONFIG` pointing to the target cluster.
-* Ansible installed on your workstation.
-
-== Connect to the Utility Machine
-
-All lab tasks are performed from the utility machine. From your workstation, connect to it via SSH:
+Install ansible-core (it might be available already):
 
 [source,bash]
 ----
-[student@workstation ~]$ ssh utility
-----
-
-Once connected, install Ansible Core:
-
-[source,bash]
-----
-[student@utility ~]$ sudo dnf install ansible-core
+[student@workstation ~]$ sudo dnf install ansible-core
 ----
 
 You will run all subsequent commands from this machine.
 
-== Clone the Playbooks Repository
+== Clone the RHOSO Chargeback and Observability Fundamentals Training Repository
 
 All the automation scripts for this lab are available in a dedicated Git repository. Clone it to your workstation:
 
@@ -41,20 +27,20 @@ cd rhoso-chargeback
 
 The repository contains four directories, each with an Ansible playbook for a specific stage of the lab:
 
-* `pre-deploy/` -- Installs Loki and MinIO, required by CloudKitty for rated data storage.
+* `pre-deploy/` -- Installs Loki, MinIO and COO, required by CloudKitty to access metrics and store the rated data.
 * `deploy/` -- Updates the OpenStack Control Plane to enable Telemetry, Ceilometer, MetricStorage, and CloudKitty.
 * `create-ck-rating/` -- Automates the creation of a hashmap rating rule (used in the next unit).
 * `validation/` -- Validates that the rating configuration was applied correctly (used in the final unit).
 
-== Install Loki and MinIO
+== Install CloudKitty Dependencies
 
-As covered in the xref:../enable-rating-in-rhoso/prerequisites-for-rating-enablement-in-rhoso.adoc[prerequisites module], CloudKitty requires a Loki instance for storing rated data, backed by S3-compatible storage. The `pre-deploy` playbook sets this up for you.
+As covered in the xref:enable-rating-in-rhoso:prerequisites-for-rating-enablement-in-rhoso.adoc[Prerequisites for Rating enablement in RHOSO] module, CloudKitty requires a Loki instance for storing rated data, backed by S3-compatible storage. The `pre-deploy` playbook sets this up for you. It also requires COO, to deploy the MetricStorage instance managed by COO.
 
 Run the playbook:
 
 [source,bash]
 ----
-ansible-playbook pre-deploy/cloudkitty-pre_deploy-install_loki.yml
+ansible-playbook pre-deploy/deploy-ck-dependencies.yml
 ----
 
 This playbook performs the following actions:
@@ -63,9 +49,10 @@ This playbook performs the following actions:
 . Applies Kubernetes manifests that create:
 * The `openshift-operators-redhat` and `minio-dev` namespaces.
 * A Loki Operator subscription (from the `stable-6.4` channel).
+* A Cluster Observability Operator subscription (from the `stable` channel).
 * A MinIO pod with persistent storage (10Gi) for S3-compatible object storage.
 * A Secret named `cloudkitty-loki-s3` in the `openstack` namespace containing MinIO credentials.
-. Waits for the Loki Operator to reach `Succeeded` status (up to 5 minutes).
+. Waits for Loki and Cluster Observability Operators to reach `Succeeded` status (up to 5 minutes).
 
 [NOTE]
 ====
@@ -75,13 +62,13 @@ The playbook references files relative to the repository root. If you are runnin
 ----
 ansible-playbook \
   -e "ansible_user_dir=/path/to/rhoso-chargeback" \
-  pre-deploy/cloudkitty-pre_deploy-install_loki.yml
+  pre-deploy/deploy-ck-dependencies.yml
 ----
 ====
 
 == Enable Telemetry, Ceilometer, MetricStorage, and CloudKitty
 
-With the storage dependencies in place, you can now enable the Rating service itself. As described in the xref:../enable-rating-in-rhoso/how-to-enable-rating.adoc[enablement module], this involves modifying the `OpenStackControlPlane` Custom Resource to activate several components.
+With the storage dependencies in place, you can now enable the Rating service itself. As described in the xref:enable-rating-in-rhoso:how-to-enable-rating.adoc[How To Enable Rating] module, this involves modifying the `OpenStackControlPlane` Custom Resource to activate several components.
 
 Run the deploy playbook:
 

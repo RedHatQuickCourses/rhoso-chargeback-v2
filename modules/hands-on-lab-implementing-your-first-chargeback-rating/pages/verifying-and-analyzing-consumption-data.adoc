@@ -134,4 +134,4 @@ Then re-run the validation playbook.
 oc logs -n openstack $(oc get pods -n openstack -l app=cloudkitty -o name | head -1)
 ----
 
-For additional guidance on diagnosing issues with metric collection, Ceilometer, MetricStorage, or CloudKitty, refer to the xref:../basic-rating-troubleshooting/troubleshooting-cloudkitty-deployment.adoc[CloudKitty troubleshooting] and xref:../basic-rating-troubleshooting/troubleshooting-rating-and-cloudkitty-configuration.adoc[rating configuration troubleshooting] modules.
+For additional guidance on diagnosing issues with metric collection, Ceilometer, MetricStorage, or CloudKitty, refer to the xref:basic-rating-troubleshooting:troubleshooting-cloudkitty-deployment.adoc[Troubleshooting CloudKitty Deployment] and xref:basic-rating-troubleshooting:troubleshooting-rating-and-cloudkitty-configuration.adoc[Troubleshooting Rating and CloudKitty Configuration] modules.
