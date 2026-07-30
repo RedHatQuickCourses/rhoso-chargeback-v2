@@ -109,9 +109,25 @@ You can verify that your rating configuration is in place by listing the active 
 oc exec -n openstack openstackclient -- openstack rating module list
 ----
 
+[NOTE]
+====
+The default `openstack rating summary get` command queries data over a wide time range, which can time out in resource-constrained lab environments. Restrict the query to the current day to avoid timeouts.
+====
+
+[source,bash,role=wrap]
+----
+oc exec -n openstack openstackclient -- openstack rating summary get --begin $(date -u +%Y-%m-%dT00:00:00) --end $(date -u +%Y-%m-%dT%H:%M:%S)
+----
+
+Example output:
+
 [source,bash]
 ----
-oc exec -n openstack openstackclient -- openstack rating summary get
++---------------------------+---------------------------+-------------+------+
+| Begin                     | End                       |         Qty | Rate |
++---------------------------+---------------------------+-------------+------+
+| 2026-07-30T00:00:00+00:00 | 2026-07-30T16:12:19+00:00 | 512535.9375 |  0.0 |
++---------------------------+---------------------------+-------------+------+
 ----
 
 [TIP]
