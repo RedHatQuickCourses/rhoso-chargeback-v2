@@ -48,7 +48,7 @@ The output should show `status: "True"` and `message: Deployment ready for telem
 === Hands-on Exercise: Verifying Ceilometer Deployment
 
 .Prerequisites
-*   Access to the OpenShift cluster via `oc` CLI
+*   Access to an RHOCP cluster with RHOSO deployed
 
 .Steps
 . Verify that telemetry is enabled in the controlplane:
@@ -101,7 +101,7 @@ Check what the Ceilometer central agent is exposing:
 
 [source,bash]
 ----
-oc rsh openstackclient curl https://ceilometer-internal.openstack.svc:3000/metrics
+oc exec -n openstack openstackclient -- curl https://ceilometer-internal.openstack.svc:3000/metrics
 ----
 
 You should see `ceilometer_*` metric lines in the output. For example:
@@ -116,7 +116,7 @@ Check what a Ceilometer compute agent is exposing (replace the IP address with t
 
 [source,bash]
 ----
-oc rsh openstackclient curl https://192.168.122.100:9101/metrics
+oc exec -n openstack openstackclient -- curl https://192.168.122.100:9101/metrics
 ----
 
 You should see compute-related `ceilometer_*` metrics such as `ceilometer_disk_device_read_bytes` or `ceilometer_cpu`.
@@ -130,7 +130,8 @@ You should see compute-related `ceilometer_*` metrics such as `ceilometer_disk_d
 === Hands-on Exercise: Querying Ceilometer Endpoints
 
 .Prerequisites
-*   Access to the `openstackclient` pod via `oc rsh`
+*   Access to an RHOCP cluster with RHOSO deployed
+*   Telemetry with Ceilometer is enabled
 *   At least one OpenStack resource exists (image, server, or volume)
 
 .Steps
@@ -138,7 +139,7 @@ You should see compute-related `ceilometer_*` metrics such as `ceilometer_disk_d
 +
 [source,bash]
 ----
-oc rsh openstackclient curl https://ceilometer-internal.openstack.svc:3000/metrics
+oc exec -n openstack openstackclient -- curl https://ceilometer-internal.openstack.svc:3000/metrics
 ----
 
 . Look for `ceilometer_*` metric lines in the output. If present, the central agent is exposing metrics correctly.
@@ -147,7 +148,7 @@ oc rsh openstackclient curl https://ceilometer-internal.openstack.svc:3000/metri
 +
 [source,bash]
 ----
-oc rsh openstackclient curl https://<compute-node-IP>:9101/metrics
+oc exec -n openstack openstackclient -- curl https://<compute-node-IP>:9101/metrics
 ----
 
 . Look for compute-related `ceilometer_*` metrics in the output.
@@ -187,14 +188,14 @@ Check if the targets in Prometheus are up:
 
 [source,bash]
 ----
-oc rsh openstackclient openstack metric show up --disable-rbac -c value -c job | grep ceilometer
+oc exec -n openstack openstackclient -- openstack metric show up --disable-rbac -c value -c job | grep ceilometer
 ----
 
 The `telemetry-ceilometer` and `telemetry-ceilometer-compute-prom-exporter-tls` targets should have a value of `1`. If a target shows `0`, query the Prometheus targets API to see the error:
 
 [source,bash]
 ----
-oc rsh openstackclient curl https://metric-storage-prometheus.openstack.svc:9090/api/v1/targets?scrapePool=scrapeConfig/openstack/telemetry-ceilometer | jq ".data.activeTargets"
+oc exec -n openstack openstackclient -- curl https://metric-storage-prometheus.openstack.svc:9090/api/v1/targets?scrapePool=scrapeConfig/openstack/telemetry-ceilometer | jq ".data.activeTargets"
 ----
 
 Pay attention to the `lastError` field in the output.
@@ -210,8 +211,8 @@ Pay attention to the `lastError` field in the output.
 === Hands-on Exercise: Diagnosing Scrape Failures
 
 .Prerequisites
-*   Access to the OpenShift cluster via `oc` CLI
-*   Access to the `openstackclient` pod via `oc rsh`
+*   Access to an RHOCP cluster with RHOSO deployed
+*   Telemetry with Ceilometer and MetricStorage is enabled
 
 .Steps
 . Check the controlplane scrape configuration:
@@ -234,14 +235,14 @@ oc get scrapeconfig telemetry-ceilometer-compute-prom-exporter-tls -ojsonpath --
 +
 [source,bash]
 ----
-oc rsh openstackclient openstack metric show up --disable-rbac -c value -c job | grep ceilometer
+oc exec -n openstack openstackclient -- openstack metric show up --disable-rbac -c value -c job | grep ceilometer
 ----
 
 . For any target with a value of `0`, query the Prometheus targets API to see the error details:
 +
 [source,bash]
 ----
-oc rsh openstackclient curl https://metric-storage-prometheus.openstack.svc:9090/api/v1/targets?scrapePool=scrapeConfig/openstack/telemetry-ceilometer | jq ".data.activeTargets"
+oc exec -n openstack openstackclient -- curl https://metric-storage-prometheus.openstack.svc:9090/api/v1/targets?scrapePool=scrapeConfig/openstack/telemetry-ceilometer | jq ".data.activeTargets"
 ----
 
 . Examine the `lastError` and `health` fields to determine the root cause.

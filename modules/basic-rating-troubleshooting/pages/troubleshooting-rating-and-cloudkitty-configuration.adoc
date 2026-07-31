@@ -14,7 +14,7 @@ Retrieve the rating summary grouped by type:
 
 [source,bash]
 ----
-oc rsh openstackclient openstack rating --rating-api-version 2 summary get -g type
+oc exec -n openstack openstackclient -- openstack rating --rating-api-version 2 summary get -g type
 ----
 
 Example output:
@@ -43,15 +43,15 @@ Follow the specific sub-issue identified through the analysis above.
 === Hands-on Exercise: Interpreting Rating Summary Output
 
 .Prerequisites
-*   Access to the `openstackclient` pod via `oc rsh`
-*   CloudKitty deployed and responding to commands
+*   Access to an RHOCP cluster with RHOSO deployed
+*   CloudKitty is deployed and responding to commands
 
 .Steps
 . Retrieve the rating summary:
 +
 [source,bash]
 ----
-oc rsh openstackclient openstack rating --rating-api-version 2 summary get -g type
+oc exec -n openstack openstackclient -- openstack rating --rating-api-version 2 summary get -g type
 ----
 
 . Examine the output and check for each of the symptoms described above:
@@ -76,7 +76,7 @@ Check the status of the rating modules:
 
 [source,bash]
 ----
-oc rsh openstackclient openstack rating module list
+oc exec -n openstack openstackclient -- openstack rating module list
 ----
 
 Example output:
@@ -99,42 +99,43 @@ Enable the hashmap module and set its priority:
 
 [source,bash]
 ----
-oc rsh openstackclient openstack rating module enable hashmap
-oc rsh openstackclient openstack rating module set priority hashmap 100
+oc exec -n openstack openstackclient -- openstack rating module enable hashmap
+oc exec -n openstack openstackclient -- openstack rating module set priority hashmap 100
 ----
 
 === Hands-on Exercise: Enabling the Hashmap Module
 
 .Prerequisites
-*   Access to the `openstackclient` pod via `oc rsh`
+*   Access to an RHOCP cluster with RHOSO deployed
+*   CloudKitty is deployed and responding to commands
 
 .Steps
 . Check the current module status:
 +
 [source,bash]
 ----
-oc rsh openstackclient openstack rating module list
+oc exec -n openstack openstackclient -- openstack rating module list
 ----
 
 . If the hashmap module is disabled, enable it:
 +
 [source,bash]
 ----
-oc rsh openstackclient openstack rating module enable hashmap
+oc exec -n openstack openstackclient -- openstack rating module enable hashmap
 ----
 
 . Set the priority to 100 to ensure it is processed before other modules:
 +
 [source,bash]
 ----
-oc rsh openstackclient openstack rating module set priority hashmap 100
+oc exec -n openstack openstackclient -- openstack rating module set priority hashmap 100
 ----
 
 . Verify the module is now enabled:
 +
 [source,bash]
 ----
-oc rsh openstackclient openstack rating module list
+oc exec -n openstack openstackclient -- openstack rating module list
 ----
 
 .Result
@@ -152,7 +153,7 @@ Retrieve the current contents of the `metrics.yaml` file from the CloudKitty pro
 
 [source,bash]
 ----
-oc rsh cloudkitty-proc-0 cat /etc/cloudkitty/metrics.yaml
+oc exec -n openstack cloudkitty-proc-0 -- cat /etc/cloudkitty/metrics.yaml
 ----
 
 Compare the metrics listed in this file against the metrics available in the metric store and the metrics you expect to rate.
@@ -163,7 +164,7 @@ Compare the metrics listed in this file against the metrics available in the met
 +
 [source,bash]
 ----
-oc rsh cloudkitty-proc-0 cat /etc/cloudkitty/metrics.yaml > metrics.yaml
+oc exec -n openstack cloudkitty-proc-0 -- cat /etc/cloudkitty/metrics.yaml > metrics.yaml
 ----
 
 . Edit the file in your preferred editor to add or correct metric definitions.
@@ -182,15 +183,15 @@ The CloudKitty proc pod will restart and begin processing the newly added metric
 === Hands-on Exercise: Inspecting and Correcting metrics.yaml
 
 .Prerequisites
-*   Access to the OpenShift cluster via `oc` CLI
-*   Permissions to edit the OpenStackControlPlane CR
+*   Access to an RHOCP cluster with RHOSO deployed
+*   CloudKitty is deployed and responding to commands
 
 .Steps
 . Retrieve the current `metrics.yaml`:
 +
 [source,bash]
 ----
-oc rsh cloudkitty-proc-0 cat /etc/cloudkitty/metrics.yaml > metrics.yaml
+oc exec -n openstack cloudkitty-proc-0 -- cat /etc/cloudkitty/metrics.yaml > metrics.yaml
 ----
 
 . Review the file and identify any metrics that are missing or incorrectly configured.
@@ -210,7 +211,7 @@ oc create secret generic cloudkitty-proc-config-files-modified --from-file metri
 +
 [source,bash]
 ----
-oc rsh openstackclient openstack rating --rating-api-version 2 summary get -g type
+oc exec -n openstack openstackclient -- openstack rating --rating-api-version 2 summary get -g type
 ----
 
 .Result
@@ -228,7 +229,7 @@ Check which metrics have rating rules configured:
 
 [source,bash]
 ----
-oc rsh openstackclient openstack rating hashmap service list
+oc exec -n openstack openstackclient -- openstack rating hashmap service list
 ----
 
 If a metric that should be rated is missing from this list, rating rules need to be created for it.
@@ -241,35 +242,35 @@ Create hashmap rating rules for the missing metric. The following example create
 +
 [source,bash]
 ----
-oc rsh openstackclient openstack rating hashmap group create instance_uptime_flavor_id
+oc exec -n openstack openstackclient -- openstack rating hashmap group create instance_uptime_flavor_id
 ----
 
 . Add a service to be rated (replace `instance` with the metric name):
 +
 [source,bash]
 ----
-oc rsh openstackclient openstack rating hashmap service create instance
+oc exec -n openstack openstackclient -- openstack rating hashmap service create instance
 ----
 
 . Optionally, create a field matching rule to distinguish between resource variants (e.g., different flavors):
 +
 [source,bash]
 ----
-oc rsh openstackclient openstack rating hashmap field create <service_id> flavor_id
+oc exec -n openstack openstackclient -- openstack rating hashmap field create <service_id> flavor_id
 ----
 
 . Retrieve a value to match (e.g., a flavor ID):
 +
 [source,bash]
 ----
-oc rsh openstackclient openstack flavor show m1.tiny | grep id
+oc exec -n openstack openstackclient -- openstack flavor show m1.tiny | grep id
 ----
 
 . Create a cost mapping:
 +
 [source,bash]
 ----
-oc rsh openstackclient openstack rating hashmap mapping create 0.01 \
+oc exec -n openstack openstackclient -- openstack rating hashmap mapping create 0.01 \
   --field-id <field_id> \
   --value <flavor_id> \
   -g <group_id> \
@@ -279,22 +280,22 @@ oc rsh openstackclient openstack rating hashmap mapping create 0.01 \
 === Hands-on Exercise: Creating a Basic Rating Configuration
 
 .Prerequisites
-*   Access to the `openstackclient` pod via `oc rsh`
-*   CloudKitty deployed and operational
+*   Access to an RHOCP cluster with RHOSO deployed
+*   CloudKitty is deployed and responding to commands
 
 .Steps
 . List the currently rated services:
 +
 [source,bash]
 ----
-oc rsh openstackclient openstack rating hashmap service list
+oc exec -n openstack openstackclient -- openstack rating hashmap service list
 ----
 
 . Create a hashmap group for the new rating rule:
 +
 [source,bash]
 ----
-oc rsh openstackclient openstack rating hashmap group create instance_uptime_flavor_id
+oc exec -n openstack openstackclient -- openstack rating hashmap group create instance_uptime_flavor_id
 ----
 +
 Note the `Group ID` from the output.
@@ -303,7 +304,7 @@ Note the `Group ID` from the output.
 +
 [source,bash]
 ----
-oc rsh openstackclient openstack rating hashmap service create instance
+oc exec -n openstack openstackclient -- openstack rating hashmap service create instance
 ----
 +
 Note the `Service ID` from the output.
@@ -312,7 +313,7 @@ Note the `Service ID` from the output.
 +
 [source,bash]
 ----
-oc rsh openstackclient openstack rating hashmap field create <service_id> flavor_id
+oc exec -n openstack openstackclient -- openstack rating hashmap field create <service_id> flavor_id
 ----
 +
 Note the `Field ID` from the output.
@@ -321,14 +322,14 @@ Note the `Field ID` from the output.
 +
 [source,bash]
 ----
-oc rsh openstackclient openstack flavor show m1.tiny | grep id
+oc exec -n openstack openstackclient -- openstack flavor show m1.tiny | grep id
 ----
 
 . Create a mapping with a cost of 0.01 per rating period:
 +
 [source,bash]
 ----
-oc rsh openstackclient openstack rating hashmap mapping create 0.01 \
+oc exec -n openstack openstackclient -- openstack rating hashmap mapping create 0.01 \
   --field-id <field_id> \
   --value <flavor_id> \
   -g <group_id> \
@@ -339,7 +340,7 @@ oc rsh openstackclient openstack rating hashmap mapping create 0.01 \
 +
 [source,bash]
 ----
-oc rsh openstackclient openstack rating hashmap service list
+oc exec -n openstack openstackclient -- openstack rating hashmap service list
 ----
 
 .Result
@@ -357,14 +358,14 @@ List the currently rated services:
 
 [source,bash]
 ----
-oc rsh openstackclient openstack rating hashmap service list
+oc exec -n openstack openstackclient -- openstack rating hashmap service list
 ----
 
 For the service in question, list its mappings:
 
 [source,bash]
 ----
-oc rsh openstackclient openstack rating hashmap mapping list -s <service_id>
+oc exec -n openstack openstackclient -- openstack rating hashmap mapping list -s <service_id>
 ----
 
 Review the `Cost`, `Value`, `Type`, and `Field ID` columns to determine if any values are incorrect.
@@ -375,7 +376,7 @@ Changing a rating rule that is already in effect is not supported. Delete the in
 
 [source,bash]
 ----
-oc rsh openstackclient openstack rating hashmap mapping delete <mapping_id>
+oc exec -n openstack openstackclient -- openstack rating hashmap mapping delete <mapping_id>
 ----
 
 Then create a new mapping with the correct values following the procedure in the "Rating Configuration Is Missing" section above.
@@ -383,7 +384,8 @@ Then create a new mapping with the correct values following the procedure in the
 === Hands-on Exercise: Correcting Rating Mappings
 
 .Prerequisites
-*   Access to the `openstackclient` pod via `oc rsh`
+*   Access to an RHOCP cluster with RHOSO deployed
+*   CloudKitty is deployed and responding to commands
 *   At least one hashmap service and mapping already configured
 
 .Steps
@@ -391,14 +393,14 @@ Then create a new mapping with the correct values following the procedure in the
 +
 [source,bash]
 ----
-oc rsh openstackclient openstack rating hashmap service list
+oc exec -n openstack openstackclient -- openstack rating hashmap service list
 ----
 
 . List the mappings for a specific service:
 +
 [source,bash]
 ----
-oc rsh openstackclient openstack rating hashmap mapping list -s <service_id>
+oc exec -n openstack openstackclient -- openstack rating hashmap mapping list -s <service_id>
 ----
 
 . Identify the incorrect mapping and note its `Mapping ID`.
@@ -407,14 +409,14 @@ oc rsh openstackclient openstack rating hashmap mapping list -s <service_id>
 +
 [source,bash]
 ----
-oc rsh openstackclient openstack rating hashmap mapping delete <mapping_id>
+oc exec -n openstack openstackclient -- openstack rating hashmap mapping delete <mapping_id>
 ----
 
 . Recreate the mapping with the correct values:
 +
 [source,bash]
 ----
-oc rsh openstackclient openstack rating hashmap mapping create <correct_cost> \
+oc exec -n openstack openstackclient -- openstack rating hashmap mapping create <correct_cost> \
   --field-id <field_id> \
   --value <value> \
   -g <group_id> \
@@ -425,14 +427,14 @@ oc rsh openstackclient openstack rating hashmap mapping create <correct_cost> \
 +
 [source,bash]
 ----
-oc rsh openstackclient openstack rating hashmap mapping list -s <service_id>
+oc exec -n openstack openstackclient -- openstack rating hashmap mapping list -s <service_id>
 ----
 
 . After the next rating period, verify the rate is correct:
 +
 [source,bash]
 ----
-oc rsh openstackclient openstack rating --rating-api-version 2 summary get -g type
+oc exec -n openstack openstackclient -- openstack rating --rating-api-version 2 summary get -g type
 ----
 
 .Result
