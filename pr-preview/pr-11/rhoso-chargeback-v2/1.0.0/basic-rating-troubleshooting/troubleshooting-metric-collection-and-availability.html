@@ -277,6 +277,20 @@
 </div>
 <div class="sect2">
 <h3 id="_hands_on_exercise_diagnosing_missing_metrics"><a class="anchor" href="#_hands_on_exercise_diagnosing_missing_metrics"></a>Hands-on Exercise: Diagnosing Missing Metrics</h3>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>Access to an RHOCP cluster with RHOSO deployed</p>
+</li>
+<li>
+<p>Telemetry with Ceilometer is enabled</p>
+</li>
+<li>
+<p>At least one OpenStack resource exists (image, server, or volume)</p>
+</li>
+</ul>
+</div>
 <div class="olist arabic">
 <div class="title">Steps</div>
 <ol class="arabic">
@@ -360,6 +374,14 @@ oc exec -n openstack openstackclient -- openstack volume list</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_hands_on_exercise_verifying_openstack_resources"><a class="anchor" href="#_hands_on_exercise_verifying_openstack_resources"></a>Hands-on Exercise: Verifying OpenStack Resources</h3>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>Access to an RHOCP cluster with RHOSO deployed</p>
+</li>
+</ul>
+</div>
 <div class="olist arabic">
 <div class="title">Steps</div>
 <ol class="arabic">
@@ -472,6 +494,9 @@ oc exec -n openstack openstackclient -- openstack volume list</code></pre>
 <div class="ulist">
 <div class="title">Prerequisites</div>
 <ul>
+<li>
+<p>Access to an RHOCP cluster with RHOSO deployed</p>
+</li>
 <li>
 <p>At least one OpenStack resource (server, image, or volume) exists</p>
 </li>
