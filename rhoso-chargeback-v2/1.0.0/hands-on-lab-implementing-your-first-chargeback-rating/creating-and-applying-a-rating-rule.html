@@ -476,9 +476,35 @@
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating module list</code></pre>
 </div>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The default <code>openstack rating summary get</code> command queries data over a wide time range, which can time out in resource-constrained lab environments. Restrict the query to the current day to avoid timeouts.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 <div class="listingblock wrap">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating summary get</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating summary get --begin $(date -u +%Y-%m-%dT00:00:00) --end $(date -u +%Y-%m-%dT%H:%M:%S)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Example output:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">+---------------------------+---------------------------+-------------+------+
+| Begin                     | End                       |         Qty | Rate |
++---------------------------+---------------------------+-------------+------+
+| 2026-07-30T00:00:00+00:00 | 2026-07-30T16:12:19+00:00 | 512535.9375 |  0.0 |
++---------------------------+---------------------------+-------------+------+</code></pre>
 </div>
 </div>
 <div class="admonitionblock tip">
