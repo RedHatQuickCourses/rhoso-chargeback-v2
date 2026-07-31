@@ -269,7 +269,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh -n openstack cloudkitty-proc-0 cat /etc/cloudkitty/metrics.yaml &gt; metrics.yaml</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack cloudkitty-proc-0 -- cat /etc/cloudkitty/metrics.yaml &gt; metrics.yaml</code></pre>
 </div>
 </div>
 </div>
@@ -280,7 +280,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh -n openstack openstackclient  list</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack metric list</code></pre>
 </div>
 </div>
 </div>
@@ -568,7 +568,7 @@ Always back up your CR definition before making any modifications. Incorrect cha
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh -n openstack cloudkitty-proc-0 cat /etc/cloudkitty/metrics.yaml</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack cloudkitty-proc-0 -- cat /etc/cloudkitty/metrics.yaml</code></pre>
 </div>
 </div>
 </div>

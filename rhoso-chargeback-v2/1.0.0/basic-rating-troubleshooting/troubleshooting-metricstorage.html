@@ -281,7 +281,10 @@
 <div class="title">Prerequisites</div>
 <ul>
 <li>
-<p>Access to the OpenShift cluster via <code>oc</code> CLI</p>
+<p>Access to an RHOCP cluster with RHOSO deployed</p>
+</li>
+<li>
+<p>Telemetry with MetricStorage is enabled</p>
 </li>
 </ul>
 </div>
@@ -369,10 +372,7 @@ oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.metricStor
 <div class="title">Prerequisites</div>
 <ul>
 <li>
-<p>Access to the OpenShift cluster via <code>oc</code> CLI</p>
-</li>
-<li>
-<p>Permissions to edit the OpenStackControlPlane CR</p>
+<p>Access to an RHOCP cluster with RHOSO deployed</p>
 </li>
 </ul>
 </div>
@@ -467,7 +467,7 @@ EOF</code></pre>
 <div class="title">Prerequisites</div>
 <ul>
 <li>
-<p>Access to the OpenShift cluster via <code>oc</code> CLI</p>
+<p>Access to an RHOCP cluster with RHOSO deployed</p>
 </li>
 <li>
 <p>Cluster admin permissions to install operators</p>

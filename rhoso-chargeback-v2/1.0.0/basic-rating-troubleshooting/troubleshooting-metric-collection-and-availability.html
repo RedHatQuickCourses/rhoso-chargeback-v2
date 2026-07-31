@@ -241,7 +241,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack metric list</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack metric list</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -252,7 +252,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack metric show ceilometer_cpu</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack metric show ceilometer_cpu</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -281,7 +281,13 @@
 <div class="title">Prerequisites</div>
 <ul>
 <li>
-<p>Access to the <code>openstackclient</code> pod via <code>oc rsh</code></p>
+<p>Access to an RHOCP cluster with RHOSO deployed</p>
+</li>
+<li>
+<p>Telemetry with Ceilometer is enabled</p>
+</li>
+<li>
+<p>At least one OpenStack resource exists (image, server, or volume)</p>
 </li>
 </ul>
 </div>
@@ -292,7 +298,7 @@
 <p>List all available metrics:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack metric list</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack metric list</code></pre>
 </div>
 </div>
 </li>
@@ -300,7 +306,7 @@
 <p>Filter the output for ceilometer metrics:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack metric list | grep ceilometer</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack metric list | grep ceilometer</code></pre>
 </div>
 </div>
 </li>
@@ -308,7 +314,7 @@
 <p>Pick a specific ceilometer metric and inspect its details:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack metric show ceilometer_image_size</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack metric show ceilometer_image_size</code></pre>
 </div>
 </div>
 </li>
@@ -344,9 +350,9 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack server list
-oc rsh openstackclient openstack image list
-oc rsh openstackclient openstack volume list</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack server list
+oc exec -n openstack openstackclient -- openstack image list
+oc exec -n openstack openstackclient -- openstack volume list</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -372,7 +378,7 @@ oc rsh openstackclient openstack volume list</code></pre>
 <div class="title">Prerequisites</div>
 <ul>
 <li>
-<p>Access to the <code>openstackclient</code> pod via <code>oc rsh</code></p>
+<p>Access to an RHOCP cluster with RHOSO deployed</p>
 </li>
 </ul>
 </div>
@@ -383,7 +389,7 @@ oc rsh openstackclient openstack volume list</code></pre>
 <p>List all running servers:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack server list</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack server list</code></pre>
 </div>
 </div>
 </li>
@@ -391,7 +397,7 @@ oc rsh openstackclient openstack volume list</code></pre>
 <p>List all available images:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack image list</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack image list</code></pre>
 </div>
 </div>
 </li>
@@ -399,7 +405,7 @@ oc rsh openstackclient openstack volume list</code></pre>
 <p>List all volumes:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack volume list</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack volume list</code></pre>
 </div>
 </div>
 </li>
@@ -436,7 +442,7 @@ oc rsh openstackclient openstack volume list</code></pre>
 <p>Verify that the metric store is operational:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack metric list</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack metric list</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -447,7 +453,7 @@ oc rsh openstackclient openstack volume list</code></pre>
 <p>Filter for ceilometer metrics specifically:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack metric list | grep ceilometer</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack metric list | grep ceilometer</code></pre>
 </div>
 </div>
 </li>
@@ -489,7 +495,7 @@ oc rsh openstackclient openstack volume list</code></pre>
 <div class="title">Prerequisites</div>
 <ul>
 <li>
-<p>Access to the <code>openstackclient</code> pod via <code>oc rsh</code></p>
+<p>Access to an RHOCP cluster with RHOSO deployed</p>
 </li>
 <li>
 <p>At least one OpenStack resource (server, image, or volume) exists</p>
@@ -503,7 +509,7 @@ oc rsh openstackclient openstack volume list</code></pre>
 <p>Verify that Prometheus metrics are available:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack metric list | head -20</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack metric list | head -20</code></pre>
 </div>
 </div>
 </li>
@@ -511,7 +517,7 @@ oc rsh openstackclient openstack volume list</code></pre>
 <p>Check specifically for ceilometer metrics:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack metric list | grep ceilometer</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack metric list | grep ceilometer</code></pre>
 </div>
 </div>
 </li>

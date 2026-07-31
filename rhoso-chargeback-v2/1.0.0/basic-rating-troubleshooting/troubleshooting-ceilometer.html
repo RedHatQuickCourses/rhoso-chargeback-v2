@@ -294,7 +294,7 @@ oc get ceilometer</code></pre>
 <div class="title">Prerequisites</div>
 <ul>
 <li>
-<p>Access to the OpenShift cluster via <code>oc</code> CLI</p>
+<p>Access to an RHOCP cluster with RHOSO deployed</p>
 </li>
 </ul>
 </div>
@@ -370,7 +370,7 @@ oc get ceilometer</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient curl https://ceilometer-internal.openstack.svc:3000/metrics</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- curl https://ceilometer-internal.openstack.svc:3000/metrics</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -388,7 +388,7 @@ ceilometer_image_size{counter="image.size",image="98f26736-...",project="32268e9
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient curl https://192.168.122.100:9101/metrics</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- curl https://192.168.122.100:9101/metrics</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -417,7 +417,10 @@ ceilometer_image_size{counter="image.size",image="98f26736-...",project="32268e9
 <div class="title">Prerequisites</div>
 <ul>
 <li>
-<p>Access to the <code>openstackclient</code> pod via <code>oc rsh</code></p>
+<p>Access to an RHOCP cluster with RHOSO deployed</p>
+</li>
+<li>
+<p>Telemetry with Ceilometer is enabled</p>
 </li>
 <li>
 <p>At least one OpenStack resource exists (image, server, or volume)</p>
@@ -431,7 +434,7 @@ ceilometer_image_size{counter="image.size",image="98f26736-...",project="32268e9
 <p>Query the Ceilometer central agent endpoint:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient curl https://ceilometer-internal.openstack.svc:3000/metrics</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- curl https://ceilometer-internal.openstack.svc:3000/metrics</code></pre>
 </div>
 </div>
 </li>
@@ -442,7 +445,7 @@ ceilometer_image_size{counter="image.size",image="98f26736-...",project="32268e9
 <p>Identify a compute node IP that has workloads running and query its Ceilometer compute agent:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient curl https://&lt;compute-node-IP&gt;:9101/metrics</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- curl https://&lt;compute-node-IP&gt;:9101/metrics</code></pre>
 </div>
 </div>
 </li>
@@ -502,7 +505,7 @@ oc get scrapeconfig telemetry-ceilometer-compute-prom-exporter-tls -ojsonpath --
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack metric show up --disable-rbac -c value -c job | grep ceilometer</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack metric show up --disable-rbac -c value -c job | grep ceilometer</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -510,7 +513,7 @@ oc get scrapeconfig telemetry-ceilometer-compute-prom-exporter-tls -ojsonpath --
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient curl https://metric-storage-prometheus.openstack.svc:9090/api/v1/targets?scrapePool=scrapeConfig/openstack/telemetry-ceilometer | jq ".data.activeTargets"</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- curl https://metric-storage-prometheus.openstack.svc:9090/api/v1/targets?scrapePool=scrapeConfig/openstack/telemetry-ceilometer | jq ".data.activeTargets"</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -545,10 +548,10 @@ oc get scrapeconfig telemetry-ceilometer-compute-prom-exporter-tls -ojsonpath --
 <div class="title">Prerequisites</div>
 <ul>
 <li>
-<p>Access to the OpenShift cluster via <code>oc</code> CLI</p>
+<p>Access to an RHOCP cluster with RHOSO deployed</p>
 </li>
 <li>
-<p>Access to the <code>openstackclient</code> pod via <code>oc rsh</code></p>
+<p>Telemetry with Ceilometer and MetricStorage is enabled</p>
 </li>
 </ul>
 </div>
@@ -577,7 +580,7 @@ oc get scrapeconfig telemetry-ceilometer-compute-prom-exporter-tls -ojsonpath --
 <p>Check whether the targets are up in Prometheus:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack metric show up --disable-rbac -c value -c job | grep ceilometer</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack metric show up --disable-rbac -c value -c job | grep ceilometer</code></pre>
 </div>
 </div>
 </li>
@@ -585,7 +588,7 @@ oc get scrapeconfig telemetry-ceilometer-compute-prom-exporter-tls -ojsonpath --
 <p>For any target with a value of <code>0</code>, query the Prometheus targets API to see the error details:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient curl https://metric-storage-prometheus.openstack.svc:9090/api/v1/targets?scrapePool=scrapeConfig/openstack/telemetry-ceilometer | jq ".data.activeTargets"</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- curl https://metric-storage-prometheus.openstack.svc:9090/api/v1/targets?scrapePool=scrapeConfig/openstack/telemetry-ceilometer | jq ".data.activeTargets"</code></pre>
 </div>
 </div>
 </li>

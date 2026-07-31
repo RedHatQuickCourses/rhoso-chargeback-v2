@@ -241,7 +241,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack rating --rating-api-version 2 summary get -g type</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating --rating-api-version 2 summary get -g type</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -292,10 +292,10 @@
 <div class="title">Prerequisites</div>
 <ul>
 <li>
-<p>Access to the <code>openstackclient</code> pod via <code>oc rsh</code></p>
+<p>Access to an RHOCP cluster with RHOSO deployed</p>
 </li>
 <li>
-<p>CloudKitty deployed and responding to commands</p>
+<p>CloudKitty is deployed and responding to commands</p>
 </li>
 </ul>
 </div>
@@ -306,7 +306,7 @@
 <p>Retrieve the rating summary:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack rating --rating-api-version 2 summary get -g type</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating --rating-api-version 2 summary get -g type</code></pre>
 </div>
 </div>
 </li>
@@ -358,7 +358,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack rating module list</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating module list</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -386,8 +386,8 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack rating module enable hashmap
-oc rsh openstackclient openstack rating module set priority hashmap 100</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating module enable hashmap
+oc exec -n openstack openstackclient -- openstack rating module set priority hashmap 100</code></pre>
 </div>
 </div>
 </div>
@@ -397,7 +397,10 @@ oc rsh openstackclient openstack rating module set priority hashmap 100</code></
 <div class="title">Prerequisites</div>
 <ul>
 <li>
-<p>Access to the <code>openstackclient</code> pod via <code>oc rsh</code></p>
+<p>Access to an RHOCP cluster with RHOSO deployed</p>
+</li>
+<li>
+<p>CloudKitty is deployed and responding to commands</p>
 </li>
 </ul>
 </div>
@@ -408,7 +411,7 @@ oc rsh openstackclient openstack rating module set priority hashmap 100</code></
 <p>Check the current module status:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack rating module list</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating module list</code></pre>
 </div>
 </div>
 </li>
@@ -416,7 +419,7 @@ oc rsh openstackclient openstack rating module set priority hashmap 100</code></
 <p>If the hashmap module is disabled, enable it:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack rating module enable hashmap</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating module enable hashmap</code></pre>
 </div>
 </div>
 </li>
@@ -424,7 +427,7 @@ oc rsh openstackclient openstack rating module set priority hashmap 100</code></
 <p>Set the priority to 100 to ensure it is processed before other modules:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack rating module set priority hashmap 100</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating module set priority hashmap 100</code></pre>
 </div>
 </div>
 </li>
@@ -432,7 +435,7 @@ oc rsh openstackclient openstack rating module set priority hashmap 100</code></
 <p>Verify the module is now enabled:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack rating module list</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating module list</code></pre>
 </div>
 </div>
 </li>
@@ -465,7 +468,7 @@ oc rsh openstackclient openstack rating module set priority hashmap 100</code></
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh cloudkitty-proc-0 cat /etc/cloudkitty/metrics.yaml</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack cloudkitty-proc-0 -- cat /etc/cloudkitty/metrics.yaml</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -480,7 +483,7 @@ oc rsh openstackclient openstack rating module set priority hashmap 100</code></
 <p>Retrieve and save the current <code>metrics.yaml</code>:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh cloudkitty-proc-0 cat /etc/cloudkitty/metrics.yaml &gt; metrics.yaml</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack cloudkitty-proc-0 -- cat /etc/cloudkitty/metrics.yaml &gt; metrics.yaml</code></pre>
 </div>
 </div>
 </li>
@@ -510,10 +513,10 @@ oc rsh openstackclient openstack rating module set priority hashmap 100</code></
 <div class="title">Prerequisites</div>
 <ul>
 <li>
-<p>Access to the OpenShift cluster via <code>oc</code> CLI</p>
+<p>Access to an RHOCP cluster with RHOSO deployed</p>
 </li>
 <li>
-<p>Permissions to edit the OpenStackControlPlane CR</p>
+<p>CloudKitty is deployed and responding to commands</p>
 </li>
 </ul>
 </div>
@@ -524,7 +527,7 @@ oc rsh openstackclient openstack rating module set priority hashmap 100</code></
 <p>Retrieve the current <code>metrics.yaml</code>:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh cloudkitty-proc-0 cat /etc/cloudkitty/metrics.yaml &gt; metrics.yaml</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack cloudkitty-proc-0 -- cat /etc/cloudkitty/metrics.yaml &gt; metrics.yaml</code></pre>
 </div>
 </div>
 </li>
@@ -549,7 +552,7 @@ oc rsh openstackclient openstack rating module set priority hashmap 100</code></
 <p>Wait for the CloudKitty proc pod to restart and verify the changes:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack rating --rating-api-version 2 summary get -g type</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating --rating-api-version 2 summary get -g type</code></pre>
 </div>
 </div>
 </li>
@@ -582,7 +585,7 @@ oc rsh openstackclient openstack rating module set priority hashmap 100</code></
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack rating hashmap service list</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating hashmap service list</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -600,7 +603,7 @@ oc rsh openstackclient openstack rating module set priority hashmap 100</code></
 <p>Create a hashmap group:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack rating hashmap group create instance_uptime_flavor_id</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating hashmap group create instance_uptime_flavor_id</code></pre>
 </div>
 </div>
 </li>
@@ -608,7 +611,7 @@ oc rsh openstackclient openstack rating module set priority hashmap 100</code></
 <p>Add a service to be rated (replace <code>instance</code> with the metric name):</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack rating hashmap service create instance</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating hashmap service create instance</code></pre>
 </div>
 </div>
 </li>
@@ -616,7 +619,7 @@ oc rsh openstackclient openstack rating module set priority hashmap 100</code></
 <p>Optionally, create a field matching rule to distinguish between resource variants (e.g., different flavors):</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack rating hashmap field create &lt;service_id&gt; flavor_id</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating hashmap field create &lt;service_id&gt; flavor_id</code></pre>
 </div>
 </div>
 </li>
@@ -624,7 +627,7 @@ oc rsh openstackclient openstack rating module set priority hashmap 100</code></
 <p>Retrieve a value to match (e.g., a flavor ID):</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack flavor show m1.tiny | grep id</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack flavor show m1.tiny | grep id</code></pre>
 </div>
 </div>
 </li>
@@ -632,7 +635,7 @@ oc rsh openstackclient openstack rating module set priority hashmap 100</code></
 <p>Create a cost mapping:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack rating hashmap mapping create 0.01 \
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating hashmap mapping create 0.01 \
   --field-id &lt;field_id&gt; \
   --value &lt;flavor_id&gt; \
   -g &lt;group_id&gt; \
@@ -649,10 +652,10 @@ oc rsh openstackclient openstack rating module set priority hashmap 100</code></
 <div class="title">Prerequisites</div>
 <ul>
 <li>
-<p>Access to the <code>openstackclient</code> pod via <code>oc rsh</code></p>
+<p>Access to an RHOCP cluster with RHOSO deployed</p>
 </li>
 <li>
-<p>CloudKitty deployed and operational</p>
+<p>CloudKitty is deployed and responding to commands</p>
 </li>
 </ul>
 </div>
@@ -663,7 +666,7 @@ oc rsh openstackclient openstack rating module set priority hashmap 100</code></
 <p>List the currently rated services:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack rating hashmap service list</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating hashmap service list</code></pre>
 </div>
 </div>
 </li>
@@ -671,7 +674,7 @@ oc rsh openstackclient openstack rating module set priority hashmap 100</code></
 <p>Create a hashmap group for the new rating rule:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack rating hashmap group create instance_uptime_flavor_id</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating hashmap group create instance_uptime_flavor_id</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -682,7 +685,7 @@ oc rsh openstackclient openstack rating module set priority hashmap 100</code></
 <p>Create a service for the metric to be rated:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack rating hashmap service create instance</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating hashmap service create instance</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -693,7 +696,7 @@ oc rsh openstackclient openstack rating module set priority hashmap 100</code></
 <p>Create a field to match on (e.g., <code>flavor_id</code>):</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack rating hashmap field create &lt;service_id&gt; flavor_id</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating hashmap field create &lt;service_id&gt; flavor_id</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -704,7 +707,7 @@ oc rsh openstackclient openstack rating module set priority hashmap 100</code></
 <p>Retrieve the flavor ID to use in the mapping:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack flavor show m1.tiny | grep id</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack flavor show m1.tiny | grep id</code></pre>
 </div>
 </div>
 </li>
@@ -712,7 +715,7 @@ oc rsh openstackclient openstack rating module set priority hashmap 100</code></
 <p>Create a mapping with a cost of 0.01 per rating period:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack rating hashmap mapping create 0.01 \
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating hashmap mapping create 0.01 \
   --field-id &lt;field_id&gt; \
   --value &lt;flavor_id&gt; \
   -g &lt;group_id&gt; \
@@ -724,7 +727,7 @@ oc rsh openstackclient openstack rating module set priority hashmap 100</code></
 <p>Verify the new service appears in the list:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack rating hashmap service list</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating hashmap service list</code></pre>
 </div>
 </div>
 </li>
@@ -757,7 +760,7 @@ oc rsh openstackclient openstack rating module set priority hashmap 100</code></
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack rating hashmap service list</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating hashmap service list</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -765,7 +768,7 @@ oc rsh openstackclient openstack rating module set priority hashmap 100</code></
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack rating hashmap mapping list -s &lt;service_id&gt;</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating hashmap mapping list -s &lt;service_id&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -779,7 +782,7 @@ oc rsh openstackclient openstack rating module set priority hashmap 100</code></
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack rating hashmap mapping delete &lt;mapping_id&gt;</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating hashmap mapping delete &lt;mapping_id&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -792,7 +795,10 @@ oc rsh openstackclient openstack rating module set priority hashmap 100</code></
 <div class="title">Prerequisites</div>
 <ul>
 <li>
-<p>Access to the <code>openstackclient</code> pod via <code>oc rsh</code></p>
+<p>Access to an RHOCP cluster with RHOSO deployed</p>
+</li>
+<li>
+<p>CloudKitty is deployed and responding to commands</p>
 </li>
 <li>
 <p>At least one hashmap service and mapping already configured</p>
@@ -806,7 +812,7 @@ oc rsh openstackclient openstack rating module set priority hashmap 100</code></
 <p>List the rated services:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack rating hashmap service list</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating hashmap service list</code></pre>
 </div>
 </div>
 </li>
@@ -814,7 +820,7 @@ oc rsh openstackclient openstack rating module set priority hashmap 100</code></
 <p>List the mappings for a specific service:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack rating hashmap mapping list -s &lt;service_id&gt;</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating hashmap mapping list -s &lt;service_id&gt;</code></pre>
 </div>
 </div>
 </li>
@@ -825,7 +831,7 @@ oc rsh openstackclient openstack rating module set priority hashmap 100</code></
 <p>Delete the incorrect mapping:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack rating hashmap mapping delete &lt;mapping_id&gt;</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating hashmap mapping delete &lt;mapping_id&gt;</code></pre>
 </div>
 </div>
 </li>
@@ -833,7 +839,7 @@ oc rsh openstackclient openstack rating module set priority hashmap 100</code></
 <p>Recreate the mapping with the correct values:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack rating hashmap mapping create &lt;correct_cost&gt; \
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating hashmap mapping create &lt;correct_cost&gt; \
   --field-id &lt;field_id&gt; \
   --value &lt;value&gt; \
   -g &lt;group_id&gt; \
@@ -845,7 +851,7 @@ oc rsh openstackclient openstack rating module set priority hashmap 100</code></
 <p>Verify the corrected mapping:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack rating hashmap mapping list -s &lt;service_id&gt;</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating hashmap mapping list -s &lt;service_id&gt;</code></pre>
 </div>
 </div>
 </li>
@@ -853,7 +859,7 @@ oc rsh openstackclient openstack rating module set priority hashmap 100</code></
 <p>After the next rating period, verify the rate is correct:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc rsh openstackclient openstack rating --rating-api-version 2 summary get -g type</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating --rating-api-version 2 summary get -g type</code></pre>
 </div>
 </div>
 </li>
