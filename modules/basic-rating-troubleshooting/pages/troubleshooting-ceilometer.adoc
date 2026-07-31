@@ -130,6 +130,8 @@ You should see compute-related `ceilometer_*` metrics such as `ceilometer_disk_d
 === Hands-on Exercise: Querying Ceilometer Endpoints
 
 .Prerequisites
+*   Access to an RHOCP cluster with RHOSO deployed
+*   Telemetry with Ceilometer is enabled
 *   At least one OpenStack resource exists (image, server, or volume)
 
 .Steps
@@ -210,6 +212,7 @@ Pay attention to the `lastError` field in the output.
 
 .Prerequisites
 *   Access to an RHOCP cluster with RHOSO deployed
+*   Telemetry with Ceilometer is enabled
 
 .Steps
 . Check the controlplane scrape configuration:

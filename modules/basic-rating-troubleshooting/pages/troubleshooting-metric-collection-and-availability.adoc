@@ -37,6 +37,9 @@ This shows all label values associated with the metric, including `project`, `re
 === Hands-on Exercise: Diagnosing Missing Metrics
 
 .Prerequisites
+*   Access to an RHOCP cluster with RHOSO deployed
+*   Telemetry with Ceilometer is enabled
+*   At least one OpenStack resource exists (image, server, or volume)
 
 .Steps
 . List all available metrics:
@@ -92,6 +95,7 @@ If any expected resource type returns an empty list, that explains why the corre
 === Hands-on Exercise: Verifying OpenStack Resources
 
 .Prerequisites
+*   Access to an RHOCP cluster with RHOSO deployed
 
 .Steps
 . List all running servers:
@@ -157,6 +161,7 @@ oc exec -n openstack openstackclient -- openstack metric list | grep ceilometer
 === Hands-on Exercise: Checking Ceilometer Metric Presence
 
 .Prerequisites
+*   Access to an RHOCP cluster with RHOSO deployed
 *   At least one OpenStack resource (server, image, or volume) exists
 
 .Steps
