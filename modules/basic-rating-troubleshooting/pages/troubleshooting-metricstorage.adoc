@@ -37,7 +37,7 @@ Look for conditions with `status: "False"`. The `message` and `reason` fields pr
 === Hands-on Exercise: Inspecting MetricStorage Status
 
 .Prerequisites
-*   Access to the OpenShift cluster via `oc` CLI
+*   Access to an RHOCP cluster with RHOSO deployed
 
 .Steps
 . Check whether the MetricStorage CR exists:
@@ -89,7 +89,7 @@ If either value is `false`, edit the controlplane CR and set them to `true`:
 === Hands-on Exercise: Enabling MetricStorage
 
 .Prerequisites
-*   Access to the OpenShift cluster via `oc` CLI
+*   Access to an RHOCP cluster with RHOSO deployed
 *   Permissions to edit the OpenStackControlPlane CR
 
 .Steps
@@ -156,7 +156,7 @@ After installation, MetricStorage should automatically reconcile and reach the "
 === Hands-on Exercise: Installing the Cluster Observability Operator
 
 .Prerequisites
-*   Access to the OpenShift cluster via `oc` CLI
+*   Access to an RHOCP cluster with RHOSO deployed
 *   Cluster admin permissions to install operators
 
 .Steps

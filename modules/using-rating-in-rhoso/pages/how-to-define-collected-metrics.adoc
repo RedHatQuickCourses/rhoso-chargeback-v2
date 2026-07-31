@@ -23,7 +23,7 @@ The default `metrics.yaml` file is located in the `cloudkitty-proc` pod. You can
 
 [source,bash]
 ----
-oc rsh -n openstack cloudkitty-proc-0 cat /etc/cloudkitty/metrics.yaml > metrics.yaml
+oc exec -n openstack cloudkitty-proc-0 -- cat /etc/cloudkitty/metrics.yaml > metrics.yaml
 ----
 
 === 2. Retrieve a list of the available metrics that can be configured
@@ -32,7 +32,7 @@ To see the list of available metrics that can be configured in the `metrics.yaml
 
 [source,bash]
 ----
-oc rsh -n openstack openstackclient  list
+oc exec -n openstack openstackclient -- openstack metric list
 ----
 
 === 3. Define how each metric is collected
@@ -239,5 +239,5 @@ To verify that your custom `metrics.yaml` configuration is applied correctly, yo
 
 [source,bash]
 ----
-oc rsh -n openstack cloudkitty-proc-0 cat /etc/cloudkitty/metrics.yaml
+oc exec -n openstack cloudkitty-proc-0 -- cat /etc/cloudkitty/metrics.yaml
 ----

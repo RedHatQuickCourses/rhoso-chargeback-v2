@@ -39,7 +39,7 @@ Look for conditions with `status: "False"`. Common error patterns include:
 === Hands-on Exercise: Diagnosing CloudKitty Deployment Failures
 
 .Prerequisites
-*   Access to the OpenShift cluster via `oc` CLI
+*   Access to an RHOCP cluster with RHOSO deployed
 
 .Steps
 . Check whether the CloudKitty CR exists:
@@ -91,7 +91,7 @@ If either value is `false`, edit the controlplane CR and set them to `true`:
 === Hands-on Exercise: Enabling CloudKitty
 
 .Prerequisites
-*   Access to the OpenShift cluster via `oc` CLI
+*   Access to an RHOCP cluster with RHOSO deployed
 *   Permissions to edit the OpenStackControlPlane CR
 
 .Steps
@@ -158,7 +158,7 @@ The usage of conditions in LokiStack differs from OpenStack CRs. Look at the `la
 === Hands-on Exercise: Checking LokiStack Health
 
 .Prerequisites
-*   Access to the OpenShift cluster via `oc` CLI
+*   Access to an RHOCP cluster with RHOSO deployed
 
 .Steps
 . Verify that the loki-operator is installed:
@@ -248,7 +248,7 @@ You will also need to configure S3 storage for Loki. See the "S3 Storage Secret 
 === Hands-on Exercise: Installing the Loki Operator
 
 .Prerequisites
-*   Access to the OpenShift cluster via `oc` CLI
+*   Access to an RHOCP cluster with RHOSO deployed
 *   Cluster admin permissions to install operators
 
 .Steps
@@ -322,7 +322,7 @@ For more information about configuring Loki storage, see the link:https://docs.r
 === Hands-on Exercise: Configuring S3 Storage for Loki
 
 .Prerequisites
-*   Access to the OpenShift cluster via `oc` CLI
+*   Access to an RHOCP cluster with RHOSO deployed
 *   An S3-compatible storage endpoint with valid credentials
 
 .Steps
