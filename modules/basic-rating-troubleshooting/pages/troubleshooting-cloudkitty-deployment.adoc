@@ -40,6 +40,7 @@ Look for conditions with `status: "False"`. Common error patterns include:
 
 .Prerequisites
 *   Access to an RHOCP cluster with RHOSO deployed
+*   Telemetry with CloudKitty is enabled
 
 .Steps
 . Check whether the CloudKitty CR exists:
@@ -92,7 +93,6 @@ If either value is `false`, edit the controlplane CR and set them to `true`:
 
 .Prerequisites
 *   Access to an RHOCP cluster with RHOSO deployed
-*   Permissions to edit the OpenStackControlPlane CR
 
 .Steps
 . Check the current state of the telemetry and CloudKitty flags:

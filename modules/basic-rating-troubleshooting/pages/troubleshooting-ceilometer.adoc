@@ -212,7 +212,7 @@ Pay attention to the `lastError` field in the output.
 
 .Prerequisites
 *   Access to an RHOCP cluster with RHOSO deployed
-*   Telemetry with Ceilometer is enabled
+*   Telemetry with Ceilometer and MetricStorage is enabled
 
 .Steps
 . Check the controlplane scrape configuration:

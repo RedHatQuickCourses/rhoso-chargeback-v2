@@ -43,7 +43,8 @@ Follow the specific sub-issue identified through the analysis above.
 === Hands-on Exercise: Interpreting Rating Summary Output
 
 .Prerequisites
-*   CloudKitty deployed and responding to commands
+*   Access to an RHOCP cluster with RHOSO deployed
+*   CloudKitty is deployed and responding to commands
 
 .Steps
 . Retrieve the rating summary:
@@ -105,6 +106,8 @@ oc exec -n openstack openstackclient -- openstack rating module set priority has
 === Hands-on Exercise: Enabling the Hashmap Module
 
 .Prerequisites
+*   Access to an RHOCP cluster with RHOSO deployed
+*   CloudKitty is deployed and responding to commands
 
 .Steps
 . Check the current module status:
@@ -181,7 +184,7 @@ The CloudKitty proc pod will restart and begin processing the newly added metric
 
 .Prerequisites
 *   Access to an RHOCP cluster with RHOSO deployed
-*   Permissions to edit the OpenStackControlPlane CR
+*   CloudKitty is deployed and responding to commands
 
 .Steps
 . Retrieve the current `metrics.yaml`:
@@ -277,7 +280,8 @@ oc exec -n openstack openstackclient -- openstack rating hashmap mapping create 
 === Hands-on Exercise: Creating a Basic Rating Configuration
 
 .Prerequisites
-*   CloudKitty deployed and operational
+*   Access to an RHOCP cluster with RHOSO deployed
+*   CloudKitty is deployed and responding to commands
 
 .Steps
 . List the currently rated services:
@@ -380,6 +384,8 @@ Then create a new mapping with the correct values following the procedure in the
 === Hands-on Exercise: Correcting Rating Mappings
 
 .Prerequisites
+*   Access to an RHOCP cluster with RHOSO deployed
+*   CloudKitty is deployed and responding to commands
 *   At least one hashmap service and mapping already configured
 
 .Steps
