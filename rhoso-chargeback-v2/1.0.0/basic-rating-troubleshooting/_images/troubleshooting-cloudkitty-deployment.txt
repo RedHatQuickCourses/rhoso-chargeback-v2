@@ -1,0 +1,36 @@
+CloudKitty is the critical service responsible for rating and charge calculations in your environment. If it fails to deploy, these services will be unavailable. Because CloudKitty relies on several prerequisites—specifically MetricStorage and Loki—troubleshooting deployment usually involves investigating the health of these underlying components.
+
+### Diagnosing CloudKitty Deployment Failures
+
+If you find that the CloudKitty Custom Resource exists but fails to reach a ready state, the first step is to inspect its status conditions. You can do this by running `oc get cloudkitty` followed by a JSON query to examine the status conditions.
+
+Look for any conditions where the status is set to "False." Common issues you might encounter include:
+
+*   **Prometheus endpoint errors:** This usually means MetricStorage is not created or is not ready. You should troubleshoot MetricStorage if you see a message stating that the prometheus-endpoint secret is not found.
+*   **LokiStack issues:** If the `CloudKittyLokiStackReady` condition is false, the issue lies with your Loki configuration. 
+
+Once you identify the specific prerequisite that is failing, address that issue directly. Once the dependencies are resolved, CloudKitty will automatically reconcile and attempt to deploy again.
+
+### Ensuring CloudKitty is Enabled
+
+If CloudKitty does not appear to be deploying at all, verify that it is actually enabled in your controlplane Custom Resource. You can check the status of your telemetry and CloudKitty flags by using `oc get` queries against your configuration. If these return a value of "false," you must edit the controlplane Custom Resource and update both the `telemetry.enabled` and `telemetry.template.cloudkitty.enabled` fields to "true."
+
+### Troubleshooting Loki
+
+Since CloudKitty uses Loki for log storage, an unhealthy LokiStack will block CloudKitty deployment. To diagnose this, first ensure the `loki-operator` is installed by running `oc get csv | grep loki`. Then, check if the `LokiStack` resource exists. 
+
+If it does exist, inspect its status conditions. Keep in mind that LokiStack conditions behave differently than standard OpenStack resources; look at the `lastTransitionTime` to find the most recent state. Common culprits here include a missing S3 storage secret or components that are still in a pending state. If you see "PendingComponents," ensure your cluster has sufficient resources to support the Loki workload.
+
+### Installing the Loki Operator
+
+The `loki-operator` is a hard requirement for CloudKitty. If it is missing, you will see an error indicating that the operator cannot own the LokiStack resource. To resolve this, you must install the operator using a subscription and operator group in the `openshift-operators-redhat` namespace.
+
+Once the operator is installed, remember that you must also configure S3 storage for Loki. This brings us to the next common configuration hurdle.
+
+### Configuring S3 Storage
+
+Loki requires an S3-compatible storage backend. If the required Kubernetes secret is missing or misconfigured, the LokiStack will report a `MissingObjectStorageSecret` condition.
+
+To fix this, create a Kubernetes Secret containing your access key, secret key, bucket name, and S3 endpoint. After creating the secret, you must reference it in the controlplane Custom Resource by updating the `.spec.telemetry.template.cloudkitty.s3StorageConfig.secret.name` field. 
+
+For detailed information on best practices and sizing for your log store, please consult the official OpenShift Logging documentation regarding LokiStack storage. By ensuring your S3 credentials are correct and accessible, you will allow the LokiStack to move to a ready state, which in turn enables CloudKitty to finalize its deployment.
