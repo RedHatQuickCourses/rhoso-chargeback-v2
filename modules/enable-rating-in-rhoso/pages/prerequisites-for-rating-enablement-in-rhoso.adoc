@@ -1,4 +1,6 @@
 #  Prerequisites for Rating enablement in RHOSO
+:page-audio-src: prerequisites-for-rating-enablement-in-rhoso.wav
+:page-transcript-src: prerequisites-for-rating-enablement-in-rhoso.txt
 
 To successfully deploy and activate the Rating service in your RHOSO environment, the following prerequisites must be met:
 

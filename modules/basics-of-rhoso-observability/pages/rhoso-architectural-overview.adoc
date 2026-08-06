@@ -1,4 +1,6 @@
 #  RHOSO architectural overview
+:page-audio-src: rhoso-architectural-overview.wav
+:page-transcript-src: rhoso-architectural-overview.txt
 
 This section provides a detailed look into Red Hat OpenStack Services on OpenShift (RHOSO) architecture, with a particular focus on its observability components. Understanding this architecture is crucial for effectively managing, monitoring, and troubleshooting your RHOSO environment.
 

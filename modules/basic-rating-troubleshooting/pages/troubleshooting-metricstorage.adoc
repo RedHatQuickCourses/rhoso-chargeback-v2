@@ -1,4 +1,6 @@
 #  Troubleshooting MetricStorage
+:page-audio-src: troubleshooting-metricstorage.wav
+:page-transcript-src: troubleshooting-metricstorage.txt
 
 MetricStorage manages the Prometheus instance that stores all collected metrics. If MetricStorage is not running correctly, no metrics will be available to the Rating service or to Ceilometer scrape targets.
 

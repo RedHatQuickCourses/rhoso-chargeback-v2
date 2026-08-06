@@ -1,4 +1,6 @@
 #  Enable Rating in RHOSO
+:page-audio-src: enable-rating-in-rhoso.wav
+:page-transcript-src: enable-rating-in-rhoso.txt
 
 Starting with RHOSO 18.0 Feature Release 5 (FR5), you can utilize chargeback capabilities by enabling the Rating service (CloudKitty) within the Telemetry Operator.
 

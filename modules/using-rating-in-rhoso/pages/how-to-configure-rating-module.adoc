@@ -1,4 +1,6 @@
 # Step-by-Step to Configure CloudKitty with the Hashmap module
+:page-audio-src: how-to-configure-rating-module.wav
+:page-transcript-src: how-to-configure-rating-module.txt
 
 . *Verify that the Rating service is enabled:* The rating module can be configured via the OpenStack CLI.
 +

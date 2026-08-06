@@ -1,4 +1,6 @@
 #  How to Create and Manage Rating Rules
+:page-audio-src: how-to-create-and-manage-rating-rules.wav
+:page-transcript-src: how-to-create-and-manage-rating-rules.txt
 
 == How Rating Rules Work
 

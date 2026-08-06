@@ -1,4 +1,6 @@
 # How to Define Collected Metrics
+:page-audio-src: how-to-define-collected-metrics.wav
+:page-transcript-src: how-to-define-collected-metrics.txt
 
 Rating rules assign a value to the consumption of computing resources. By default, a set of metrics is exposed to the Rating service (CloudKitty). Use a custom metrics.yaml file to define the specific metrics that CloudKitty processes for your deployment.
 

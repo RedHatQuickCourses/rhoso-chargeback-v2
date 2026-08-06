@@ -1,4 +1,6 @@
 #  Using the Rating Service
+:page-audio-src: using-the-rating-service.wav
+:page-transcript-src: using-the-rating-service.txt
 
 The rating service (CloudKitty) enables users to apply rating rules to cloud resources consumption to determine associated costs.
 

@@ -1,4 +1,6 @@
 #  Overview of the chargeback process flow
+:page-audio-src: overview-of-the-chargeback-process-flow.wav
+:page-transcript-src: overview-of-the-chargeback-process-flow.txt
 
 == The Core Chargeback Workflow
 

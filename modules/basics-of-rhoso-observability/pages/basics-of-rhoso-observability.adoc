@@ -1,4 +1,6 @@
 #  Basics of RHOSO Observability
+:page-audio-src: basics-of-rhoso-observability.wav
+:page-transcript-src: basics-of-rhoso-observability.txt
 
 RHOSO Observability is the monitoring solution for Red Hat OpenStack Services on OpenShift (RHOSO). It provides insight into a RHOSO deployment by collecting and storing metrics and logs.
 

@@ -1,4 +1,6 @@
 #  Introduction to RHOSO and its purpose
+:page-audio-src: introduction-to-rhoso-and-its-purpose.wav
+:page-transcript-src: introduction-to-rhoso-and-its-purpose.txt
 
 Red Hat OpenStack Services on OpenShift (RHOSO) represents a significant evolution in the deployment and management of OpenStack environments. At its core, *RHOSO stands for Red Hat OpenStack on OpenShift*. This new architectural paradigm shifts the traditional deployment model, enabling OpenStack (OSP) to run directly as a workload on top of Red Hat OpenShift Container Platform (RHOCP).
 

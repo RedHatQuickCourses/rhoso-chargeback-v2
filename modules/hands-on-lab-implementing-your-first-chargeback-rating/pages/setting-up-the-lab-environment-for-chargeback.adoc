@@ -1,4 +1,6 @@
 # Setting up the lab environment for Chargeback
+:page-audio-src: setting-up-the-lab-environment-for-chargeback.wav
+:page-transcript-src: setting-up-the-lab-environment-for-chargeback.txt
 
 In this unit, you will prepare your Red Hat OpenStack Services on OpenShift (RHOSO) environment for chargeback by installing the required dependencies and enabling the Rating service (CloudKitty). You will use Ansible playbooks to automate the setup, while understanding what each step accomplishes based on the concepts covered in the xref:enable-rating-in-rhoso:prerequisites-for-rating-enablement-in-rhoso.adoc[Prerequisites for Rating enablement in RHOSO] and xref:enable-rating-in-rhoso:how-to-enable-rating.adoc[How To Enable Rating] theory modules.
 

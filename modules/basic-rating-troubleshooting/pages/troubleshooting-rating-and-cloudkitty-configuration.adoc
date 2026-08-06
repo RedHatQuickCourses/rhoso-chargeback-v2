@@ -1,4 +1,6 @@
 #  Troubleshooting Rating and CloudKitty Configuration
+:page-audio-src: troubleshooting-rating-and-cloudkitty-configuration.wav
+:page-transcript-src: troubleshooting-rating-and-cloudkitty-configuration.txt
 
 Once CloudKitty is deployed and running, configuration issues can lead to missing or incorrect ratings. This section covers problems where CloudKitty is operational but the rating data it produces is not as expected.
 

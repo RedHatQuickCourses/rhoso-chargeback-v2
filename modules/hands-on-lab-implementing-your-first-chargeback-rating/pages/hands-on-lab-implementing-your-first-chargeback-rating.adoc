@@ -1,4 +1,6 @@
 #  Hands-on Lab: Implementing Your First Chargeback Rating
+:page-audio-src: hands-on-lab-implementing-your-first-chargeback-rating.wav
+:page-transcript-src: hands-on-lab-implementing-your-first-chargeback-rating.txt
 
 This hands-on lab provides practical experience in configuring and using the Rating service. You will use Ansible playbooks from the https://github.com/opentraining-labs-customizations/rhoso-chargeback[lab repository] along with the concepts from the training to complete the following activities:
 

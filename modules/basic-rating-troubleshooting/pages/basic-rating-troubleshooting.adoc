@@ -1,4 +1,6 @@
 #  Basic Rating Troubleshooting
+:page-audio-src: basic-rating-troubleshooting.wav
+:page-transcript-src: basic-rating-troubleshooting.txt
 
 Key Points:
 

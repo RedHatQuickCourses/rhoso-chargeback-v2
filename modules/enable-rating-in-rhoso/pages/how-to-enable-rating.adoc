@@ -1,4 +1,6 @@
 # How To Enable Rating
+:page-audio-src: how-to-enable-rating.wav
+:page-transcript-src: how-to-enable-rating.txt
 
 Once the prerequisites have been met, you can proceed to enable the Rating feature in your RHOSO environment. This involves activating and configuring the Rating service (CloudKitty) within the OpenStackControlPlane.
 

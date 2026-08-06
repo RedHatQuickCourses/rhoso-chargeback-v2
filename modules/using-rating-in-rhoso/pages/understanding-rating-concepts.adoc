@@ -1,4 +1,7 @@
 #  Understanding rating concepts
+:page-audio-src: understanding-rating-concepts.wav
+:page-transcript-src: understanding-rating-concepts.txt
+
 
 == What is a Rating Rule
 

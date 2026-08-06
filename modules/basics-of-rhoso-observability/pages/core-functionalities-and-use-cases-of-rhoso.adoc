@@ -1,4 +1,6 @@
 #  RHOSO Observability Core Functionalities and Use Cases
+:page-audio-src: core-functionalities-and-use-cases-of-rhoso.wav
+:page-transcript-src: core-functionalities-and-use-cases-of-rhoso.txt
 
 This section details the fundamental capabilities and practical applications of Red Hat OpenStack Services on OpenShift (RHOSO) Observability. Understanding these is crucial for effectively managing, troubleshooting, and optimizing your RHOSO environment.
 

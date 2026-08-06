@@ -1,4 +1,6 @@
 #  How to Retrieve Resources Consumption
+:page-audio-src: how-to-retrieve-resources-consumption.wav
+:page-transcript-src: how-to-retrieve-resources-consumption.txt
 
 Once you have defined the metrics to be collected and created rating rules, you can retrieve the consumption data for your resources.
 

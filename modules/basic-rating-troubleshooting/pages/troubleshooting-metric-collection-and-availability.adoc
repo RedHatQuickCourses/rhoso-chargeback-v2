@@ -1,4 +1,6 @@
 #  Troubleshooting Metric Collection and Availability
+:page-audio-src: troubleshooting-metric-collection-and-availability.wav
+:page-transcript-src: troubleshooting-metric-collection-and-availability.txt
 
 Accurate rating depends on metrics being available in the metric store. If expected metrics are missing, the Rating service cannot generate correct charge data. This section covers common issues related to metric availability and collection.
 
