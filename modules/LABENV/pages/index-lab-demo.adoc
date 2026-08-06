@@ -1,4 +1,6 @@
 = Lab Environment
+:page-audio-src: index-lab-demo.wav
+:page-transcript-src: index-lab-demo.txt
 
 == Instructions to Launch Your Lab on the Red Hat Demo Platform (RHDP)
 

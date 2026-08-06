@@ -1,4 +1,6 @@
 =  RHOSO Chargeback and Observability Fundamentals
+:page-audio-src: index.wav
+:page-transcript-src: index.txt
 :navtitle: Home
 
 == Introduction

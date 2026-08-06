@@ -1,4 +1,6 @@
 = Chapter 3
+:page-audio-src: index.wav
+:page-transcript-src: index.txt
 
 In this section, we cover... FIXME
 
