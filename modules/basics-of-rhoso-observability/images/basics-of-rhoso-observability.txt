@@ -1,0 +1,13 @@
+Welcome to this overview of the basics of RHOSO Observability. 
+
+RHOSO Observability serves as the monitoring solution for Red Hat OpenStack Services on OpenShift, or RHOSO. Its primary purpose is to provide deep insight into your RHOSO deployment by effectively collecting and storing both metrics and logs.
+
+There are a few key aspects to understand about how this system functions. First, consider the goal: the system is designed to provide full observability for RHOSO, specifically in environments where OpenStack runs as a workload directly on top of OpenShift.
+
+The architecture is built to leverage existing, proven tools within the Red Hat OpenShift Container Platform, such as the Cluster Observability Operator and the Cluster Logging Operator, alongside the OpenShift Console user interface. At the same time, it maintains compatibility with native OpenStack telemetry solutions, including Ceilometer and AODH.
+
+This approach offers significant advantages. By integrating directly with the OpenShift ecosystem, you can utilize familiar, industry-standard tools while still retaining the OpenStack-compatible solutions you rely on.
+
+In terms of functionality, the system captures metrics and logs from services running across both the OpenStack control plane and the OpenStack data plane nodes.
+
+Finally, it is important to note a key change for those familiar with previous versions: RHOSO Observability replaces the Service Telemetry Framework, or STF. Observability is now fully integrated directly into the RHOSO platform. This means it is no longer an external service; it no longer requires a separate, independent configuration, deployment, or release cycle, making your monitoring tasks much more streamlined.

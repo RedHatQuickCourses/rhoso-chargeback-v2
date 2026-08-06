@@ -1,0 +1,3 @@
+In this chapter, we will walk through the process of managing your documentation structure. 
+
+To adjust your chapter list, you will need to perform two key actions. First, add or remove the necessary section entries within your `antora.yaml` file. Second, you must ensure that you either create or delete the corresponding directory for that chapter to keep your file system in sync with your configuration.

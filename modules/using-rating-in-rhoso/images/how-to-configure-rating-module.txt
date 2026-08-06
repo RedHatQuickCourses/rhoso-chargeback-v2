@@ -1,0 +1,20 @@
+In this lesson, we will walk through the steps to configure CloudKitty with the Hashmap module.
+
+First, let's verify that the Rating service is properly enabled. You can manage the rating modules using the OpenStack command-line interface. To see the current status of your modules, run the following command:
+
+`oc exec openstackclient -n openstack -- openstack rating module list`
+
+When you run this, you will see a table displaying your available modules—such as hashmap, noop, and pyscripts—along with their enabled status and priority levels. By default, you may find that the hashmap module is disabled.
+
+Next, you will learn how to enable or disable modules and adjust their priority settings. We’ll perform three specific actions: enabling the hashmap module, disabling the pyscripts module, and increasing the priority of the hashmap module to 100.
+
+To enable the hashmap module, run this command:
+`oc exec openstackclient -n openstack -- openstack rating module enable hashmap`
+
+Now, to disable the pyscripts module, use this command:
+`oc exec openstackclient -n openstack -- openstack rating module disable pyscripts`
+
+Finally, to set the priority of the hashmap module to 100, run the following:
+`oc exec openstackclient -n openstack -- openstack rating module set priority hashmap 100`
+
+Once these commands are executed, your CloudKitty configuration will be updated to prioritize the hashmap module for your rating requirements.
