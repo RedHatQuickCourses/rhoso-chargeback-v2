@@ -1,5 +1,0 @@
-Welcome to this module. In this section, we will cover the foundational steps for organizing your training content effectively.
-
-To ensure your materials are well-structured and easy to follow, there are a few best practices to keep in mind. First, you should create multiple copies of this section whenever the scope of your training requires additional modules. As you build out your content, be sure to remove any sections or chapter pages that are unnecessary for your specific learning objectives. 
-
-It is important that you customize each section as appropriate to fit the needs of your audience. Finally, always strive to ensure that each individual page contains a manageable amount of content, as this helps prevent learner fatigue and ensures that each concept is clearly understood.

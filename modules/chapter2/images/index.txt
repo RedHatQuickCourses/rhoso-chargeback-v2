@@ -1,5 +1,0 @@
-Welcome to Chapter 2. In this section, we will cover the essential steps for managing your content structure.
-
-To effectively organize your documentation, you will need to modify the configuration file. Specifically, you should add or remove section entries in the `antora.yaml` file as your project requirements change. 
-
-It is important to remember that for every change you make in the configuration file, you must also ensure that you create or delete the corresponding directory for that chapter accordingly. Keeping your directory structure in sync with your `antora.yaml` file is key to maintaining a functional and organized site.
