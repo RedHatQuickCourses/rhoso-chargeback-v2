@@ -2,14 +2,21 @@ site:
   title:  RHOSO Chargeback and Observability Fundamentals
   start_page: rhoso-chargeback-v2::index.adoc
 
+antora:
+  extensions:
+  - require: '@antora/lunr-extension'
+    index_latest_only: true
+ 
 content:
   sources:
   - url: ./
 
 asciidoc:
+  extensions:
+  - '@asciidoctor/tabs'
   attributes:
     page-pagination: true
-
+ 
 ui:
   bundle:
     url: ./ui-bundle/ui-bundle.zip
