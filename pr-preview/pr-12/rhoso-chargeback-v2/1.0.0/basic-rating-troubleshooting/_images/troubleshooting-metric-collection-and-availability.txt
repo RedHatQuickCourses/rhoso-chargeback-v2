@@ -1,0 +1,19 @@
+In this session, we will focus on troubleshooting metric collection and availability. 
+
+Accurate rating depends entirely on metrics being available in the metric store. If your expected metrics are missing, the Rating service cannot generate correct charge data. We will cover three common scenarios: missing metrics, missing underlying OpenStack resources, and issues with the collection process itself.
+
+First, let's look at how to address missing metrics. When metrics expected by the Rating service are not present, you might notice missing entries in rating summaries or empty chargeback reports. To diagnose this, you should list your available metrics by running the command: `oc exec -n openstack openstackclient -- openstack metric list`. 
+
+You are looking for `ceilometer_*` metrics, such as `ceilometer_cpu`, `ceilometer_image_size`, or `ceilometer_volume_size`. If you need to inspect a specific metric, use the command: `oc exec -n openstack openstackclient -- openstack metric show` followed by the metric name. This provides details like label values, including the project, resource, and value. Compare this output against your `metrics.yaml` file to ensure the names match exactly. If the metric is absent, verify the resource exists, update your configuration, or investigate the collection process.
+
+Next, consider the case where the related OpenStack resources are missing. Remember, Ceilometer generates metrics based on actual resources. For example, CPU and memory metrics require a running server, image size requires a Glance image, and volume size requires a Cinder volume. If these resources do not exist, no metrics will be produced. 
+
+To diagnose this, verify the existence of your resources by running: `oc exec -n openstack openstackclient -- openstack server list`, `openstack image list`, and `openstack volume list`. If a list returns empty, that is likely why your metrics are missing. Simply create the necessary resources and wait for the next Ceilometer polling interval for the metrics to appear.
+
+Finally, let's discuss what to do if metrics are simply not being collected. In this scenario, the metric store might be working—returning things like Prometheus metrics—but Ceilometer metrics are entirely absent. 
+
+To diagnose this, first confirm the metric store is operational by running `openstack metric list`. Then, filter for Ceilometer metrics specifically using `grep ceilometer`. Analyzing this output is key: if no Ceilometer metrics appear, there may be a broader issue with your Ceilometer agents. If only compute metrics are missing, check your compute agent deployment. If only controlplane metrics are missing, focus on the central agent.
+
+If no Ceilometer metrics are present, you should refer to the documentation on troubleshooting Ceilometer to verify your deployment. If Ceilometer is deployed, check whether it is successfully exposing metrics and if Prometheus is scraping them correctly.
+
+By following these diagnostic steps, you can quickly determine whether an issue is caused by missing configurations, missing infrastructure, or a failure in the collection service, allowing you to restore accurate reporting for your Rating service.

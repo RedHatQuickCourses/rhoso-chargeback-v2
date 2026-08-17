@@ -1,0 +1,15 @@
+Once you have defined your metrics and created your rating rules, you are ready to retrieve the consumption data for your resources. This is accomplished by executing a command within your OpenStack client.
+
+To retrieve this data, run the command: `oc exec -n openstack openstackclient -- openstack rating summary get`, followed by your specific group ID, filters, and the desired beginning and ending dates.
+
+Let’s break down the parameters you’ll need for this command. First, the `<group_id>` specifies the attribute or time period you want to use to group your summary results. If you want to group your data by time, you have four options: use `"time-d"` for daily, `"time-w"` for weekly, `"time-m"` for monthly, or `"time-y"` for yearly groupings.
+
+Next, the `<filter>` parameter allows you to refine your results using a simple `"key:value"` format. 
+
+Finally, you will define your timeframe using the `<begin>` and `<end>` parameters. These should be provided in ISO 8601 format—for example, `2019-05-01T00:00:00Z`. Keep in mind that if you do not specify these values, the system defaults to beginning on the first day of the month and ending on the first day of the following month.
+
+A common use case for this feature is generating a summary of consumption and costs for a specific month. For instance, to retrieve a summary for February 2026, you would run the command: `oc exec -n openstack openstackclient -- openstack rating summary get --begin 2026-02-01 --end 2026-03-01`. 
+
+Executing this command queries CloudKitty for all rated data within that date range, specifically for the project associated with your current OpenStack authentication context.
+
+For an additional look at how to retrieve CloudKitty rating data in action, you can consult the resource on chargeback usage provided in the training documentation.

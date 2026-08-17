@@ -1,0 +1,37 @@
+Troubleshooting CloudKitty configuration issues is a critical skill for maintaining accurate resource rating and billing. Even when CloudKitty is operational, you may occasionally encounter scenarios where expected metrics are missing, quantities are incorrect, or rates appear as zero. Let’s walk through how to diagnose and resolve these issues.
+
+### Identifying Rating Summary Problems
+
+When you suspect an issue, the first step is to retrieve the rating summary grouped by type. You can do this by running the `openstack rating summary get` command via the `openstackclient` pod.
+
+Once you have the output, examine it for these common symptoms:
+*   **Missing metrics:** If a metric is completely absent, it likely isn't configured in your `metrics.yaml` file.
+*   **Incorrect quantities:** This usually points to an issue with how the metric data is stored or retrieved.
+*   **Rates of zero:** If the quantity is present but the rate is zero, the hashmap module may be disabled, or specific rating rules may be missing.
+*   **Unexpected rate values:** If a rate is non-zero but incorrect, your rating mapping is likely misconfigured.
+
+### Enabling the Hashmap Module
+
+The hashmap module is responsible for applying your pricing rules. If this module is disabled, all rates will result in zero. 
+
+To check its status, run `openstack rating module list`. If the hashmap module shows "Enabled: False," you must enable it and set its priority. Use the `openstack rating module enable` command to turn it on, and then set its priority to 100 using the `openstack rating module set priority` command. This ensures it is processed correctly. After these steps, verify the change by listing the modules again to confirm the status is now true.
+
+### Correcting metrics.yaml
+
+The `metrics.yaml` file tells CloudKitty which metrics to retrieve from Prometheus. If a metric isn't in this file, CloudKitty ignores it.
+
+To fix this, retrieve the current file from the `cloudkitty-proc` pod, save it locally, and edit it to include your missing metrics. Once you've updated the file, create a new Kubernetes secret from the modified configuration. Finally, update your control plane custom resource to point to this new secret. The CloudKitty processor pod will automatically restart and begin processing the metrics you've added.
+
+### Configuring Rating Rules
+
+If a metric is being collected but still shows a rate of zero, it means no pricing rules have been defined. You can check which services have active rules by running `openstack rating hashmap service list`.
+
+If the service is missing, you need to create a hashmap group, add the service, define the fields to match against—such as a flavor ID—and then create a cost mapping. For example, if you want a flat-rate charge for a specific flavor, you would use the `openstack rating hashmap mapping create` command, specifying the cost, the field ID, the resource value, and the group ID.
+
+### Correcting Existing Mappings
+
+If you find that a rating mapping already exists but uses the wrong cost, field, or type, remember that you cannot modify an existing rule. Instead, you must delete the incorrect mapping using its mapping ID and then create a new, corrected one. 
+
+To do this, list the mappings for the service to identify the incorrect ID, delete it, and then recreate it using the correct values. Once you've updated the mapping, the system will apply the new rates during the next rating period.
+
+By systematically checking your module status, metric configuration, and hashmap mappings, you can resolve the most common issues and ensure your CloudKitty environment provides accurate and reliable rating data.
