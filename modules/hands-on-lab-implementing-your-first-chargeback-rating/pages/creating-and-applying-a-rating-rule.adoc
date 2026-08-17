@@ -38,13 +38,66 @@ oc exec -n openstack openstackclient -- openstack rating module enable hashmap
 +
 Example output:
 +
-[source,bash]
 ----
 +---------+---------+----------+
 | Module  | Enabled | Priority |
 +---------+---------+----------+
 | hashmap | True    | 1        |
 +---------+---------+----------+
+----
++
+If the command fails with the following error:
++
+----
+public endpoint for rating service in regionOne region not found
+command terminated with exit code 1
+----
++
+verify that the CloudKitty service user is configured correctly in the `OpenStackControlPlane` resource:
++
+[source,bash,role=wrap]
+----
+oc get openstackcontrolplane openstack-control-plane -n openstack \
+  -o jsonpath='{.spec.telemetry.template.cloudkitty.serviceUser}{"\n"}'
+----
++
+The command should return:
++
+----
+cloudkitty
+----
++
+If the output is empty or contains a different value, set the `serviceUser` to `cloudkitty`:
++
+[source,bash,role=wrap]
+----
+oc patch openstackcontrolplane openstack-control-plane \
+  -n openstack \
+  --type=json \
+  -p='[{"op":"replace","path":"/spec/telemetry/template/cloudkitty/serviceUser","value":"cloudkitty"}]'
+----
++
+After applying the patch, monitor the `OpenStackControlPlane` resource while the operator reconciles the change:
++
+[source,bash,role=wrap]
+----
+oc get openstackcontrolplane openstack-control-plane -n openstack -w
+----
++
+Wait until the setup is complete and the resource reports the following status:
++
+----
+NAME                      STATUS   MESSAGE
+openstack-control-plane   True     Setup complete
+----
++
+Once the setup is complete, press `Ctrl+C` to exit the resource watch.
++
+After reconciliation completes, retry the command to enable the `hashmap` module:
++
+[source,bash,role=wrap]
+----
+oc exec -n openstack openstackclient -- openstack rating module enable hashmap
 ----
 
 . **Create a rating group**
@@ -58,7 +111,6 @@ oc exec -n openstack openstackclient -- openstack rating hashmap group create in
 +
 Example output:
 +
-[source,bash]
 ----
 +----------------------------+---------------------------------------+
 | Name                       | Group ID                               |
@@ -80,7 +132,6 @@ oc exec -n openstack openstackclient -- openstack rating hashmap service create 
 +
 Example output:
 +
-[source,bash]
 ----
 +----------+---------------------------------------+
 | Name     | Service ID                             |
@@ -109,7 +160,6 @@ oc exec -n openstack openstackclient -- openstack rating hashmap field create 69
 +
 Example output:
 +
-[source,bash]
 ----
 +-----------+--------------------------------------+--------------------------------------+
 | Name      | Field ID                              | Service ID                            |
@@ -131,7 +181,6 @@ oc exec -n openstack openstackclient -- openstack flavor show m1.tiny
 +
 Example output:
 +
-[source,bash]
 ----
 +----------------------------+--------------------------------------+
 | Field                      | Value                                 |
@@ -172,7 +221,6 @@ oc exec -n openstack openstackclient -- openstack rating hashmap mapping create 
 +
 Example output:
 +
-[source,bash]
 ----
 +---------------------------------------+---------------------------------------+-------------------------------------+------+---------------------------------------+-------------+---------------------------------------+------------+
 | Mapping ID                             | Value                                  | Cost                                 | Type | Field ID                               | Service ID  | Group ID                               | Project ID |
@@ -204,7 +252,6 @@ oc exec -n openstack openstackclient -- openstack rating summary get --begin $(d
 
 Example output:
 
-[source,bash]
 ----
 +---------------------------+---------------------------+-------------+------+
 | Begin                     | End                       |         Qty | Rate |
