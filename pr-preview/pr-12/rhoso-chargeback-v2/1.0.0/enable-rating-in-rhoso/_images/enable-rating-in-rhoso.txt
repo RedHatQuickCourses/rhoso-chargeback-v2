@@ -1,7 +1,0 @@
-In this module, we will discuss how to enable the Rating service within Red Hat OpenStack Services on OpenShift, also known as RHOSO. 
-
-Starting with RHOSO 18.0 Feature Release 5, you can utilize chargeback capabilities by enabling the Rating service, which is powered by CloudKitty, directly within the Telemetry Operator. 
-
-Before you begin, there are a few important prerequisites to keep in mind. You must have an operational RHOSO deployment with Telemetry already enabled. Additionally, you must have a configured `MetricStorage` and the Loki Operator successfully deployed in your environment. 
-
-Once these prerequisites are met, activating the service is straightforward. You can turn on CloudKitty directly through the `OpenStackControlPlane` Custom Resource.
