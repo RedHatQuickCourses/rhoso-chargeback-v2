@@ -18,7 +18,7 @@ For a detailed explanation of these concepts, refer to the xref:using-rating-in-
 
 == Hands-on Activity: Creating a Rating Rule for a Compute Flavor
 
-In this activity, you will create a hashmap rating rule that charges a flat cost of `0.3` for instances using the `m1.tiny` flavor. You will execute each command manually through the `openstackclient` pod in your RHOSO environment.
+In this activity, you will create a hashmap rating rule that charges a flat cost of `0.3` for instances using the `m1.small` flavor. You will execute each command manually through the `openstackclient` pod in your RHOSO environment.
 
 [NOTE]
 ====
@@ -122,11 +122,11 @@ Note the field ID from the output.
 
 . **Look up the flavor ID**
 +
-Find the UUID of the `m1.tiny` flavor so you can associate it with a cost.
+Find the UUID of the `m1.small` flavor so you can associate it with a cost.
 +
 [source,bash,role=wrap]
 ----
-oc exec -n openstack openstackclient -- openstack flavor show m1.tiny
+oc exec -n openstack openstackclient -- openstack flavor show m1.small
 ----
 +
 Example output:
@@ -134,21 +134,21 @@ Example output:
 [source,bash]
 ----
 +----------------------------+--------------------------------------+
-| Field                      | Value                                 |
+| Field                      | Value                                |
 +----------------------------+--------------------------------------+
-| OS-FLV-DISABLED:disabled   | False                                  |
-| OS-FLV-EXT-DATA:ephemeral  | 0                                       |
-| access_project_ids         | None                                    |
-| description                | None                                    |
-| disk                       | 1                                       |
-| id                         | f2dae2ae-d5cf-4e19-9af7-fff1cd533664    |
-| name                       | m1.tiny                                 |
-| os-flavor-access:is_public | True                                    |
-| properties                 |                                         |
-| ram                        | 512                                     |
-| rxtx_factor                | 1.0                                     |
-| swap                       |                                         |
-| vcpus                      | 1                                       |
+| OS-FLV-DISABLED:disabled   | False                                |
+| OS-FLV-EXT-DATA:ephemeral  | 0                                    |
+| access_project_ids         | None                                 |
+| description                | None                                 |
+| disk                       | 10                                   |
+| id                         | 2acd2a44-0fb8-4c38-9a34-aed6c4d20ed8 |
+| name                       | m1.small                             |
+| os-flavor-access:is_public | True                                 |
+| properties                 |                                      |
+| ram                        | 2048                                 |
+| rxtx_factor                | 1.0                                  |
+| swap                       |                                      |
+| vcpus                      | 1                                    |
 +----------------------------+--------------------------------------+
 ----
 +
@@ -156,7 +156,7 @@ Note the flavor UUID (the `id` field) from the output.
 
 . **Create a mapping**
 +
-Create a flat mapping that assigns a cost of `0.3` to instances running the `m1.tiny` flavor.
+Create a flat mapping that assigns a cost of `0.3` to instances running the `m1.small` flavor.
 +
 [source,bash,role=wrap]
 ----
@@ -167,7 +167,7 @@ Replace `<field_id>`, `<flavor_uuid>`, and `<group_id>` with the values you note
 +
 [source,bash,role=wrap]
 ----
-oc exec -n openstack openstackclient -- openstack rating hashmap mapping create 0.3 --field-id 6936544f-f745-4a98-9a8a-ac89925894b9 --value f2dae2ae-d5cf-4e19-9af7-fff1cd533664 -g ddb39143-170c-4512-a3b0-44f32ab7b83a -t flat
+oc exec -n openstack openstackclient -- openstack rating hashmap mapping create 0.3 --field-id 6936544f-f745-4a98-9a8a-ac89925894b9 --value 2acd2a44-0fb8-4c38-9a34-aed6c4d20ed8 -g ddb39143-170c-4512-a3b0-44f32ab7b83a -t flat
 ----
 +
 Example output:
@@ -177,7 +177,7 @@ Example output:
 +---------------------------------------+---------------------------------------+-------------------------------------+------+---------------------------------------+-------------+---------------------------------------+------------+
 | Mapping ID                             | Value                                  | Cost                                 | Type | Field ID                               | Service ID  | Group ID                               | Project ID |
 +---------------------------------------+---------------------------------------+-------------------------------------+------+---------------------------------------+-------------+---------------------------------------+------------+
-| 3a13fe1f-9078-41a2-8a33-4883adf249bf   | f2dae2ae-d5cf-4e19-9af7-fff1cd533664    | 0.29999999999999998889776975373      | flat | 6936544f-f745-4a98-9a8a-ac89925894b9   | None        | ddb39143-170c-4512-a3b0-44f32ab7b83a   | None       |
+| 3a13fe1f-9078-41a2-8a33-4883adf249bf   | 2acd2a44-0fb8-4c38-9a34-aed6c4d20ed8    | 0.29999999999999998889776975373      | flat | 6936544f-f745-4a98-9a8a-ac89925894b9   | None        | ddb39143-170c-4512-a3b0-44f32ab7b83a   | None       |
 +---------------------------------------+---------------------------------------+-------------------------------------+------+---------------------------------------+-------------+---------------------------------------+------------+
 ----
 
@@ -257,4 +257,4 @@ The playbook supports the following variables:
 | `mapping_type` | `flat` | Mapping type (`flat` or `rate`)
 |===
 
-In the next unit, you will validate your configuration and verify that charges are being generated correctly.
+In the next unit, you will launch a test instance so that CloudKitty has real consumption data to rate with the rule you just created.

@@ -6,4 +6,5 @@ This hands-on lab provides practical experience in configuring and using the Rat
 
 * xref:setting-up-the-lab-environment-for-chargeback.adoc[Set up the lab environment for chargeback] by installing the required dependencies and enabling the Rating service in RHOSO.
 * xref:creating-and-applying-a-rating-rule.adoc[Create and apply a rating rule] for a compute flavor using the hashmap module.
+* xref:launching-a-test-instance.adoc[Launch a test instance] to generate real consumption data for CloudKitty to rate.
 * xref:verifying-and-analyzing-consumption-data.adoc[Verify and analyze consumption data] by validating your rating configuration.

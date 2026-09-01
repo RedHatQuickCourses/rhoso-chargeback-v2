@@ -2,7 +2,7 @@
 :page-audio-src: verifying-and-analyzing-consumption-data.wav
 :page-transcript-src: verifying-and-analyzing-consumption-data.txt
 
-In this final unit, you will validate that your rating configuration from the previous unit was applied correctly. You will use the validation playbook from the lab repository to run a series of automated checks against your RHOSO environment.
+In this final unit, you will validate that your rating configuration was applied correctly and confirm that the test instance you launched in the previous unit is generating rated consumption data. You will use the validation playbook from the lab repository to run a series of automated checks against your RHOSO environment.
 
 == Run the Validation Playbook
 
