@@ -1,5 +1,0 @@
-In this session, we will explore how to use the rating service, known as CloudKitty. This service enables you to apply specific rating rules to your cloud resource consumption, allowing you to accurately determine associated costs.
-
-Throughout this training, we will cover five essential areas. First, you will learn to understand the core rating concepts, including how rating rules and rating modules function. Next, we will walk through how to configure the CloudKitty service to utilize the Hashmap module. 
-
-We will also cover how to define which specific metrics should be collected for your rating purposes, as well as the procedures for creating and managing your rating rules. Finally, we will examine how you can access and retrieve your rated resource consumption data.

@@ -1,9 +1,0 @@
-To begin, let's look at the concept of a rating rule. Simply put, a rating rule dictates how a specific resource or service consumption within an environment should be valued.
-
-To understand this in a real-world scenario, consider an organization that wants to charge for the usage of virtual machines. In this case, a rating definition would specify that for every hour a virtual machine is actively running, a certain value is applied to the project consuming that resource. Ultimately, the primary goal of a well-defined rating rule is to ensure that all incurred charges remain fair, predictable, and transparent.
-
-Now, let’s discuss the rating module. A rating module defines how CloudKitty processes and applies those rating rules to your data. You can have several rating modules enabled at the same time. When this happens, data is passed through these enabled modules consecutively. It is important to note that you can set the module priority through the API, which determines the specific order in which they will process your data.
-
-There are two primary modules to be aware of. First, the hashmap module allows you to create rating rules based on metric metadata. Second, the pyscripts module allows you to rate data using custom Python scripts.
-
-I must provide an important warning regarding the pyscripts module: it is not advised and is not supported. You should use the hashmap rating module instead, as it provides a much more structured and maintainable way to create your rating rules.

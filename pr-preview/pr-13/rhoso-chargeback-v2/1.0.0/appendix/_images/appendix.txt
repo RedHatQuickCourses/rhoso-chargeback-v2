@@ -1,7 +1,0 @@
-To wrap up this module, I have compiled a list of recommended resources to help you deepen your understanding of these topics.
-
-For detailed technical guidance, I encourage you to consult the official Red Hat documentation. Specifically, you will find comprehensive instructions on configuring observability and utilizing the rating service within Red Hat OpenStack Services on OpenShift version 18.0. These documents are excellent references for your ongoing work with these features.
-
-Additionally, if you are interested in the broader context of cloud economics, I recommend reading the article titled "Taming Costs in Cloud Environments: Rating in OpenStack with CloudKitty," available on the Red Hat blog. This post offers valuable insights into how to effectively manage and rate resources in your cloud environment.
-
-I suggest bookmarking these resources as you continue your training.
