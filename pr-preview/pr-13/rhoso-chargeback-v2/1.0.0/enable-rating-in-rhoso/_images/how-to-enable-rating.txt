@@ -1,0 +1,21 @@
+Once you have met the necessary prerequisites, you are ready to enable the Rating feature in your RHOSO environment. This process involves activating and configuring the CloudKitty service within your OpenStackControlPlane.
+
+To get started with the configuration, follow these steps:
+
+First, locate the service definition for telemetry in your OpenStackControlPlane custom resource. You can access this by running the command: `oc edit OpenStackControlPlane -n openstack`. 
+
+Within the telemetry section of that file, you need to add the CloudKitty configuration. Ensure that the cloudkitty service is set to enabled, and provide your S3 storage configuration, including the schema version, effective date, and the secret name for your S3 storage.
+
+Before you make any changes, please note this important warning: Always back up your custom resource definition before modifying it. Any incorrect changes could disrupt your telemetry services and negatively impact the stability of your RHOSO environment.
+
+Once you have added the configuration, save the YAML file. The Telemetry Operator will automatically detect these changes and initiate the reconciliation process to deploy or configure CloudKitty. After saving, be sure to monitor the deployment to ensure that the CloudKitty pods start up correctly.
+
+Now, let’s discuss how to verify that the rating activation was successful.
+
+Start by checking the status of your CloudKitty pods to confirm they are up and running. You can list the pods using `oc get pods -n openstack` filtered by `cloudkitty`. If you need to troubleshoot, you can stream the logs for a specific pod using the command: `oc logs -f <cloudkitty-api-pod-name> -n openstack`.
+
+All associated pods, such as `cloudkitty-api` and `cloudkitty-proc`, should be in the "Running" state. 
+
+Next, review the status of the CloudKitty custom resource. You can verify the operational state and deployment success by running an `oc get` command on the CloudKitty resource and inspecting the ready condition through the JSON path. Look for confirmation within the output that the service is in a ready state.
+
+Finally, for a definitive verification, you should perform a basic rating rule test. While this module focuses on the enablement process, the best way to confirm that everything is working as expected is to create a simple rating rule and observe if CloudKitty successfully processes metrics and associates usage with costs. We will cover this practical application in detail in the upcoming hands-on lab titled, "Creating Your First Rating."
