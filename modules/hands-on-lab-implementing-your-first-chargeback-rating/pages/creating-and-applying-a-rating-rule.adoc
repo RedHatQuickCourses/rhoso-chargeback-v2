@@ -16,7 +16,7 @@ For a detailed explanation of these concepts, refer to the xref:using-rating-in-
 
 == Hands-on Activity: Creating a Rating Rule for a Compute Flavor
 
-In this activity, you will launch a test instance and create a hashmap rating rule that charges a flat cost of `0.3` for instances using the `m1.small` flavor. You will execute each command manually through the `openstackclient` pod in your RHOSO environment.
+In this activity, you will create a hashmap rating rule that charges a flat cost of `0.3` for instances using the `m1.small` flavor. You will execute each command manually through the `openstackclient` pod in your RHOSO environment.
 
 [NOTE]
 ====
@@ -24,29 +24,6 @@ All `openstack rating` commands are executed through the `openstackclient` pod r
 ====
 
 Follow these steps:
-
-. **Add a Cirros image to the Image service**
-+
-Download a lightweight Cirros image and upload it to the Image service (glance). You will use this image to launch a test instance that generates the consumption data your rating rule will charge for.
-+
-[source,bash,role=wrap]
-----
-curl -L https://download.cirros-cloud.net/0.6.2/cirros-0.6.2-x86_64-disk.img | oc exec -i -n openstack openstackclient -- openstack image create --disk-format qcow2 --container-format bare --public cirros
-----
-
-. **Create a test instance**
-+
-Launch an instance named `test-vm` using the Cirros image and the `m1.small` flavor. This instance generates the uptime metrics that CloudKitty collects and rates.
-+
-[NOTE]
-====
-Use the `m1.small` flavor. The `m1.tiny` flavor is too small to boot the Cirros image.
-====
-+
-[source,bash,role=wrap]
-----
-oc exec -n openstack openstackclient -- openstack server create --flavor m1.small --image cirros --network private test-vm
-----
 
 . **Enable the hashmap module**
 +
@@ -278,4 +255,4 @@ The playbook supports the following variables:
 | `mapping_type` | `flat` | Mapping type (`flat` or `rate`)
 |===
 
-In the next unit, you will validate your configuration and verify that charges are being generated correctly.
+In the next unit, you will launch a test instance so that CloudKitty has real consumption data to rate with the rule you just created.

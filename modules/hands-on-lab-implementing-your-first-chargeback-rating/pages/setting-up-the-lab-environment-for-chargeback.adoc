@@ -25,11 +25,12 @@ git clone https://github.com/opentraining-labs-customizations/rhoso-chargeback.g
 cd rhoso-chargeback
 ----
 
-The repository contains four directories, each with an Ansible playbook for a specific stage of the lab:
+The repository contains five directories, each with an Ansible playbook for a specific stage of the lab:
 
 * `pre-deploy/` -- Installs Loki, MinIO and COO, required by CloudKitty to access metrics and store the rated data.
 * `deploy/` -- Updates the OpenStack Control Plane to enable Telemetry, Ceilometer, MetricStorage, and CloudKitty.
 * `create-ck-rating/` -- Automates the creation of a hashmap rating rule (used in the next unit).
+* `create-test-instance/` -- Launches a test instance that generates consumption data for CloudKitty to rate (used after creating the rating rule).
 * `validation/` -- Validates that the rating configuration was applied correctly (used in the final unit).
 
 == Install CloudKitty Dependencies
