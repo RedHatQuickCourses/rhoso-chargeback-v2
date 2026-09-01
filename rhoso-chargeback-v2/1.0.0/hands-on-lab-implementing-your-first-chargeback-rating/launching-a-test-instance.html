@@ -3,9 +3,9 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Setting up the lab environment for Chargeback :: RHOSO Chargeback and Observability Fundamentals</title>
-    <link rel="prev" href="hands-on-lab-implementing-your-first-chargeback-rating.html">
-    <link rel="next" href="creating-and-applying-a-rating-rule.html">
+    <title>Launching a test instance to generate consumption data :: RHOSO Chargeback and Observability Fundamentals</title>
+    <link rel="prev" href="creating-and-applying-a-rating-rule.html">
+    <link rel="next" href="verifying-and-analyzing-consumption-data.html">
     <meta name="generator" content="Antora 3.2.0-alpha.12">
     <link rel="stylesheet" href="../../../_/css/site.css">
     <link rel="stylesheet" href="../../../_/css/vendor/tabs.css">
@@ -142,13 +142,13 @@
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="hands-on-lab-implementing-your-first-chargeback-rating.html">Hands-on Lab: Implementing Your First Chargeback Rating</a>
 <ul class="nav-list">
-  <li class="nav-item is-current-page" data-depth="2">
+  <li class="nav-item" data-depth="2">
     <a class="nav-link" href="setting-up-the-lab-environment-for-chargeback.html">Setting up the lab environment for Chargeback</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="creating-and-applying-a-rating-rule.html">Creating and applying a rating rule</a>
   </li>
-  <li class="nav-item" data-depth="2">
+  <li class="nav-item is-current-page" data-depth="2">
     <a class="nav-link" href="launching-a-test-instance.html">Launching a test instance to generate consumption data</a>
   </li>
   <li class="nav-item" data-depth="2">
@@ -220,7 +220,7 @@
   <ul>
     <li><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></li>
     <li><a href="hands-on-lab-implementing-your-first-chargeback-rating.html">Hands-on Lab: Implementing Your First Chargeback Rating</a></li>
-    <li><a href="setting-up-the-lab-environment-for-chargeback.html">Setting up the lab environment for Chargeback</a></li>
+    <li><a href="launching-a-test-instance.html">Launching a test instance to generate consumption data</a></li>
   </ul>
 </nav>
 </div>
@@ -228,118 +228,20 @@
 <aside class="toc sidebar" data-title="Contents" data-levels="2">
   <div class="toc-menu"></div>
 </aside>
-<article class="doc" data-audio-src="setting-up-the-lab-environment-for-chargeback.wav" data-transcript-src="setting-up-the-lab-environment-for-chargeback.txt">
-<h1 class="page">Setting up the lab environment for Chargeback</h1>
+<article class="doc">
+<h1 class="page">Launching a test instance to generate consumption data</h1>
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>In this unit, you will prepare your Red Hat OpenStack Services on OpenShift (RHOSO) environment for chargeback by installing the required dependencies and enabling the Rating service (CloudKitty). You will use Ansible playbooks to automate the setup, while understanding what each step accomplishes based on the concepts covered in the <a href="../enable-rating-in-rhoso/prerequisites-for-rating-enablement-in-rhoso.html" class="xref page">Prerequisites for Rating enablement in RHOSO</a> and <a href="../enable-rating-in-rhoso/how-to-enable-rating.html" class="xref page">How To Enable Rating</a> theory modules.</p>
+<p>In this unit, you will launch a test instance on your Red Hat OpenStack Services on OpenShift (RHOSO) environment so that CloudKitty has real consumption data to rate. With the rating rule from the <a href="creating-and-applying-a-rating-rule.html" class="xref page">previous unit</a> already in place, the uptime of this instance is collected by Ceilometer and rated by CloudKitty according to the cost you assigned to its flavor.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_connect_to_the_workstation_machine"><a class="anchor" href="#_connect_to_the_workstation_machine"></a>Connect to the Workstation Machine</h2>
+<h2 id="_hands_on_activity_launching_a_test_instance"><a class="anchor" href="#_hands_on_activity_launching_a_test_instance"></a>Hands-on Activity: Launching a Test Instance</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>All lab tasks are performed from the workstation machine.</p>
-</div>
-<div class="paragraph">
-<p>Install ansible-core (it might be available already):</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[student@workstation ~]$ sudo dnf install ansible-core</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>You will run all subsequent commands from this machine.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_clone_the_rhoso_chargeback_and_observability_fundamentals_training_repository"><a class="anchor" href="#_clone_the_rhoso_chargeback_and_observability_fundamentals_training_repository"></a>Clone the RHOSO Chargeback and Observability Fundamentals Training Repository</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>All the automation scripts for this lab are available in a dedicated Git repository. Clone it to your workstation:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">git clone https://github.com/opentraining-labs-customizations/rhoso-chargeback.git
-cd rhoso-chargeback</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The repository contains five directories, each with an Ansible playbook for a specific stage of the lab:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>pre-deploy/</code>&#8201;&#8212;&#8201;Installs Loki, MinIO and COO, required by CloudKitty to access metrics and store the rated data.</p>
-</li>
-<li>
-<p><code>deploy/</code>&#8201;&#8212;&#8201;Updates the OpenStack Control Plane to enable Telemetry, Ceilometer, MetricStorage, and CloudKitty.</p>
-</li>
-<li>
-<p><code>create-ck-rating/</code>&#8201;&#8212;&#8201;Automates the creation of a hashmap rating rule (used in the next unit).</p>
-</li>
-<li>
-<p><code>create-test-instance/</code>&#8201;&#8212;&#8201;Launches a test instance that generates consumption data for CloudKitty to rate (used after creating the rating rule).</p>
-</li>
-<li>
-<p><code>validation/</code>&#8201;&#8212;&#8201;Validates that the rating configuration was applied correctly (used in the final unit).</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_install_cloudkitty_dependencies"><a class="anchor" href="#_install_cloudkitty_dependencies"></a>Install CloudKitty Dependencies</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>As covered in the <a href="../enable-rating-in-rhoso/prerequisites-for-rating-enablement-in-rhoso.html" class="xref page">Prerequisites for Rating enablement in RHOSO</a> module, CloudKitty requires a Loki instance for storing rated data, backed by S3-compatible storage. The <code>pre-deploy</code> playbook sets this up for you. It also requires COO, to deploy the MetricStorage instance managed by COO.</p>
-</div>
-<div class="paragraph">
-<p>Run the playbook:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ansible-playbook pre-deploy/deploy-ck-dependencies.yml</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>This playbook performs the following actions:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Waits for the OpenShift Route API to become available.</p>
-</li>
-<li>
-<p>Applies Kubernetes manifests that create:</p>
-<div class="ulist">
-<ul>
-<li>
-<p>The <code>openshift-operators-redhat</code> and <code>minio-dev</code> namespaces.</p>
-</li>
-<li>
-<p>A Loki Operator subscription (from the <code>stable-6.4</code> channel).</p>
-</li>
-<li>
-<p>A Cluster Observability Operator subscription (from the <code>stable</code> channel).</p>
-</li>
-<li>
-<p>A MinIO pod with persistent storage (10Gi) for S3-compatible object storage.</p>
-</li>
-<li>
-<p>A Secret named <code>cloudkitty-loki-s3</code> in the <code>openstack</code> namespace containing MinIO credentials.</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Waits for Loki and Cluster Observability Operators to reach <code>Succeeded</code> status (up to 5 minutes).</p>
-</li>
-</ol>
+<p>In this activity, you will upload a lightweight Cirros image to the Image service (glance), launch an instance from it using the <code>m1.small</code> flavor, and confirm that the instance is running. You will execute each command manually through the <code>openstackclient</code> pod in your RHOSO environment.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -349,69 +251,92 @@ cd rhoso-chargeback</code></pre>
 </td>
 <td class="content">
 <div class="paragraph">
-<p>The playbook references files relative to the repository root. If you are running it from a different directory, override the path with:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ansible-playbook \
-  -e "ansible_user_dir=/path/to/rhoso-chargeback" \
-  pre-deploy/deploy-ck-dependencies.yml</code></pre>
-</div>
+<p>All commands are executed through the <code>openstackclient</code> pod running in the <code>openstack</code> namespace.</p>
 </div>
 </td>
 </tr>
 </table>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_enable_telemetry_ceilometer_metricstorage_and_cloudkitty"><a class="anchor" href="#_enable_telemetry_ceilometer_metricstorage_and_cloudkitty"></a>Enable Telemetry, Ceilometer, MetricStorage, and CloudKitty</h2>
-<div class="sectionbody">
 <div class="paragraph">
-<p>With the storage dependencies in place, you can now enable the Rating service itself. As described in the <a href="../enable-rating-in-rhoso/how-to-enable-rating.html" class="xref page">How To Enable Rating</a> module, this involves modifying the <code>OpenStackControlPlane</code> Custom Resource to activate several components.</p>
-</div>
-<div class="paragraph">
-<p>Run the deploy playbook:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ansible-playbook deploy/update-deployment-for-ck.yml</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>This playbook performs the following actions:</p>
+<p>Follow these steps:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Adds a <code>CloudKittyPassword</code> entry to the <code>osp-secret</code> Secret.</p>
-</li>
-<li>
-<p>Activates the Telemetry service in the <code>OpenStackControlPlane</code> CR.</p>
-</li>
-<li>
-<p>Activates Ceilometer in the <code>OpenStackControlPlane</code> CR.</p>
-</li>
-<li>
-<p>Activates MetricStorage with <code>pvcStorageClass: nfs-storage</code>.</p>
-</li>
-<li>
-<p>Activates CloudKitty in the <code>OpenStackControlPlane</code> CR.</p>
-</li>
-<li>
-<p>Waits for the <code>OpenStackControlPlane</code> to become ready (up to 30 minutes).</p>
-</li>
-</ol>
+<p><strong>Add a Cirros image to the Image service</strong></p>
+<div class="paragraph">
+<p>Download a lightweight Cirros image and upload it to the Image service (glance). You will use this image to launch a test instance that generates the consumption data your rating rule charges for.</p>
 </div>
-<div class="admonitionblock important">
+<div class="listingblock wrap">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -L https://download.cirros-cloud.net/0.6.2/cirros-0.6.2-x86_64-disk.img | oc exec -i -n openstack openstackclient -- openstack image create --disk-format qcow2 --container-format bare --public cirros</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Create a test instance</strong></p>
+<div class="paragraph">
+<p>Launch an instance named <code>test-vm</code> using the Cirros image and the <code>m1.small</code> flavor. This instance generates the uptime metrics that CloudKitty collects and rates.</p>
+</div>
+<div class="admonitionblock note">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-important" title="Important"></i>
+<i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
 <div class="paragraph">
-<p>This step may take up to 30 minutes to complete while the operator reconciles all changes and deploys the new components. Do not interrupt the playbook while it is waiting.</p>
+<p>Use the <code>m1.small</code> flavor to match the rating rule you created in the previous unit. The <code>m1.tiny</code> flavor is too small to boot the Cirros image.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock wrap">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack server create --flavor m1.small --image cirros --network private test-vm</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Confirm the instance is running</strong></p>
+<div class="paragraph">
+<p>Check that the instance reached the <code>ACTIVE</code> state. It may take a minute or two to boot.</p>
+</div>
+<div class="listingblock wrap">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack server show test-vm -c name -c status -c flavor</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Example output:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">+--------+----------+
+| Field  | Value    |
++--------+----------+
+| flavor | m1.small |
+| name   | test-vm  |
+| status | ACTIVE   |
++--------+----------+</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Once the instance is <code>ACTIVE</code>, it starts generating uptime metrics. CloudKitty collects and rates these metrics on a periodic cycle, so it may take a few minutes before rated consumption data appears.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If the instance status is <code>BUILD</code>, wait a moment and run the <code>openstack server show</code> command again. If it reaches <code>ERROR</code>, the flavor is likely too small to boot the image&#8201;&#8212;&#8201;delete the instance and retry with the <code>m1.small</code> flavor.</p>
 </div>
 </td>
 </tr>
@@ -420,51 +345,106 @@ cd rhoso-chargeback</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_verify_the_deployment"><a class="anchor" href="#_verify_the_deployment"></a>Verify the Deployment</h2>
+<h2 id="_automation_alternative"><a class="anchor" href="#_automation_alternative"></a>Automation Alternative</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>After the playbook completes successfully, verify that CloudKitty is running.</p>
+<p>The repository you cloned in the <a href="setting-up-the-lab-environment-for-chargeback.html" class="xref page">lab setup unit</a> includes a playbook that automates all the manual steps above. It downloads the Cirros image, uploads it to the Image service, launches the instance, and waits for it to become <code>ACTIVE</code>.</p>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Check that the CloudKitty pods are in <code>Running</code> state:</p>
-<div class="listingblock">
+<div class="paragraph">
+<p>To launch the test instance automatically:</p>
+</div>
+<div class="listingblock wrap">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get pods -n openstack | grep cloudkitty</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ansible-playbook create-test-instance/create-test-instance.yml</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>You should see <code>cloudkitty-api</code> and <code>cloudkitty-processor</code> pods running.</p>
+<p>You can customize the playbook variables to use a different image, flavor, or instance name:</p>
 </div>
-</li>
-<li>
-<p>Confirm the CloudKitty CR reports a <code>Ready</code> condition:</p>
-<div class="listingblock">
+<div class="listingblock wrap">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get -n openstack CloudKitty</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ansible-playbook create-test-instance/create-test-instance.yml -e flavor_name=m1.medium -e instance_name=demo-vm</code></pre>
 </div>
-</div>
-</li>
-<li>
-<p>Verify that Ceilometer and MetricStorage are also ready:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get ceilometer -n openstack
-oc get metricstorage -n openstack</code></pre>
-</div>
-</div>
-</li>
-</ol>
 </div>
 <div class="paragraph">
-<p>Once all components report a ready state, your environment is fully prepared for rating. In the next unit, you will create your first rating rule.</p>
+<p>The playbook supports the following variables:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Variable</th>
+<th class="tableblock halign-left valign-top">Default</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>openstack_namespace</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>openstack</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OpenShift namespace for the OpenStack pods</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>image_name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>cirros</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the image to create</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>image_url</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cirros 0.6.2 download URL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Source image to upload to the Image service</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>flavor_name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>m1.small</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Flavor to launch the instance with</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>instance_name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>test-vm</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the test instance to launch</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>network_name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>private</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Network the instance attaches to</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Keep the <code>flavor_name</code> in sync with the flavor used by your rating rule so the rule applies to the instance you launch.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>If you made a mistake and need to start over, remove the test instance and image with the cleanup playbook, then run the create playbook again:</p>
+</div>
+<div class="listingblock wrap">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ansible-playbook create-test-instance/cleanup-test-instance.yml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the next unit, you will validate your rating configuration and confirm that CloudKitty is rating the consumption generated by this instance.</p>
 </div>
 </div>
 </div>
 <nav class="pagination">
-  <span class="prev"><a href="hands-on-lab-implementing-your-first-chargeback-rating.html">Hands-on Lab: Implementing Your First Chargeback Rating</a></span>
-  <span class="next"><a href="creating-and-applying-a-rating-rule.html">Creating and applying a rating rule</a></span>
+  <span class="prev"><a href="creating-and-applying-a-rating-rule.html">Creating and applying a rating rule</a></span>
+  <span class="next"><a href="verifying-and-analyzing-consumption-data.html">Verifying and analyzing consumption data</a></span>
 </nav>
 </article>
   </div>
@@ -476,7 +456,6 @@ oc get metricstorage -n openstack</code></pre>
 <script async src="../../../_/js/vendor/highlight.js"></script>
 <script defer src="../../../_/js/vendor/tabs.js"></script>
 <script defer src="../../../_/js/vendor/reading-time.js"></script>
-<script defer src="../../../_/js/vendor/audio-transcript.js"></script>
 <script src="../../../_/js/vendor/lunr.js"></script>
 <script src="../../../_/js/search-ui.js" id="search-ui-script" data-site-root-path="../../.." data-snippet-length="100" data-stylesheet="../../../_/css/search.css"></script>
 <script async src="../../../search-index.js"></script>
