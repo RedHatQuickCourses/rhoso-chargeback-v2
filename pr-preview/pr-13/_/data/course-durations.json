@@ -1,6 +1,6 @@
 {
-  "totalSeconds": 2806,
-  "pageCount": 29,
+  "totalSeconds": 2917,
+  "pageCount": 30,
   "pages": [
     {
       "module": "ROOT",
@@ -95,22 +95,27 @@
     {
       "module": "hands-on-lab-implementing-your-first-chargeback-rating",
       "page": "hands-on-lab-implementing-your-first-chargeback-rating.adoc",
-      "seconds": 20
+      "seconds": 23
     },
     {
       "module": "hands-on-lab-implementing-your-first-chargeback-rating",
       "page": "setting-up-the-lab-environment-for-chargeback.adoc",
-      "seconds": 83
+      "seconds": 89
     },
     {
       "module": "hands-on-lab-implementing-your-first-chargeback-rating",
       "page": "creating-and-applying-a-rating-rule.adoc",
-      "seconds": 205
+      "seconds": 190
+    },
+    {
+      "module": "hands-on-lab-implementing-your-first-chargeback-rating",
+      "page": "launching-a-test-instance.adoc",
+      "seconds": 113
     },
     {
       "module": "hands-on-lab-implementing-your-first-chargeback-rating",
       "page": "verifying-and-analyzing-consumption-data.adoc",
-      "seconds": 158
+      "seconds": 162
     },
     {
       "module": "basic-rating-troubleshooting",

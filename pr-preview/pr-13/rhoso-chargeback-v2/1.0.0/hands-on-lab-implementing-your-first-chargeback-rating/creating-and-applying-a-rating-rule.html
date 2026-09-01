@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Creating and applying a rating rule :: RHOSO Chargeback and Observability Fundamentals</title>
     <link rel="prev" href="setting-up-the-lab-environment-for-chargeback.html">
-    <link rel="next" href="verifying-and-analyzing-consumption-data.html">
+    <link rel="next" href="launching-a-test-instance.html">
     <meta name="generator" content="Antora 3.2.0-alpha.12">
     <link rel="stylesheet" href="../../../_/css/site.css">
     <link rel="stylesheet" href="../../../_/css/vendor/tabs.css">
@@ -149,6 +149,9 @@
     <a class="nav-link" href="creating-and-applying-a-rating-rule.html">Creating and applying a rating rule</a>
   </li>
   <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="launching-a-test-instance.html">Launching a test instance to generate consumption data</a>
+  </li>
+  <li class="nav-item" data-depth="2">
     <a class="nav-link" href="verifying-and-analyzing-consumption-data.html">Verifying and analyzing consumption data</a>
   </li>
 </ul>
@@ -268,7 +271,7 @@
 <h2 id="_hands_on_activity_creating_a_rating_rule_for_a_compute_flavor"><a class="anchor" href="#_hands_on_activity_creating_a_rating_rule_for_a_compute_flavor"></a>Hands-on Activity: Creating a Rating Rule for a Compute Flavor</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In this activity, you will launch a test instance and create a hashmap rating rule that charges a flat cost of <code>0.3</code> for instances using the <code>m1.small</code> flavor. You will execute each command manually through the <code>openstackclient</code> pod in your RHOSO environment.</p>
+<p>In this activity, you will create a hashmap rating rule that charges a flat cost of <code>0.3</code> for instances using the <code>m1.small</code> flavor. You will execute each command manually through the <code>openstackclient</code> pod in your RHOSO environment.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -289,42 +292,6 @@
 </div>
 <div class="olist arabic">
 <ol class="arabic">
-<li>
-<p><strong>Add a Cirros image to the Image service</strong></p>
-<div class="paragraph">
-<p>Download a lightweight Cirros image and upload it to the Image service (glance). You will use this image to launch a test instance that generates the consumption data your rating rule will charge for.</p>
-</div>
-<div class="listingblock wrap">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -L https://download.cirros-cloud.net/0.6.2/cirros-0.6.2-x86_64-disk.img | oc exec -i -n openstack openstackclient -- openstack image create --disk-format qcow2 --container-format bare --public cirros</code></pre>
-</div>
-</div>
-</li>
-<li>
-<p><strong>Create a test instance</strong></p>
-<div class="paragraph">
-<p>Launch an instance named <code>test-vm</code> using the Cirros image and the <code>m1.small</code> flavor. This instance generates the uptime metrics that CloudKitty collects and rates.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>Use the <code>m1.small</code> flavor. The <code>m1.tiny</code> flavor is too small to boot the Cirros image.</p>
-</div>
-</td>
-</tr>
-</table>
-</div>
-<div class="listingblock wrap">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack server create --flavor m1.small --image cirros --network private test-vm</code></pre>
-</div>
-</div>
-</li>
 <li>
 <p><strong>Enable the hashmap module</strong></p>
 <div class="paragraph">
@@ -648,13 +615,13 @@
 </tbody>
 </table>
 <div class="paragraph">
-<p>In the next unit, you will validate your configuration and verify that charges are being generated correctly.</p>
+<p>In the next unit, you will launch a test instance so that CloudKitty has real consumption data to rate with the rule you just created.</p>
 </div>
 </div>
 </div>
 <nav class="pagination">
   <span class="prev"><a href="setting-up-the-lab-environment-for-chargeback.html">Setting up the lab environment for Chargeback</a></span>
-  <span class="next"><a href="verifying-and-analyzing-consumption-data.html">Verifying and analyzing consumption data</a></span>
+  <span class="next"><a href="launching-a-test-instance.html">Launching a test instance to generate consumption data</a></span>
 </nav>
 </article>
   </div>
