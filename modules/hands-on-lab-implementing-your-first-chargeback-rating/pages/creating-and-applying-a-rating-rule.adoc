@@ -220,7 +220,7 @@ At this stage, do not expect the `Rate` value to grow: no workloads are running 
 
 [WARNING]
 ====
-*Known issue:* If the summary reports both `Qty` and `Rate` as `0.0`, as in the following output, some CloudKitty base values might not be properly configured and the service needs to be restarted:
+*Known issue:* If the summary continues to report both `Qty` and `Rate` as `0.0` (the `Qty` value never grows), as in the following output, some CloudKitty base values might not be properly configured and the service needs to be restarted:
 
 [source,bash]
 ----
