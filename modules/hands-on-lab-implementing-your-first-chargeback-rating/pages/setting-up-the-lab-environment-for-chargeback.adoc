@@ -30,7 +30,7 @@ cd rhoso-chargeback
 The repository contains five directories, each with an Ansible playbook for a specific stage of the lab:
 
 * `pre-deploy/` -- Installs Loki, MinIO and COO, required by CloudKitty to access metrics and store the rated data.
-* `deploy/` -- Updates the OpenStack Control Plane to enable Telemetry, Ceilometer, MetricStorage, and CloudKitty.
+* `deploy/` -- Updates the OpenStack Control Plane to enable Telemetry, Ceilometer, MetricStorage, and CloudKitty, and rolls out the telemetry service to the data plane.
 * `create-ck-rating/` -- Automates the creation of a hashmap rating rule (used in the next unit).
 * `create-test-instance/` -- Launches a test instance that generates consumption data for CloudKitty to rate (used after creating the rating rule).
 * `validation/` -- Validates that the rating configuration was applied correctly (used in the final unit).
@@ -83,15 +83,17 @@ ansible-playbook deploy/update-deployment-for-ck.yml
 This playbook performs the following actions:
 
 . Adds a `CloudKittyPassword` entry to the `osp-secret` Secret.
-. Activates the Telemetry service in the `OpenStackControlPlane` CR.
-. Activates Ceilometer in the `OpenStackControlPlane` CR.
-. Activates MetricStorage with `pvcStorageClass: nfs-storage`.
-. Activates CloudKitty in the `OpenStackControlPlane` CR.
+. Enables the Telemetry service in the `OpenStackControlPlane` CR.
+. Enables Ceilometer in the `OpenStackControlPlane` CR.
+. Enables MetricStorage in the `OpenStackControlPlane` CR.
+. Enables and configures CloudKitty in the `OpenStackControlPlane` CR.
 . Waits for the `OpenStackControlPlane` to become ready (up to 30 minutes).
+. Adds the `telemetry` service to the `OpenStackDataPlaneNodeSet` and creates a new `OpenStackDataPlaneDeployment`.
+. Waits for the `OpenStackDataPlaneDeployment` to complete (up to 60 minutes).
 
 [IMPORTANT]
 ====
-This step may take up to 30 minutes to complete while the operator reconciles all changes and deploys the new components. Do not interrupt the playbook while it is waiting.
+This step may take a while to complete. The operator first reconciles the control plane changes (up to 30 minutes), and then the telemetry data plane deployment rolls out to the compute nodes (up to another 60 minutes). Do not interrupt the playbook while it is waiting.
 ====
 
 == Verify the Deployment
