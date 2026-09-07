@@ -82,13 +82,14 @@ ansible-playbook deploy/update-deployment-for-ck.yml
 
 This playbook performs the following actions:
 
-. Adds a `CloudKittyPassword` entry to the `osp-secret` Secret, reusing the existing `CeilometerPassword` value.
-. Activates the Telemetry service in the `OpenStackControlPlane` CR.
-. Activates Ceilometer in the `OpenStackControlPlane` CR.
-. Activates MetricStorage with a persistent monitoring stack: a `20G` PVC on the `nfs-storage` storage class, a `30s` scrape interval, `24h` retention, and alerting enabled.
-. Activates CloudKitty in the `OpenStackControlPlane` CR, configured with a `60`-second API timeout, a `300`-second collection period, `95`-day Loki retention, the `1x.demo` Loki stack size, and the `cloudkitty-loki-s3` S3 storage secret.
+. Adds a `CloudKittyPassword` entry to the `osp-secret` Secret.
+. Enables the Telemetry service in the `OpenStackControlPlane` CR.
+. Enables Ceilometer in the `OpenStackControlPlane` CR.
+. Enables MetricStorage in the `OpenStackControlPlane` CR.
+. Enables and configures CloudKitty in the `OpenStackControlPlane` CR.
 . Waits for the `OpenStackControlPlane` to become ready (up to 30 minutes).
-. Rolls out the telemetry service to the data plane: it adds the `telemetry` service to the `OpenStackDataPlaneNodeSet`, creates an `OpenStackDataPlaneDeployment`, and waits for that deployment to complete (up to 60 minutes).
+. Adds the `telemetry` service to the `OpenStackDataPlaneNodeSet` and creates a new `OpenStackDataPlaneDeployment`.
+. Waits for the `OpenStackDataPlaneDeployment` to complete (up to 60 minutes).
 
 [IMPORTANT]
 ====
