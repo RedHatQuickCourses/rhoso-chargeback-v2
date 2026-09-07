@@ -190,9 +190,9 @@ You can verify that your rating configuration is in place by listing the active 
 oc exec -n openstack openstackclient -- openstack rating module list
 ----
 
-[NOTE]
+[WARNING]
 ====
-The default `openstack rating summary get` command queries data over a wide time range, which can time out in resource-constrained lab environments. Restrict the query to the current day to avoid timeouts.
+*Known issue:* The default `openstack rating summary get` command queries data over a wide time range. In this lab environment, the constrained resources can cause that query to time out and return an error. This behavior is specific to the lab; restrict the query to the current day to avoid the timeout.
 ====
 
 [source,bash,role=wrap]
