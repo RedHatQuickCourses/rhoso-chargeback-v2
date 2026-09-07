@@ -384,25 +384,28 @@ cd rhoso-chargeback</code></pre>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Adds a <code>CloudKittyPassword</code> entry to the <code>osp-secret</code> Secret, reusing the existing <code>CeilometerPassword</code> value.</p>
+<p>Adds a <code>CloudKittyPassword</code> entry to the <code>osp-secret</code> Secret.</p>
 </li>
 <li>
-<p>Activates the Telemetry service in the <code>OpenStackControlPlane</code> CR.</p>
+<p>Enables the Telemetry service in the <code>OpenStackControlPlane</code> CR.</p>
 </li>
 <li>
-<p>Activates Ceilometer in the <code>OpenStackControlPlane</code> CR.</p>
+<p>Enables Ceilometer in the <code>OpenStackControlPlane</code> CR.</p>
 </li>
 <li>
-<p>Activates MetricStorage with a persistent monitoring stack: a <code>20G</code> PVC on the <code>nfs-storage</code> storage class, a <code>30s</code> scrape interval, <code>24h</code> retention, and alerting enabled.</p>
+<p>Enables MetricStorage in the <code>OpenStackControlPlane</code> CR.</p>
 </li>
 <li>
-<p>Activates CloudKitty in the <code>OpenStackControlPlane</code> CR, configured with a <code>60</code>-second API timeout, a <code>300</code>-second collection period, <code>95</code>-day Loki retention, the <code>1x.demo</code> Loki stack size, and the <code>cloudkitty-loki-s3</code> S3 storage secret.</p>
+<p>Enables and configures CloudKitty in the <code>OpenStackControlPlane</code> CR.</p>
 </li>
 <li>
 <p>Waits for the <code>OpenStackControlPlane</code> to become ready (up to 30 minutes).</p>
 </li>
 <li>
-<p>Rolls out the telemetry service to the data plane: it adds the <code>telemetry</code> service to the <code>OpenStackDataPlaneNodeSet</code>, creates an <code>OpenStackDataPlaneDeployment</code>, and waits for that deployment to complete (up to 60 minutes).</p>
+<p>Adds the <code>telemetry</code> service to the <code>OpenStackDataPlaneNodeSet</code> and creates a new <code>OpenStackDataPlaneDeployment</code>.</p>
+</li>
+<li>
+<p>Waits for the <code>OpenStackDataPlaneDeployment</code> to complete (up to 60 minutes).</p>
 </li>
 </ol>
 </div>
