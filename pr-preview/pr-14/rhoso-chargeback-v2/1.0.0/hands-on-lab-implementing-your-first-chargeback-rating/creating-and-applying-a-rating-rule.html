@@ -544,7 +544,7 @@
 </td>
 <td class="content">
 <div class="paragraph">
-<p><strong>Known issue:</strong> If the summary continues to report both <code>Qty</code> and <code>Rate</code> as <code>0.0</code> (the <code>Qty</code> value never grows), as in the following output, some CloudKitty base values might not be properly configured and the service needs to be restarted:</p>
+<p><strong>Known issue:</strong> If the summary continues to report both <code>Qty</code> and <code>Rate</code> as <code>0.0</code> (the <code>Qty</code> value never grows), as in the following output, some CloudKitty base values might not be properly configured, and the service needs to be restarted:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -556,7 +556,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p>To recover, remove the <code>cloudkitty</code> section from the <code>OpenStackControlPlane</code> CR entirely to force the defaults to be repopulated, and then re-enable it:</p>
+<p>To recover, reset the <code>cloudkitty</code> section in the <code>OpenStackControlPlane</code> CR to an empty object so that the defaults are repopulated, and then re-enable CloudKitty:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -569,7 +569,7 @@
 </div>
 </li>
 <li>
-<p>Replace the <code>cloudkitty</code> section with an empty object to force the defaults to be repopulated, then save and wait for the Telemetry Operator to reconcile:</p>
+<p>Replace the <code>cloudkitty</code> section with an empty object, then save and wait for the Telemetry Operator to reconcile:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">cloudkitty: {}</code></pre>
