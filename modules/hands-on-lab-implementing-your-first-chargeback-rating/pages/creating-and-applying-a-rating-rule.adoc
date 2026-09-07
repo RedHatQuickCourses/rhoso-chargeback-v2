@@ -214,6 +214,8 @@ Example output:
 [TIP]
 ====
 If no rated data appears yet, wait a few minutes. CloudKitty processes metrics on a periodic cycle, so there may be a short delay before consumption data is rated.
+
+At this stage, do not expect the `Rate` value to grow: no workloads are running yet, so no cost is being registered. In the next section, you will launch a test instance to start registering costs.
 ====
 
 [WARNING]
