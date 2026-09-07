@@ -1,0 +1,36 @@
+In this final unit, we will focus on verifying and analyzing your consumption data. By the end of this session, you will be able to validate that your rating configuration from the previous unit was applied correctly by using the validation playbook from the lab repository.
+
+### Running the Validation Playbook
+
+The validation playbook is designed to check each component of the hashmap rating configuration you created. It provides a pass or fail status for every individual check.
+
+To run the playbook, execute:
+`ansible-playbook validation/validate-ck-rating.yml`
+
+If you used non-default values—such as a different flavor or cost—you must pass those as variables so the validation tool checks against the correct criteria. You can do this by adding the `-e` flag for both the `flavor_name` and the `rating_cost`.
+
+### Interpreting the Results
+
+When the playbook runs, it performs a series of checks. First, it confirms the hashmap module is enabled. Next, it ensures that your group, the `instance` service, and the `flavor_id` field are all correctly defined. It also verifies that the mapping is present and finally checks if CloudKitty is successfully generating rated data.
+
+Keep in mind that the "rating data flowing" check is a soft check. It will warn you if no data is available yet, but it will not cause the playbook to fail. If you run the validation immediately after creating your rating rule, you may see this warning, as CloudKitty processes metrics on a periodic cycle and it may take a few minutes for data to appear.
+
+### Generating Rating Reports
+
+Once your configuration is validated, you can query CloudKitty for the rated data. CloudKitty offers two levels of detail: summaries and dataframes. Think of summaries as a monthly statement showing aggregated totals, and dataframes as the individual line items on a receipt.
+
+To retrieve a summary for a specific time range, use the `openstack rating summary get` command via `oc exec`. This command will provide the total rated cost for each resource type within your chosen time window. Key fields to review include the Tenant ID, the Resource Type, and the calculated Rate. 
+
+If you find that the output is empty, remember that the processor typically collects and rates metrics once an hour. If you’ve just set up your rule, wait at least one hour before trying again.
+
+While summaries give you the big picture, dataframes provide a granular view. Use them to verify that the correct mapping was applied to individual resources or to debug missing metrics. When you retrieve dataframes, you will see rows representing individual rated data points, including the collection window, the metric type, the quantity, and the final price. By checking the Price column against your defined costs, you can confirm that your rating rule is functioning exactly as intended.
+
+### Troubleshooting
+
+If any of the validation checks fail, start by identifying the specific component flagged in the playbook output. Often, issues arise from typos, skipping the module enablement step, or using placeholder IDs instead of actual values.
+
+If you need to start fresh, you can use the provided cleanup and creation playbooks to reset your configuration, then re-run the validation.
+
+If the configuration appears correct but data is still not appearing, inspect the CloudKitty processor logs to identify potential errors. You can do this by using the `oc logs` command to target the CloudKitty pod in your OpenStack namespace.
+
+For further assistance, consult the dedicated troubleshooting modules for CloudKitty deployment and rating configuration available in your documentation.
