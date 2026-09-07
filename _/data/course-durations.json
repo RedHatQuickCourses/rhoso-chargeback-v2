@@ -1,5 +1,5 @@
 {
-  "totalSeconds": 2917,
+  "totalSeconds": 2927,
   "pageCount": 30,
   "pages": [
     {
@@ -105,7 +105,7 @@
     {
       "module": "hands-on-lab-implementing-your-first-chargeback-rating",
       "page": "creating-and-applying-a-rating-rule.adoc",
-      "seconds": 190
+      "seconds": 200
     },
     {
       "module": "hands-on-lab-implementing-your-first-chargeback-rating",
