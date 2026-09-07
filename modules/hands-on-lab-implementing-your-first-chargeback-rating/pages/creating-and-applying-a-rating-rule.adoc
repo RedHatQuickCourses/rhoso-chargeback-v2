@@ -220,7 +220,7 @@ At this stage, do not expect the `Rate` value to grow: no workloads are running 
 
 [WARNING]
 ====
-*Known issue:* If the summary continues to report both `Qty` and `Rate` as `0.0` (the `Qty` value never grows), as in the following output, some CloudKitty base values might not be properly configured and the service needs to be restarted:
+*Known issue:* If the summary continues to report both `Qty` and `Rate` as `0.0` (the `Qty` value never grows), as in the following output, some CloudKitty base values might not be properly configured, and the service needs to be restarted:
 
 [source,bash]
 ----
@@ -231,7 +231,7 @@ At this stage, do not expect the `Rate` value to grow: no workloads are running 
 +---------------------------+---------------------------+-------------+------+
 ----
 
-To recover, remove the `cloudkitty` section from the `OpenStackControlPlane` CR entirely to force the defaults to be repopulated, and then re-enable it:
+To recover, reset the `cloudkitty` section in the `OpenStackControlPlane` CR to an empty object so that the defaults are repopulated, and then re-enable CloudKitty:
 
 . Edit the CR:
 +
@@ -240,7 +240,7 @@ To recover, remove the `cloudkitty` section from the `OpenStackControlPlane` CR 
 oc edit OpenStackControlPlane -n openstack
 ----
 
-. Replace the `cloudkitty` section with an empty object to force the defaults to be repopulated, then save and wait for the Telemetry Operator to reconcile:
+. Replace the `cloudkitty` section with an empty object, then save and wait for the Telemetry Operator to reconcile:
 +
 [source,yaml]
 ----
