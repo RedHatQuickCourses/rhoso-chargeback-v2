@@ -277,7 +277,7 @@ cd rhoso-chargeback</code></pre>
 <p><code>pre-deploy/</code>&#8201;&#8212;&#8201;Installs Loki, MinIO and COO, required by CloudKitty to access metrics and store the rated data.</p>
 </li>
 <li>
-<p><code>deploy/</code>&#8201;&#8212;&#8201;Updates the OpenStack Control Plane to enable Telemetry, Ceilometer, MetricStorage, and CloudKitty.</p>
+<p><code>deploy/</code>&#8201;&#8212;&#8201;Updates the OpenStack Control Plane to enable Telemetry, Ceilometer, MetricStorage, and CloudKitty, and rolls out the telemetry service to the data plane.</p>
 </li>
 <li>
 <p><code>create-ck-rating/</code>&#8201;&#8212;&#8201;Automates the creation of a hashmap rating rule (used in the next unit).</p>
@@ -387,19 +387,25 @@ cd rhoso-chargeback</code></pre>
 <p>Adds a <code>CloudKittyPassword</code> entry to the <code>osp-secret</code> Secret.</p>
 </li>
 <li>
-<p>Activates the Telemetry service in the <code>OpenStackControlPlane</code> CR.</p>
+<p>Enables the Telemetry service in the <code>OpenStackControlPlane</code> CR.</p>
 </li>
 <li>
-<p>Activates Ceilometer in the <code>OpenStackControlPlane</code> CR.</p>
+<p>Enables Ceilometer in the <code>OpenStackControlPlane</code> CR.</p>
 </li>
 <li>
-<p>Activates MetricStorage with <code>pvcStorageClass: nfs-storage</code>.</p>
+<p>Enables MetricStorage in the <code>OpenStackControlPlane</code> CR.</p>
 </li>
 <li>
-<p>Activates CloudKitty in the <code>OpenStackControlPlane</code> CR.</p>
+<p>Enables and configures CloudKitty in the <code>OpenStackControlPlane</code> CR.</p>
 </li>
 <li>
 <p>Waits for the <code>OpenStackControlPlane</code> to become ready (up to 30 minutes).</p>
+</li>
+<li>
+<p>Adds the <code>telemetry</code> service to the <code>OpenStackDataPlaneNodeSet</code> and creates a new <code>OpenStackDataPlaneDeployment</code>.</p>
+</li>
+<li>
+<p>Waits for the <code>OpenStackDataPlaneDeployment</code> to complete (up to 60 minutes).</p>
 </li>
 </ol>
 </div>
@@ -411,7 +417,7 @@ cd rhoso-chargeback</code></pre>
 </td>
 <td class="content">
 <div class="paragraph">
-<p>This step may take up to 30 minutes to complete while the operator reconciles all changes and deploys the new components. Do not interrupt the playbook while it is waiting.</p>
+<p>This step may take a while to complete. The operator first reconciles the control plane changes (up to 30 minutes), and then the telemetry data plane deployment rolls out to the compute nodes (up to another 60 minutes). Do not interrupt the playbook while it is waiting.</p>
 </div>
 </td>
 </tr>

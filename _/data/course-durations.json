@@ -1,5 +1,5 @@
 {
-  "totalSeconds": 2927,
+  "totalSeconds": 2930,
   "pageCount": 30,
   "pages": [
     {
@@ -100,7 +100,7 @@
     {
       "module": "hands-on-lab-implementing-your-first-chargeback-rating",
       "page": "setting-up-the-lab-environment-for-chargeback.adoc",
-      "seconds": 89
+      "seconds": 92
     },
     {
       "module": "hands-on-lab-implementing-your-first-chargeback-rating",
