@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Launching a test instance to generate consumption data :: RHOSO Chargeback and Observability Fundamentals</title>
+    <link rel="prev" href="creating-and-applying-a-rating-rule.html">
+    <link rel="next" href="verifying-and-analyzing-consumption-data.html">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/tabs.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/collapsible.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/reading-time.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/audio-transcript.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">RHOSO Chargeback and Observability Fundamentals</a>
+      <div class="navbar-item search hide-for-print">
+        <div id="search-field" class="field">
+          <input id="search-input" type="text" placeholder="Search the docs">
+        </div>
+      </div>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/rhoso-chargeback-v2/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="rhoso-chargeback-v2" data-version="1.0.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../basics-of-rhoso-observability/basics-of-rhoso-observability.html">Basics of RHOSO Observability</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/introduction-to-rhoso-and-its-purpose.html">Introduction to RHOSO and its purpose</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/core-functionalities-and-use-cases-of-rhoso.html">RHOSO Observability Core Functionalities and Use Cases</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/rhoso-architectural-overview.html">RHOSO architectural overview</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-rating/introduction-to-rating.html">Introduction to the Rating Service</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rating/understanding-chargeback-usecase.html">Understanding the chargeback usecase</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rating/overview-of-the-chargeback-process-flow.html">Overview of the chargeback process flow</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../enable-rating-in-rhoso/enable-rating-in-rhoso.html">Enable Rating in RHOSO</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enable-rating-in-rhoso/prerequisites-for-rating-enablement-in-rhoso.html">Prerequisites for Rating enablement in RHOSO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enable-rating-in-rhoso/how-to-enable-rating.html">How To Enable Rating</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../using-rating-in-rhoso/using-the-rating-service.html">Using the Rating Service</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-rating-in-rhoso/understanding-rating-concepts.html">Understanding rating concepts</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-rating-in-rhoso/how-to-configure-rating-module.html">Step-by-Step to Configure CloudKitty with the Hashmap module</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-rating-in-rhoso/how-to-define-collected-metrics.html">How to Define Collected Metrics</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-rating-in-rhoso/how-to-create-and-manage-rating-rules.html">How to Create and Manage Rating Rules</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-rating-in-rhoso/how-to-retrieve-resources-consumption.html">How to Retrieve Resources Consumption</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="hands-on-lab-implementing-your-first-chargeback-rating.html">Hands-on Lab: Implementing Your First Chargeback Rating</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="setting-up-the-lab-environment-for-chargeback.html">Setting up the lab environment for Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="creating-and-applying-a-rating-rule.html">Creating and applying a rating rule</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="launching-a-test-instance.html">Launching a test instance to generate consumption data</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="verifying-and-analyzing-consumption-data.html">Verifying and analyzing consumption data</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../basic-rating-troubleshooting/basic-rating-troubleshooting.html">Basic Rating Troubleshooting</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-rating-troubleshooting/troubleshooting-metric-collection-and-availability.html">Troubleshooting Metric Collection and Availability</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-rating-troubleshooting/troubleshooting-ceilometer.html">Troubleshooting Ceilometer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-rating-troubleshooting/troubleshooting-metricstorage.html">Troubleshooting MetricStorage</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-rating-troubleshooting/troubleshooting-cloudkitty-deployment.html">Troubleshooting CloudKitty Deployment</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-rating-troubleshooting/troubleshooting-rating-and-cloudkitty-configuration.html">Troubleshooting Rating and CloudKitty Configuration</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">RHOSO Chargeback and Observability Fundamentals</span>
+    <span class="version">1.0.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">RHOSO Chargeback and Observability Fundamentals</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.0.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></li>
+    <li><a href="hands-on-lab-implementing-your-first-chargeback-rating.html">Hands-on Lab: Implementing Your First Chargeback Rating</a></li>
+    <li><a href="launching-a-test-instance.html">Launching a test instance to generate consumption data</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Launching a test instance to generate consumption data</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this unit, you will launch a test instance on your Red Hat OpenStack Services on OpenShift (RHOSO) environment so that CloudKitty has real consumption data to rate. With the rating rule from the <a href="creating-and-applying-a-rating-rule.html" class="xref page">previous unit</a> already in place, the uptime of this instance is collected by Ceilometer and rated by CloudKitty according to the cost you assigned to its flavor.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_hands_on_activity_launching_a_test_instance"><a class="anchor" href="#_hands_on_activity_launching_a_test_instance"></a>Hands-on Activity: Launching a Test Instance</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this activity, you will upload a lightweight Cirros image to the Image service (glance), launch an instance from it using the <code>m1.small</code> flavor, and confirm that the instance is running. You will execute each command manually through the <code>openstackclient</code> pod in your RHOSO environment.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>All commands are executed through the <code>openstackclient</code> pod running in the <code>openstack</code> namespace.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Follow these steps:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Add a Cirros image to the Image service</strong></p>
+<div class="paragraph">
+<p>Download a lightweight Cirros image and upload it to the Image service (glance). You will use this image to launch a test instance that generates the consumption data your rating rule charges for.</p>
+</div>
+<div class="listingblock wrap">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -L https://download.cirros-cloud.net/0.6.2/cirros-0.6.2-x86_64-disk.img | oc exec -i -n openstack openstackclient -- openstack image create --disk-format qcow2 --container-format bare --public cirros</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Create a test instance</strong></p>
+<div class="paragraph">
+<p>Launch an instance named <code>test-vm</code> using the Cirros image and the <code>m1.small</code> flavor. This instance generates the uptime metrics that CloudKitty collects and rates.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Use the <code>m1.small</code> flavor to match the rating rule you created in the previous unit. The <code>m1.tiny</code> flavor is too small to boot the Cirros image.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock wrap">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack server create --flavor m1.small --image cirros --network private test-vm</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Confirm the instance is running</strong></p>
+<div class="paragraph">
+<p>Check that the instance reached the <code>ACTIVE</code> state. It may take a minute or two to boot.</p>
+</div>
+<div class="listingblock wrap">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack server show test-vm -c name -c status -c flavor</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Example output:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">+--------+----------+
+| Field  | Value    |
++--------+----------+
+| flavor | m1.small |
+| name   | test-vm  |
+| status | ACTIVE   |
++--------+----------+</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Once the instance is <code>ACTIVE</code>, it starts generating uptime metrics. CloudKitty collects and rates these metrics on a periodic cycle, so it may take a few minutes before rated consumption data appears.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If the instance status is <code>BUILD</code>, wait a moment and run the <code>openstack server show</code> command again. If it reaches <code>ERROR</code>, the flavor is likely too small to boot the image&#8201;&#8212;&#8201;delete the instance and retry with the <code>m1.small</code> flavor.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_automation_alternative"><a class="anchor" href="#_automation_alternative"></a>Automation Alternative</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The repository you cloned in the <a href="setting-up-the-lab-environment-for-chargeback.html" class="xref page">lab setup unit</a> includes a playbook that automates all the manual steps above. It downloads the Cirros image, uploads it to the Image service, launches the instance, and waits for it to become <code>ACTIVE</code>.</p>
+</div>
+<div class="paragraph">
+<p>To launch the test instance automatically:</p>
+</div>
+<div class="listingblock wrap">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ansible-playbook create-test-instance/create-test-instance.yml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can customize the playbook variables to use a different image, flavor, or instance name:</p>
+</div>
+<div class="listingblock wrap">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ansible-playbook create-test-instance/create-test-instance.yml -e flavor_name=m1.medium -e instance_name=demo-vm</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The playbook supports the following variables:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Variable</th>
+<th class="tableblock halign-left valign-top">Default</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>openstack_namespace</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>openstack</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OpenShift namespace for the OpenStack pods</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>image_name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>cirros</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the image to create</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>image_url</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cirros 0.6.2 download URL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Source image to upload to the Image service</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>flavor_name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>m1.small</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Flavor to launch the instance with</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>instance_name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>test-vm</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the test instance to launch</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>network_name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>private</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Network the instance attaches to</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Keep the <code>flavor_name</code> in sync with the flavor used by your rating rule so the rule applies to the instance you launch.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>If you made a mistake and need to start over, remove the test instance and image with the cleanup playbook, then run the create playbook again:</p>
+</div>
+<div class="listingblock wrap">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ansible-playbook create-test-instance/cleanup-test-instance.yml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the next unit, you will validate your rating configuration and confirm that CloudKitty is rating the consumption generated by this instance.</p>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="creating-and-applying-a-rating-rule.html">Creating and applying a rating rule</a></span>
+  <span class="next"><a href="verifying-and-analyzing-consumption-data.html">Verifying and analyzing consumption data</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+<script defer src="../../../_/js/vendor/tabs.js"></script>
+<script defer src="../../../_/js/vendor/reading-time.js"></script>
+<script src="../../../_/js/vendor/lunr.js"></script>
+<script src="../../../_/js/search-ui.js" id="search-ui-script" data-site-root-path="../../.." data-snippet-length="100" data-stylesheet="../../../_/css/search.css"></script>
+<script async src="../../../search-index.js"></script>
+  </body>
+</html>
