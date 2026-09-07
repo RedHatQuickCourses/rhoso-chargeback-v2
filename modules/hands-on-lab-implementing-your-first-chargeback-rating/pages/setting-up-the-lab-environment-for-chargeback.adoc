@@ -107,7 +107,7 @@ After the playbook completes successfully, verify that CloudKitty is running.
 oc get pods -n openstack | grep cloudkitty
 ----
 +
-You should see `cloudkitty-api` and `cloudkitty-processor` pods running.
+You should see `cloudkitty-api` and `cloudkitty-proc` pods running.
 
 . Confirm the CloudKitty CR reports a `Ready` condition:
 +

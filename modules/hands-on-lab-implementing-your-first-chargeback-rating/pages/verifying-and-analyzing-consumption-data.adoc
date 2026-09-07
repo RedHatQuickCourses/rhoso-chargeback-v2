@@ -58,6 +58,14 @@ If all checks pass, your rating configuration is correctly set up and CloudKitty
 The "rating data flowing" check may show a warning if you run the validation shortly after creating the rating rule. CloudKitty processes metrics on a periodic cycle, so it may take a few minutes before rated data appears. This warning does not indicate a configuration problem.
 ====
 
+In addition to the pass/fail checks, the validation playbook runs three rating queries and prints their output, so you can inspect the rated data without running the commands yourself:
+
+* `openstack rating dataframes get` -- the individual rated data points.
+* `openstack rating summary get` -- the aggregated totals across all resources.
+* `openstack rating summary get -g type` -- the aggregated totals grouped by type.
+
+Each query is scoped to the current day (from midnight UTC to now) and returned in JSON format. The following sections explain how to run these queries yourself and how to interpret their output.
+
 == Generate Rating Reports
 
 After validating your configuration, you can query CloudKitty for the rated data it has produced. CloudKitty provides two levels of detail: **summaries** for aggregated totals and **dataframes** for individual rated data points. Think of summaries as the monthly statement and dataframes as the individual line items on the receipt.
@@ -66,12 +74,11 @@ After validating your configuration, you can query CloudKitty for the rated data
 
 The `openstack rating summary get` command returns aggregated charges for a given time period. As a tenant, you can only see your own project's data -- CloudKitty enforces tenant-aware access control automatically.
 
-Retrieve a summary for a specific time range:
+Retrieve a summary for a time range. For example, to cover the current day:
 
-[source,bash]
+[source,bash,role=wrap]
 ----
-oc exec -n openstack openstackclient -- \
-  openstack rating summary get --begin 2026-02-01 --end 2026-03-01
+oc exec -n openstack openstackclient -- openstack rating summary get --begin $(date -u +%Y-%m-%dT00:00:00) --end $(date -u +%Y-%m-%dT%H:%M:%S) -f json
 ----
 
 The output shows the total rated cost for each resource type within the specified period. Key fields to look for:
@@ -89,13 +96,11 @@ If the output is empty, CloudKitty may not have completed a processing cycle yet
 
 While summaries give you the big picture, dataframes show the individual rated data points stored in Loki. Use them to verify that the correct mapping was applied to each resource, or to debug a missing metric.
 
-Retrieve dataframes for a narrow time window (e.g., one hour):
+Retrieve dataframes for a time window. For example, to cover the current day:
 
-[source,bash]
+[source,bash,role=wrap]
 ----
-oc exec -n openstack openstackclient -- \
-  openstack rating dataframes get \
-  --begin 2026-03-01T00:00:00Z --end 2026-03-01T01:00:00Z
+oc exec -n openstack openstackclient -- openstack rating dataframes get --begin $(date -u +%Y-%m-%dT00:00:00) --end $(date -u +%Y-%m-%dT%H:%M:%S) -f json
 ----
 
 Each row in the output represents a single rated data point. The key columns are:
@@ -129,11 +134,20 @@ ansible-playbook create-ck-rating/create-ck-rating.yml
 +
 Then re-run the validation playbook.
 
-. **Check CloudKitty pod logs**: If the configuration looks correct but data is not flowing, inspect the CloudKitty processor logs for errors:
+. **Check CloudKitty pod logs**: If the configuration looks correct but data is not flowing, inspect the CloudKitty logs for errors.
 +
-[source,bash]
+Check the API logs:
++
+[source,bash,role=wrap]
 ----
-oc logs -n openstack $(oc get pods -n openstack -l app=cloudkitty -o name | head -1)
+oc logs -n openstack $(oc get pods -n openstack -l component=cloudkitty-api -o name | head -1) -c cloudkitty-api
+----
++
+Check the logs of the processor, which handles metric collection and rating:
++
+[source,bash,role=wrap]
+----
+oc logs -n openstack $(oc get pods -n openstack -l component=cloudkitty-proc -o name | head -1) -c cloudkitty-proc
 ----
 
 For additional guidance on diagnosing issues with metric collection, Ceilometer, MetricStorage, or CloudKitty, refer to the xref:basic-rating-troubleshooting:troubleshooting-cloudkitty-deployment.adoc[Troubleshooting CloudKitty Deployment] and xref:basic-rating-troubleshooting:troubleshooting-rating-and-cloudkitty-configuration.adoc[Troubleshooting Rating and CloudKitty Configuration] modules.
