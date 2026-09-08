@@ -324,6 +324,25 @@
 </tr>
 </table>
 </div>
+<div class="paragraph">
+<p>In addition to the pass/fail checks, the validation playbook runs three rating queries and prints their output, so you can inspect the rated data without running the commands yourself:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>openstack rating dataframes get</code>&#8201;&#8212;&#8201;the individual rated data points.</p>
+</li>
+<li>
+<p><code>openstack rating summary get</code>&#8201;&#8212;&#8201;the aggregated totals across all resources.</p>
+</li>
+<li>
+<p><code>openstack rating summary get -g type</code>&#8201;&#8212;&#8201;the aggregated totals grouped by type.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Each query is scoped to the current day (from midnight UTC to now) and returned in JSON format. The following sections explain how to run these queries yourself and how to interpret their output.</p>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -338,12 +357,11 @@
 <p>The <code>openstack rating summary get</code> command returns aggregated charges for a given time period. As a tenant, you can only see your own project&#8217;s data&#8201;&#8212;&#8201;CloudKitty enforces tenant-aware access control automatically.</p>
 </div>
 <div class="paragraph">
-<p>Retrieve a summary for a specific time range:</p>
+<p>Retrieve a summary for a time range. For example, to cover the current day:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock wrap">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- \
-  openstack rating summary get --begin 2026-02-01 --end 2026-03-01</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating summary get --begin $(date -u +%Y-%m-%dT00:00:00) --end $(date -u +%Y-%m-%dT%H:%M:%S)</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -383,13 +401,11 @@
 <p>While summaries give you the big picture, dataframes show the individual rated data points stored in Loki. Use them to verify that the correct mapping was applied to each resource, or to debug a missing metric.</p>
 </div>
 <div class="paragraph">
-<p>Retrieve dataframes for a narrow time window (e.g., one hour):</p>
+<p>Retrieve dataframes for a time window. For example, to cover the current day:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock wrap">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- \
-  openstack rating dataframes get \
-  --begin 2026-03-01T00:00:00Z --end 2026-03-01T01:00:00Z</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -n openstack openstackclient -- openstack rating dataframes get --begin $(date -u +%Y-%m-%dT00:00:00) --end $(date -u +%Y-%m-%dT%H:%M:%S)</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -460,10 +476,21 @@ ansible-playbook create-ck-rating/create-ck-rating.yml</code></pre>
 </div>
 </li>
 <li>
-<p><strong>Check CloudKitty pod logs</strong>: If the configuration looks correct but data is not flowing, inspect the CloudKitty processor logs for errors:</p>
-<div class="listingblock">
+<p><strong>Check CloudKitty pod logs</strong>: If the configuration looks correct but data is not flowing, inspect the CloudKitty logs for errors.</p>
+<div class="paragraph">
+<p>Check the API logs:</p>
+</div>
+<div class="listingblock wrap">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc logs -n openstack $(oc get pods -n openstack -l app=cloudkitty -o name | head -1)</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc logs -n openstack $(oc get pods -n openstack -l component=cloudkitty-api -o name | head -1) -c cloudkitty-api</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Check the logs of the processor, which handles metric collection and rating:</p>
+</div>
+<div class="listingblock wrap">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc logs -n openstack $(oc get pods -n openstack -l component=cloudkitty-proc -o name | head -1) -c cloudkitty-proc</code></pre>
 </div>
 </div>
 </li>

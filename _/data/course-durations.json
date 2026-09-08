@@ -1,5 +1,5 @@
 {
-  "totalSeconds": 2930,
+  "totalSeconds": 2962,
   "pageCount": 30,
   "pages": [
     {
@@ -115,7 +115,7 @@
     {
       "module": "hands-on-lab-implementing-your-first-chargeback-rating",
       "page": "verifying-and-analyzing-consumption-data.adoc",
-      "seconds": 162
+      "seconds": 194
     },
     {
       "module": "basic-rating-troubleshooting",
