@@ -1,1 +1,0 @@
-Welcome to the lab environment. Please note that at this time, specific instructions for accessing the lab environment on platforms other than those already covered are still being developed. If you are working on a different platform, please consult your course documentation or contact your instructor for guidance on how to successfully access your hands-on exercises.
