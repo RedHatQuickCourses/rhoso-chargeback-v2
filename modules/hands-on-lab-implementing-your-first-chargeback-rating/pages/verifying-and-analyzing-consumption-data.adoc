@@ -78,7 +78,7 @@ Retrieve a summary for a time range. For example, to cover the current day:
 
 [source,bash,role=wrap]
 ----
-oc exec -n openstack openstackclient -- openstack rating summary get --begin $(date -u +%Y-%m-%dT00:00:00) --end $(date -u +%Y-%m-%dT%H:%M:%S) -f json
+oc exec -n openstack openstackclient -- openstack rating summary get --begin $(date -u +%Y-%m-%dT00:00:00) --end $(date -u +%Y-%m-%dT%H:%M:%S)
 ----
 
 The output shows the total rated cost for each resource type within the specified period. Key fields to look for:
@@ -100,7 +100,7 @@ Retrieve dataframes for a time window. For example, to cover the current day:
 
 [source,bash,role=wrap]
 ----
-oc exec -n openstack openstackclient -- openstack rating dataframes get --begin $(date -u +%Y-%m-%dT00:00:00) --end $(date -u +%Y-%m-%dT%H:%M:%S) -f json
+oc exec -n openstack openstackclient -- openstack rating dataframes get --begin $(date -u +%Y-%m-%dT00:00:00) --end $(date -u +%Y-%m-%dT%H:%M:%S)
 ----
 
 Each row in the output represents a single rated data point. The key columns are:
