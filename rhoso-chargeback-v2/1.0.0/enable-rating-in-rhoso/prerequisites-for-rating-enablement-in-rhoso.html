@@ -299,16 +299,16 @@ oc get -n openstack OpenStackDataPlaneDeployment \
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># Check Telemetry is enabled
-oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.enabled}" | jq
+oc get -n openstack oscp -ojsonpath --template "{.items[0].spec.telemetry.enabled}" | jq
 
 # Check Ceilometer is enabled
-oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.ceilometer.enabled}" | jq
+oc get -n openstack oscp -ojsonpath --template "{.items[0].spec.telemetry.template.ceilometer.enabled}" | jq
 
 # Check that Telemetry is deployed and ready
-oc get telemetry
+oc get -n openstack telemetry
 
 # Check that Ceilometer is deployed and ready
-oc get ceilometer</code></pre>
+oc get -n openstack ceilometer</code></pre>
 </div>
 </div>
 </div>
@@ -336,10 +336,10 @@ oc get ceilometer</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># Check MetricStorage is enabled
-oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.metricStorage.enabled}" | jq
+oc get -n openstack oscp -ojsonpath --template "{.items[0].spec.telemetry.template.metricStorage.enabled}" | jq
 
 # Check that MetricStorage is deployed and ready
-oc get metricstorage</code></pre>
+oc get -n openstack metricstorage</code></pre>
 </div>
 </div>
 </div>
@@ -370,7 +370,7 @@ oc get metricstorage</code></pre>
 oc get csv | grep loki
 
 # Check that LokiStack is created
-oc get lokistack</code></pre>
+oc get -n openstack lokistack</code></pre>
 </div>
 </div>
 </div>
@@ -398,7 +398,7 @@ oc get lokistack</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># Check that osp-secret includes CloudKitty credentials
-oc get secret -o yaml osp-secret | grep CloudKitty</code></pre>
+oc get -n openstack secret -o yaml osp-secret | grep CloudKitty</code></pre>
 </div>
 </div>
 </div>

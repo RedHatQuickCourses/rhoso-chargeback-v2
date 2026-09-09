@@ -1,5 +1,5 @@
 {
-  "totalSeconds": 3015,
+  "totalSeconds": 3016,
   "pageCount": 31,
   "pages": [
     {
@@ -60,7 +60,7 @@
     {
       "module": "enable-rating-in-rhoso",
       "page": "prerequisites-for-rating-enablement-in-rhoso.adoc",
-      "seconds": 76
+      "seconds": 77
     },
     {
       "module": "enable-rating-in-rhoso",
