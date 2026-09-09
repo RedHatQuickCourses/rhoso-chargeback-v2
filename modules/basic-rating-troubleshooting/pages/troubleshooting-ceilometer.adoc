@@ -16,8 +16,8 @@ Check that telemetry and Ceilometer are enabled and ready on the controlplane:
 
 [source,bash]
 ----
-oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.enabled}" | jq
-oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.ceilometer.enabled}" | jq
+oc get -n openstack oscp -ojsonpath --template "{.items[0].spec.telemetry.enabled}" | jq
+oc get -n openstack oscp -ojsonpath --template "{.items[0].spec.telemetry.template.ceilometer.enabled}" | jq
 ----
 
 Both should return `true`.
@@ -26,8 +26,8 @@ Verify that the Telemetry and Ceilometer CRs are deployed and ready:
 
 [source,bash]
 ----
-oc get telemetry
-oc get ceilometer
+oc get telemetry -n openstack
+oc get ceilometer -n openstack
 ----
 
 The `STATUS` column should show `True` and the `MESSAGE` column should state `Setup complete`. If the message does not state "Setup complete", it should point towards what is wrong and possibly suggest a solution.
@@ -36,7 +36,7 @@ Check that Ceilometer was deployed on the dataplane. Ceilometer is deployed by t
 
 [source,bash]
 ----
-oc get osdpns openstack-edpm-ipam -oyaml | grep ServiceTelemetryDeploymentReady -B 4
+oc get -n openstack osdpns openstack-edpm-ipam -oyaml | grep ServiceTelemetryDeploymentReady -B 4
 ----
 
 The output should show `status: "True"` and `message: Deployment ready for telemetry service`.
@@ -57,35 +57,35 @@ The output should show `status: "True"` and `message: Deployment ready for telem
 +
 [source,bash]
 ----
-oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.enabled}" | jq
+oc get -n openstack oscp -ojsonpath --template "{.items[0].spec.telemetry.enabled}" | jq
 ----
 
 . Verify that Ceilometer is enabled:
 +
 [source,bash]
 ----
-oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.ceilometer.enabled}" | jq
+oc get -n openstack oscp -ojsonpath --template "{.items[0].spec.telemetry.template.ceilometer.enabled}" | jq
 ----
 
 . Check the Telemetry CR status:
 +
 [source,bash]
 ----
-oc get telemetry
+oc get -n openstack telemetry
 ----
 
 . Check the Ceilometer CR status:
 +
 [source,bash]
 ----
-oc get ceilometer
+oc get -n openstack ceilometer
 ----
 
 . Verify Ceilometer deployment on the dataplane:
 +
 [source,bash]
 ----
-oc get osdpns openstack-edpm-ipam -oyaml | grep ServiceTelemetryDeploymentReady -B 4
+oc get -n openstack osdpns openstack-edpm-ipam -oyaml | grep ServiceTelemetryDeploymentReady -B 4
 ----
 
 .Result
@@ -170,8 +170,8 @@ Verify that the scrape configurations exist and are correct:
 
 [source,bash]
 ----
-oc get scrapeconfig telemetry-ceilometer -ojsonpath --template "{.spec.scheme}"
-oc get scrapeconfig telemetry-ceilometer -ojsonpath --template "{.spec.staticConfigs..targets}" | jq
+oc get -n openstack scrapeconfig telemetry-ceilometer -ojsonpath --template "{.spec.scheme}"
+oc get -n openstack scrapeconfig telemetry-ceilometer -ojsonpath --template "{.spec.staticConfigs..targets}" | jq
 ----
 
 The scheme should match your TLS configuration (e.g., `HTTPS`), and the target should point to the Ceilometer central agent endpoint.
@@ -180,8 +180,8 @@ Check the dataplane scrape configuration:
 
 [source,bash]
 ----
-oc get scrapeconfig telemetry-ceilometer-compute-prom-exporter-tls -ojsonpath --template "{.spec.scheme}"
-oc get scrapeconfig telemetry-ceilometer-compute-prom-exporter-tls -ojsonpath --template "{.spec.staticConfigs..targets}" | jq
+oc get -n openstack scrapeconfig telemetry-ceilometer-compute-prom-exporter-tls -ojsonpath --template "{.spec.scheme}"
+oc get -n openstack scrapeconfig telemetry-ceilometer-compute-prom-exporter-tls -ojsonpath --template "{.spec.staticConfigs..targets}" | jq
 ----
 
 Verify that all compute nodes are listed as targets.
@@ -221,16 +221,16 @@ Pay attention to the `lastError` field in the output.
 +
 [source,bash]
 ----
-oc get scrapeconfig telemetry-ceilometer -ojsonpath --template "{.spec.scheme}"
-oc get scrapeconfig telemetry-ceilometer -ojsonpath --template "{.spec.staticConfigs..targets}" | jq
+oc get -n openstack scrapeconfig telemetry-ceilometer -ojsonpath --template "{.spec.scheme}"
+oc get -n openstack scrapeconfig telemetry-ceilometer -ojsonpath --template "{.spec.staticConfigs..targets}" | jq
 ----
 
 . Check the dataplane scrape configuration:
 +
 [source,bash]
 ----
-oc get scrapeconfig telemetry-ceilometer-compute-prom-exporter-tls -ojsonpath --template "{.spec.scheme}"
-oc get scrapeconfig telemetry-ceilometer-compute-prom-exporter-tls -ojsonpath --template "{.spec.staticConfigs..targets}" | jq
+oc get -n openstack scrapeconfig telemetry-ceilometer-compute-prom-exporter-tls -ojsonpath --template "{.spec.scheme}"
+oc get -n openstack scrapeconfig telemetry-ceilometer-compute-prom-exporter-tls -ojsonpath --template "{.spec.staticConfigs..targets}" | jq
 ----
 
 . Check whether the targets are up in Prometheus:

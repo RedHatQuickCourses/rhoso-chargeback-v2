@@ -16,14 +16,14 @@ Check whether the CloudKitty CR exists:
 
 [source,bash]
 ----
-oc get cloudkitty
+oc get -n openstack cloudkitty
 ----
 
 Inspect the status conditions for errors:
 
 [source,bash]
 ----
-oc get cloudkitty cloudkitty -ojsonpath --template "{.status.conditions}" | jq
+oc get -n openstack cloudkitty cloudkitty -ojsonpath --template "{.status.conditions}" | jq
 ----
 
 Look for conditions with `status: "False"`. Common error patterns include:
@@ -49,14 +49,14 @@ Look for conditions with `status: "False"`. Common error patterns include:
 +
 [source,bash]
 ----
-oc get cloudkitty
+oc get -n openstack cloudkitty
 ----
 
 . Inspect the detailed status conditions:
 +
 [source,bash]
 ----
-oc get cloudkitty cloudkitty -ojsonpath --template "{.status.conditions}" | jq
+oc get -n openstack cloudkitty cloudkitty -ojsonpath --template "{.status.conditions}" | jq
 ----
 
 . Identify conditions with `status: "False"` and read the `message` and `reason` fields.
@@ -78,8 +78,8 @@ Check that telemetry and CloudKitty are enabled:
 
 [source,bash]
 ----
-oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.enabled}" | jq
-oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.cloudkitty.enabled}" | jq
+oc get -n openstack oscp -ojsonpath --template "{.items[0].spec.telemetry.enabled}" | jq
+oc get -n openstack oscp -ojsonpath --template "{.items[0].spec.telemetry.template.cloudkitty.enabled}" | jq
 ----
 
 Both should return `true`.
@@ -101,8 +101,8 @@ If either value is `false`, edit the controlplane CR and set them to `true`:
 +
 [source,bash]
 ----
-oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.enabled}" | jq
-oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.cloudkitty.enabled}" | jq
+oc get -n openstack oscp -ojsonpath --template "{.items[0].spec.telemetry.enabled}" | jq
+oc get -n openstack oscp -ojsonpath --template "{.items[0].spec.telemetry.template.cloudkitty.enabled}" | jq
 ----
 
 . If either returns `false`, edit the controlplane CR to enable them.
@@ -111,7 +111,7 @@ oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.cloudkitty
 +
 [source,bash]
 ----
-oc get cloudkitty
+oc get -n openstack cloudkitty
 ----
 
 .Result
@@ -136,14 +136,14 @@ Check that the LokiStack CR exists:
 
 [source,bash]
 ----
-oc get lokistack
+oc get lokistack -n openstack
 ----
 
 If it exists, inspect its status conditions:
 
 [source,bash]
 ----
-oc get lokistack cloudkitty-lokistack -ojsonpath --template "{.status.conditions}" | jq
+oc get -n openstack lokistack cloudkitty-lokistack -ojsonpath --template "{.status.conditions}" | jq
 ----
 
 [NOTE]
@@ -174,14 +174,14 @@ oc get csv | grep loki
 +
 [source,bash]
 ----
-oc get lokistack
+oc get -n openstack lokistack
 ----
 
 . Inspect the LokiStack status conditions:
 +
 [source,bash]
 ----
-oc get lokistack cloudkitty-lokistack -ojsonpath --template "{.status.conditions}" | jq
+oc get -n openstack lokistack cloudkitty-lokistack -ojsonpath --template "{.status.conditions}" | jq
 ----
 
 . Identify any conditions with `status: "True"` for `Degraded` or `status: "False"` for `Ready`, and read the `message` field for the root cause.
@@ -201,7 +201,7 @@ Check the CloudKitty status conditions for the Loki-related error:
 
 [source,bash]
 ----
-oc get cloudkitty cloudkitty -ojsonpath --template "{.status.conditions}" | jq | grep LokiStackReady -B 5
+oc get -n openstack cloudkitty cloudkitty -ojsonpath --template "{.status.conditions}" | jq | grep LokiStackReady -B 5
 ----
 
 If the `reason` says "Can't own LokiStack resource. The loki-operator probably isn't installed", the operator needs to be installed.
@@ -274,7 +274,7 @@ oc get csv -n openshift-operators-redhat | grep loki
 +
 [source,bash]
 ----
-oc get cloudkitty cloudkitty -ojsonpath --template "{.status.conditions}" | jq
+oc get -n openstack cloudkitty cloudkitty -ojsonpath --template "{.status.conditions}" | jq
 ----
 
 .Result
@@ -292,7 +292,7 @@ Check the LokiStack status conditions for the S3-related error:
 
 [source,bash]
 ----
-oc get lokistack cloudkitty-lokistack -ojsonpath --template "{.status.conditions}" | jq
+oc get -n openstack lokistack cloudkitty-lokistack -ojsonpath --template "{.status.conditions}" | jq
 ----
 
 Look for a condition with `reason: "MissingObjectStorageSecret"`.
@@ -332,7 +332,7 @@ For more information about configuring Loki storage, see the link:https://docs.r
 +
 [source,bash]
 ----
-oc get lokistack cloudkitty-lokistack -ojsonpath --template "{.status.conditions}" | jq
+oc get -n openstack lokistack cloudkitty-lokistack -ojsonpath --template "{.status.conditions}" | jq
 ----
 
 . Create the S3 credentials secret (replace placeholder values with your actual credentials):
@@ -358,7 +358,7 @@ EOF
 +
 [source,bash]
 ----
-oc get lokistack cloudkitty-lokistack -ojsonpath --template "{.status.conditions}" | jq
+oc get -n openstack lokistack cloudkitty-lokistack -ojsonpath --template "{.status.conditions}" | jq
 ----
 
 .Result
