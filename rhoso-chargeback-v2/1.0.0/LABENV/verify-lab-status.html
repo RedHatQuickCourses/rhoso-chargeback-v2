@@ -3,9 +3,9 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>How To Enable Rating :: RHOSO Chargeback and Observability Fundamentals</title>
-    <link rel="prev" href="prerequisites-for-rating-enablement-in-rhoso.html">
-    <link rel="next" href="../using-rating-in-rhoso/using-the-rating-service.html">
+    <title>Verify Labe Environment Status :: RHOSO Chargeback and Observability Fundamentals</title>
+    <link rel="prev" href="index.html">
+    <link rel="next" href="../basics-of-rhoso-observability/basics-of-rhoso-observability.html">
     <meta name="generator" content="Antora 3.2.0-alpha.12">
     <link rel="stylesheet" href="../../../_/css/site.css">
     <link rel="stylesheet" href="../../../_/css/vendor/tabs.css">
@@ -57,10 +57,10 @@
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+    <a class="nav-link" href="index.html">Lab Environment</a>
 <ul class="nav-list">
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="../LABENV/verify-lab-status.html">Verify Labe Environment Status</a>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="verify-lab-status.html">Verify Labe Environment Status</a>
   </li>
 </ul>
   </li>
@@ -105,13 +105,13 @@
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="enable-rating-in-rhoso.html">Enable Rating in RHOSO</a>
+    <a class="nav-link" href="../enable-rating-in-rhoso/enable-rating-in-rhoso.html">Enable Rating in RHOSO</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="prerequisites-for-rating-enablement-in-rhoso.html">Prerequisites for Rating enablement in RHOSO</a>
+    <a class="nav-link" href="../enable-rating-in-rhoso/prerequisites-for-rating-enablement-in-rhoso.html">Prerequisites for Rating enablement in RHOSO</a>
   </li>
-  <li class="nav-item is-current-page" data-depth="2">
-    <a class="nav-link" href="how-to-enable-rating.html">How To Enable Rating</a>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enable-rating-in-rhoso/how-to-enable-rating.html">How To Enable Rating</a>
   </li>
 </ul>
   </li>
@@ -225,8 +225,8 @@
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></li>
-    <li><a href="enable-rating-in-rhoso.html">Enable Rating in RHOSO</a></li>
-    <li><a href="how-to-enable-rating.html">How To Enable Rating</a></li>
+    <li><a href="index.html">Lab Environment</a></li>
+    <li><a href="verify-lab-status.html">Verify Labe Environment Status</a></li>
   </ul>
 </nav>
 </div>
@@ -234,109 +234,96 @@
 <aside class="toc sidebar" data-title="Contents" data-levels="2">
   <div class="toc-menu"></div>
 </aside>
-<article class="doc" data-audio-src="how-to-enable-rating.wav" data-transcript-src="how-to-enable-rating.txt">
-<h1 class="page">How To Enable Rating</h1>
-<div id="preamble">
-<div class="sectionbody">
-<div class="paragraph">
-<p>Once the prerequisites have been met, you can proceed to enable the Rating feature in your RHOSO environment. This involves activating and configuring the Rating service (CloudKitty) within the OpenStackControlPlane.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_step_by_step_to_enable_rating"><a class="anchor" href="#_step_by_step_to_enable_rating"></a>Step-by-Step to Enable Rating</h2>
-<div class="sectionbody">
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p><strong>Locate the service definition for telemetry in the OpenStackControlPlane CR:</strong> Telemetry Operator can be configured via the OpenStackControlPlane CR. Add the following configuration in the telemetry section of the OpenStackControlPlane CR to enable the CloudKitty service.</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc edit OpenStackControlPlane -n openstack</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">telemetry:
-  enabled: true
-    template:
-      ...
-      cloudkitty:
-        enabled: true
-        s3StorageConfig:
-          schemas:
-          - effectiveDate: "2024-11-18"
-            version: v13
-          secret:
-            name: cloudkitty-loki-s3
-            type: s3</code></pre>
-</div>
-</div>
-<div class="admonitionblock warning">
+<article class="doc">
+<h1 class="page">Verify Labe Environment Status</h1>
+<div class="admonitionblock important">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-warning" title="Warning"></i>
+<i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Always back up your CR definition before making any modifications. Incorrect changes can disrupt your Telemetry services and impact the stability of your RHOSO environment.
+The OpenShift cluster provisioned in the lab environment may require up to an additional 30 minutes to become fully ready, even if its status is shown as Ready on the Red Hat Online Learning (ROLE) platform. Before proceeding with the lab, verify that the cluster is fully operational by following the instructions on this page.
 </td>
 </tr>
 </table>
 </div>
-</li>
-<li>
-<p><strong>Apply the Changes:</strong> Save the modified OpenStackControlPlane CR YAML. The Telemetry Operator will detect this change and initiate the reconciliation process, deploying or configuring <code>cloudkitty</code> accordingly.</p>
-</li>
-<li>
-<p><strong>Monitor Deployment:</strong> Monitor the deployment of the <code>cloudkitty</code> pods to ensure they start correctly.</p>
-</li>
-</ol>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_verifying_successful_rating_activation"><a class="anchor" href="#_verifying_successful_rating_activation"></a>Verifying Successful Rating Activation</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>After enabling and configuring <code>cloudkitty</code>, it is crucial to verify that the Rating service is active and working correctly.</p>
-</div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Check CloudKitty Pod Status:</strong> Confirm that the <code>cloudkitty</code> pods are up and running</p>
-</li>
-<li>
-<p><strong>Review CloudKitty CR Status:</strong> Check the status of the <code>CloudKitty</code> Custom Resource to ensure the setup is complete.</p>
+<p>Check the overall cluster version and update status, and verify the health of all core cluster operators.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get pods -n openstack | grep cloudkitty
-oc logs -f &lt;cloudkitty-api-pod-name&gt; -n openstack # To check specific pod logs</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get clusterversion
+oc get clusteroperators</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>All <code>cloudkitty</code> pods (e.g., <code>cloudkitty-api</code>, <code>cloudkitty-proc</code>) should be in <code>Running</code> state.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get -n openstack CloudKitty \
-    -o jsonpath="{.items[0].status.conditions[?(@.type=='Ready')]}" | jq</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Look for conditions or status fields within the YAML output that indicate `cloudkitty&#8217;s operational state and successful deployment.</p>
+<p>Ensure <strong>AVAILABLE</strong> is <code>True</code>, <strong>PROGRESSING</strong> is <code>False</code>, and <strong>DEGRADED</strong> is <code>False</code> for all cluster operators.</p>
 </div>
 </li>
 <li>
-<p><strong>Perform a Basic Rating Rule Test (Hands-On Activity):</strong> While this section focuses on enabling, a definitive verification involves creating a simple rating rule and observing if <code>cloudkitty</code> successfully processes metrics and associates usage with costs. This practical application will be covered in detail in the "Hands-on Lab: Creating Your First Rating."</p>
+<p>Check the status of all nodes and machine config pools.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get nodes
+oc get mcp</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Ensure all nodes are <strong>Ready</strong>, and machine config pools show <strong>UPDATED</strong> as <code>True</code> and <strong>DEGRADED</strong> as <code>False</code>.</p>
+</div>
+</li>
+<li>
+<p>Check for pods across all namespaces that are not running or have not completed successfully.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get pods -A | grep -v -e Running -e Completed</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Ensure the command returns no output. If pods are listed, investigate those in CrashLoopBackOff, Pending, or Error states.</p>
+</div>
+</li>
+<li>
+<p>Check CPU and memory utilization across all nodes.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc adm top nodes</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Ensure no nodes are approaching their available CPU or memory capacity.</p>
+</div>
+</li>
+<li>
+<p>Monitor the cluster version, machine config pools, and node status in real time.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">watch "oc get clusterversion; echo; oc get mcp; echo; oc get nodes"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Use this command during cluster updates or troubleshooting to monitor changes in cluster health.</p>
+</div>
 </li>
 </ol>
 </div>
-</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If any check indicates an unhealthy state, wait 30–40 minutes from the time the lab was provisioned for the OpenShift cluster to reach a fully ready state. If the cluster remains unhealthy after this period, investigate the affected cluster operator, node, pod, or machine config pool before proceeding with the lab.
+</td>
+</tr>
+</table>
 </div>
 <nav class="pagination">
-  <span class="prev"><a href="prerequisites-for-rating-enablement-in-rhoso.html">Prerequisites for Rating enablement in RHOSO</a></span>
-  <span class="next"><a href="../using-rating-in-rhoso/using-the-rating-service.html">Using the Rating Service</a></span>
+  <span class="prev"><a href="index.html">Lab Environment</a></span>
+  <span class="next"><a href="../basics-of-rhoso-observability/basics-of-rhoso-observability.html">Basics of RHOSO Observability</a></span>
 </nav>
 </article>
   </div>
@@ -348,7 +335,6 @@ oc logs -f &lt;cloudkitty-api-pod-name&gt; -n openstack # To check specific pod 
 <script async src="../../../_/js/vendor/highlight.js"></script>
 <script defer src="../../../_/js/vendor/tabs.js"></script>
 <script defer src="../../../_/js/vendor/reading-time.js"></script>
-<script defer src="../../../_/js/vendor/audio-transcript.js"></script>
 <script src="../../../_/js/vendor/lunr.js"></script>
 <script src="../../../_/js/search-ui.js" id="search-ui-script" data-site-root-path="../../.." data-snippet-length="100" data-stylesheet="../../../_/css/search.css"></script>
 <script async src="../../../search-index.js"></script>

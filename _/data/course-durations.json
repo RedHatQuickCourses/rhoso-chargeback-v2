@@ -1,6 +1,6 @@
 {
-  "totalSeconds": 2962,
-  "pageCount": 30,
+  "totalSeconds": 3015,
+  "pageCount": 31,
   "pages": [
     {
       "module": "ROOT",
@@ -10,7 +10,12 @@
     {
       "module": "LABENV",
       "page": "index.adoc",
-      "seconds": 4
+      "seconds": 3
+    },
+    {
+      "module": "LABENV",
+      "page": "verify-lab-status.adoc",
+      "seconds": 54
     },
     {
       "module": "basics-of-rhoso-observability",
