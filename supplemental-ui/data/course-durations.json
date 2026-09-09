@@ -1,6 +1,6 @@
 {
-  "totalSeconds": 2789,
-  "pageCount": 29,
+  "totalSeconds": 3015,
+  "pageCount": 31,
   "pages": [
     {
       "module": "ROOT",
@@ -10,7 +10,12 @@
     {
       "module": "LABENV",
       "page": "index.adoc",
-      "seconds": 4
+      "seconds": 3
+    },
+    {
+      "module": "LABENV",
+      "page": "verify-lab-status.adoc",
+      "seconds": 54
     },
     {
       "module": "basics-of-rhoso-observability",
@@ -95,22 +100,27 @@
     {
       "module": "hands-on-lab-implementing-your-first-chargeback-rating",
       "page": "hands-on-lab-implementing-your-first-chargeback-rating.adoc",
-      "seconds": 20
+      "seconds": 23
     },
     {
       "module": "hands-on-lab-implementing-your-first-chargeback-rating",
       "page": "setting-up-the-lab-environment-for-chargeback.adoc",
-      "seconds": 83
+      "seconds": 92
     },
     {
       "module": "hands-on-lab-implementing-your-first-chargeback-rating",
       "page": "creating-and-applying-a-rating-rule.adoc",
-      "seconds": 188
+      "seconds": 200
+    },
+    {
+      "module": "hands-on-lab-implementing-your-first-chargeback-rating",
+      "page": "launching-a-test-instance.adoc",
+      "seconds": 113
     },
     {
       "module": "hands-on-lab-implementing-your-first-chargeback-rating",
       "page": "verifying-and-analyzing-consumption-data.adoc",
-      "seconds": 158
+      "seconds": 194
     },
     {
       "module": "basic-rating-troubleshooting",

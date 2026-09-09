@@ -1,5 +1,0 @@
-= Lab Environment
-:page-audio-src: index-lab-other.wav
-:page-transcript-src: index-lab-other.txt
-
-FIXME: Instructions for accessing the lab environment on any other platform, for this hands-on based training.

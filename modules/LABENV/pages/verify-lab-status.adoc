@@ -1,0 +1,52 @@
+= Verify Labe Environment Status
+
+IMPORTANT: The OpenShift cluster provisioned in the lab environment may require up to an additional 30 minutes to become fully ready, even if its status is shown as Ready on the Red Hat Online Learning (ROLE) platform. Before proceeding with the lab, verify that the cluster is fully operational by following the instructions on this page.
+
+. Check the overall cluster version and update status, and verify the health of all core cluster operators.
++
+[source,bash]
+----
+oc get clusterversion
+oc get clusteroperators
+----
++
+Ensure **AVAILABLE** is `True`, **PROGRESSING** is `False`, and **DEGRADED** is `False` for all cluster operators.
+
+. Check the status of all nodes and machine config pools.
++
+[source,bash]
+----
+oc get nodes
+oc get mcp
+----
++
+Ensure all nodes are **Ready**, and machine config pools show **UPDATED** as `True` and **DEGRADED** as `False`.
+
+. Check for pods across all namespaces that are not running or have not completed successfully.
++
+[source,bash]
+----
+oc get pods -A | grep -v -e Running -e Completed
+----
++
+Ensure the command returns no output. If pods are listed, investigate those in CrashLoopBackOff, Pending, or Error states.
+
+. Check CPU and memory utilization across all nodes.
++
+[source,bash]
+----
+oc adm top nodes
+----
++
+Ensure no nodes are approaching their available CPU or memory capacity.
+
+. Monitor the cluster version, machine config pools, and node status in real time.
++
+[source,bash]
+----
+watch "oc get clusterversion; echo; oc get mcp; echo; oc get nodes"
+----
++
+Use this command during cluster updates or troubleshooting to monitor changes in cluster health.
+
+NOTE: If any check indicates an unhealthy state, wait 30–40 minutes from the time the lab was provisioned for the OpenShift cluster to reach a fully ready state. If the cluster remains unhealthy after this period, investigate the affected cluster operator, node, pod, or machine config pool before proceeding with the lab.
