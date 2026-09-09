@@ -42,16 +42,16 @@ Ensure the Telemetry Operator is available in your RHOSO deployment, that Ceilom
 [source,bash]
 ----
 # Check Telemetry is enabled
-oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.enabled}" | jq
+oc get -n openstack oscp -ojsonpath --template "{.items[0].spec.telemetry.enabled}" | jq
 
 # Check Ceilometer is enabled
-oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.ceilometer.enabled}" | jq
+oc get -n openstack oscp -ojsonpath --template "{.items[0].spec.telemetry.template.ceilometer.enabled}" | jq
 
 # Check that Telemetry is deployed and ready
-oc get telemetry
+oc get -n openstack telemetry
 
 # Check that Ceilometer is deployed and ready
-oc get ceilometer
+oc get -n openstack ceilometer
 ----
 --
 
@@ -66,10 +66,10 @@ Check that the MetricStorage is enabled and that the Prometheus instance is depl
 [source,bash]
 ----
 # Check MetricStorage is enabled
-oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.metricStorage.enabled}" | jq
+oc get -n openstack oscp -ojsonpath --template "{.items[0].spec.telemetry.template.metricStorage.enabled}" | jq
 
 # Check that MetricStorage is deployed and ready
-oc get metricstorage
+oc get -n openstack metricstorage
 ----
 --
 
@@ -87,7 +87,7 @@ Verify that a Loki instance designated for Cloudkitty's use is deployed and acce
 oc get csv | grep loki
 
 # Check that LokiStack is created
-oc get lokistack
+oc get -n openstack lokistack
 ----
 --
 
@@ -102,6 +102,6 @@ Verify that the OpenStack Secret has been updated to include CloudKitty credenti
 [source,bash]
 ----
 # Check that osp-secret includes CloudKitty credentials
-oc get secret -o yaml osp-secret | grep CloudKitty
+oc get -n openstack secret -o yaml osp-secret | grep CloudKitty
 ----
 --
