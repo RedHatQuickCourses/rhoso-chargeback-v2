@@ -259,8 +259,8 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.enabled}" | jq
-oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.ceilometer.enabled}" | jq</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get -n openstack oscp -ojsonpath --template "{.items[0].spec.telemetry.enabled}" | jq
+oc get -n openstack oscp -ojsonpath --template "{.items[0].spec.telemetry.template.ceilometer.enabled}" | jq</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -271,8 +271,8 @@ oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.ceilometer
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get telemetry
-oc get ceilometer</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get telemetry -n openstack
+oc get ceilometer -n openstack</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -283,7 +283,7 @@ oc get ceilometer</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get osdpns openstack-edpm-ipam -oyaml | grep ServiceTelemetryDeploymentReady -B 4</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get -n openstack osdpns openstack-edpm-ipam -oyaml | grep ServiceTelemetryDeploymentReady -B 4</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -323,7 +323,7 @@ oc get ceilometer</code></pre>
 <p>Verify that telemetry is enabled in the controlplane:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.enabled}" | jq</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get -n openstack oscp -ojsonpath --template "{.items[0].spec.telemetry.enabled}" | jq</code></pre>
 </div>
 </div>
 </li>
@@ -331,7 +331,7 @@ oc get ceilometer</code></pre>
 <p>Verify that Ceilometer is enabled:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.ceilometer.enabled}" | jq</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get -n openstack oscp -ojsonpath --template "{.items[0].spec.telemetry.template.ceilometer.enabled}" | jq</code></pre>
 </div>
 </div>
 </li>
@@ -339,7 +339,7 @@ oc get ceilometer</code></pre>
 <p>Check the Telemetry CR status:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get telemetry</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get -n openstack telemetry</code></pre>
 </div>
 </div>
 </li>
@@ -347,7 +347,7 @@ oc get ceilometer</code></pre>
 <p>Check the Ceilometer CR status:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get ceilometer</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get -n openstack ceilometer</code></pre>
 </div>
 </div>
 </li>
@@ -355,7 +355,7 @@ oc get ceilometer</code></pre>
 <p>Verify Ceilometer deployment on the dataplane:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get osdpns openstack-edpm-ipam -oyaml | grep ServiceTelemetryDeploymentReady -B 4</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get -n openstack osdpns openstack-edpm-ipam -oyaml | grep ServiceTelemetryDeploymentReady -B 4</code></pre>
 </div>
 </div>
 </li>
@@ -499,8 +499,8 @@ ceilometer_image_size{counter="image.size",image="98f26736-...",project="32268e9
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get scrapeconfig telemetry-ceilometer -ojsonpath --template "{.spec.scheme}"
-oc get scrapeconfig telemetry-ceilometer -ojsonpath --template "{.spec.staticConfigs..targets}" | jq</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get -n openstack scrapeconfig telemetry-ceilometer -ojsonpath --template "{.spec.scheme}"
+oc get -n openstack scrapeconfig telemetry-ceilometer -ojsonpath --template "{.spec.staticConfigs..targets}" | jq</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -511,8 +511,8 @@ oc get scrapeconfig telemetry-ceilometer -ojsonpath --template "{.spec.staticCon
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get scrapeconfig telemetry-ceilometer-compute-prom-exporter-tls -ojsonpath --template "{.spec.scheme}"
-oc get scrapeconfig telemetry-ceilometer-compute-prom-exporter-tls -ojsonpath --template "{.spec.staticConfigs..targets}" | jq</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get -n openstack scrapeconfig telemetry-ceilometer-compute-prom-exporter-tls -ojsonpath --template "{.spec.scheme}"
+oc get -n openstack scrapeconfig telemetry-ceilometer-compute-prom-exporter-tls -ojsonpath --template "{.spec.staticConfigs..targets}" | jq</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -580,8 +580,8 @@ oc get scrapeconfig telemetry-ceilometer-compute-prom-exporter-tls -ojsonpath --
 <p>Check the controlplane scrape configuration:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get scrapeconfig telemetry-ceilometer -ojsonpath --template "{.spec.scheme}"
-oc get scrapeconfig telemetry-ceilometer -ojsonpath --template "{.spec.staticConfigs..targets}" | jq</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get -n openstack scrapeconfig telemetry-ceilometer -ojsonpath --template "{.spec.scheme}"
+oc get -n openstack scrapeconfig telemetry-ceilometer -ojsonpath --template "{.spec.staticConfigs..targets}" | jq</code></pre>
 </div>
 </div>
 </li>
@@ -589,8 +589,8 @@ oc get scrapeconfig telemetry-ceilometer -ojsonpath --template "{.spec.staticCon
 <p>Check the dataplane scrape configuration:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get scrapeconfig telemetry-ceilometer-compute-prom-exporter-tls -ojsonpath --template "{.spec.scheme}"
-oc get scrapeconfig telemetry-ceilometer-compute-prom-exporter-tls -ojsonpath --template "{.spec.staticConfigs..targets}" | jq</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get -n openstack scrapeconfig telemetry-ceilometer-compute-prom-exporter-tls -ojsonpath --template "{.spec.scheme}"
+oc get -n openstack scrapeconfig telemetry-ceilometer-compute-prom-exporter-tls -ojsonpath --template "{.spec.staticConfigs..targets}" | jq</code></pre>
 </div>
 </div>
 </li>

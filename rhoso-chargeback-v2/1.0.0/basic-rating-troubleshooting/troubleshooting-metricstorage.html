@@ -259,7 +259,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get metricstorage</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get -n openstack metricstorage</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -270,7 +270,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get metricstorage metric-storage -ojsonpath --template "{.status.conditions}" | jq</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get -n openstack metricstorage metric-storage -ojsonpath --template "{.status.conditions}" | jq</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -313,7 +313,7 @@
 <p>Check whether the MetricStorage CR exists:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get metricstorage</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get -n openstack metricstorage</code></pre>
 </div>
 </div>
 </li>
@@ -321,7 +321,7 @@
 <p>If the CR exists but is not ready, inspect the detailed status conditions:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get metricstorage metric-storage -ojsonpath --template "{.status.conditions}" | jq</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get -n openstack metricstorage metric-storage -ojsonpath --template "{.status.conditions}" | jq</code></pre>
 </div>
 </div>
 </li>
@@ -360,8 +360,8 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.enabled}" | jq
-oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.metricStorage.enabled}" | jq</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get -n openstack oscp -ojsonpath --template "{.items[0].spec.telemetry.enabled}" | jq
+oc get -n openstack oscp -ojsonpath --template "{.items[0].spec.telemetry.template.metricStorage.enabled}" | jq</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -401,8 +401,8 @@ oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.metricStor
 <p>Verify the current state of the telemetry and MetricStorage flags:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.enabled}" | jq
-oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.metricStorage.enabled}" | jq</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get -n openstack oscp -ojsonpath --template "{.items[0].spec.telemetry.enabled}" | jq
+oc get -n openstack oscp -ojsonpath --template "{.items[0].spec.telemetry.template.metricStorage.enabled}" | jq</code></pre>
 </div>
 </div>
 </li>
@@ -413,7 +413,7 @@ oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.metricStor
 <p>After editing, verify that the MetricStorage CR is created and reaches the "Setup complete" state:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get metricstorage</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get -n openstack metricstorage</code></pre>
 </div>
 </div>
 </li>
@@ -446,7 +446,7 @@ oc get oscp -ojsonpath --template "{.items[0].spec.telemetry.template.metricStor
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get metricstorage metric-storage -ojsonpath --template "{.status.conditions}" | jq</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get -n openstack metricstorage metric-storage -ojsonpath --template "{.status.conditions}" | jq</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -499,7 +499,7 @@ EOF</code></pre>
 <p>Confirm that COO is not installed by checking the MetricStorage conditions:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get metricstorage metric-storage -ojsonpath --template "{.status.conditions}" | jq</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get -n openstack metricstorage metric-storage -ojsonpath --template "{.status.conditions}" | jq</code></pre>
 </div>
 </div>
 </li>
@@ -535,7 +535,7 @@ EOF</code></pre>
 <p>Verify that MetricStorage recovers:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get metricstorage</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get -n openstack metricstorage</code></pre>
 </div>
 </div>
 </li>

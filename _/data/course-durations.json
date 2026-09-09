@@ -1,5 +1,5 @@
 {
-  "totalSeconds": 3016,
+  "totalSeconds": 3028,
   "pageCount": 31,
   "pages": [
     {
@@ -135,17 +135,17 @@
     {
       "module": "basic-rating-troubleshooting",
       "page": "troubleshooting-ceilometer.adoc",
-      "seconds": 198
+      "seconds": 204
     },
     {
       "module": "basic-rating-troubleshooting",
       "page": "troubleshooting-metricstorage.adoc",
-      "seconds": 103
+      "seconds": 107
     },
     {
       "module": "basic-rating-troubleshooting",
       "page": "troubleshooting-cloudkitty-deployment.adoc",
-      "seconds": 99
+      "seconds": 101
     },
     {
       "module": "basic-rating-troubleshooting",
